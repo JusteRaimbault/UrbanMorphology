@@ -1,8 +1,8 @@
 
 # mapping functions
 
-library(cartography)
-library(classInt)
+#library(cartography)
+#library(classInt)
 
 #'
 #'

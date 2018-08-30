@@ -29,5 +29,7 @@ rows <- foreach(i=1:nrow(indics)) %dopar% {
   dif=abs(emissions$lon-indics$lonmin[i])+abs(emissions$lat-indics$latmin[i])
   return(which(dif==min(dif)))
 }
-  
+save(rows,file='Models/StaticCorrelations/rowstmp.RData')
+system('rm log')
+
 stopCluster(cl)
