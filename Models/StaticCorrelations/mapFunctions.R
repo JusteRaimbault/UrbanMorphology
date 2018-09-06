@@ -1,9 +1,11 @@
 
 # mapping functions
 
-library(cartography)
-library(classInt)
+
 library(raster)
+#library(cartography)
+#library(classInt)
+
 
 #'
 #'

@@ -54,6 +54,9 @@ g+geom_raster()+scale_fill_viridis(option = "magma", direction = -1)
 #  return(which(dif==min(dif)))
 #}
 #stopCluster(cl)
+#save(rows,file='Models/StaticCorrelations/rowstmp.RData')
+#system('rm log')
+#stopCluster(cl)
 
 
 
@@ -81,9 +84,6 @@ corrplot(cor(smootheddata[,c(-1,-2)],sindics[,c(-1,-2)]),method="color")
 #g+geom_raster()+scale_fill_viridis(option = "magma", direction = -1)
 #g=ggplot(sindics,aes(x=lonmin,y=latmin,fill=log(totalPop)))
 #g+geom_raster()+scale_fill_viridis(option = "magma", direction = -1)
-
-
-
 
 
 
