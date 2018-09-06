@@ -15,7 +15,7 @@ source('Models/StaticCorrelations/mapFunctions.R')
 areasize=100;offset=50;factor=0.5
 indics = as.tbl(loadIndicatorData(paste0("Data/StaticCorrelations/res/europecoupled_areasize",areasize,"_offset",offset,"_factor",factor,"_temp.RData")))
 #indics=indics[,1:10]
-indics=indics[apply(indics,1,function(r){prod(as.numeric(!is.na(r)))>0}),]
+#indics=indics[apply(indics,1,function(r){prod(as.numeric(!is.na(r)))>0}),]
 
 emissions <- as.tbl(read.csv('Data/EDGAR/v432_CO2_excl_short-cycle_org_C_2012/v432_CO2_excl_short-cycle_org_C_2012.txt',sep=';'))
 
@@ -30,10 +30,16 @@ sdata = emissions[selectedpoints,]
 datapoints = SpatialPoints(data.frame(indics[,c("lonmin","latmin")]),proj4string = countries@proj4string)
 selectedpoints = gContains(country,datapoints,byid = TRUE)
 sindics = indics[selectedpoints,]
+#sindics = indics
 
-#g=ggplot(indics,aes(x=lonmin,y=latmin,fill=moran))
-#g+geom_raster()+scale_fill_viridis(option = "magma", direction = -1)
-#ggsave(file=paste0('Results/Maps/Test/moran.png'),width=30,height=20,units='cm')
+for(indic in names(indics)){
+ g=ggplot(indics,aes_string(x="lonmin",y="latmin",fill=indic))
+ g+geom_raster()+scale_fill_viridis(option = "magma", direction = -1)
+ ggsave(file=paste0('Results/Maps/Indics/EU/',indic,'.png'),width=30,height=20,units='cm')
+}
+
+g=ggplot(indics,aes(x=lonmin,y=latmin,fill=log(totalPop)*log(1+euclPerf)*log(mu)))
+g+geom_raster()+scale_fill_viridis(option = "magma", direction = -1)
 
 #g=ggplot(sdata,aes(x=lon,y=lat,fill=norm_log_emission))
 #g+geom_raster()+scale_fill_viridis(option = "magma", direction = -1)
@@ -48,6 +54,13 @@ sindics = indics[selectedpoints,]
 #  return(which(dif==min(dif)))
 #}
 #stopCluster(cl)
+
+
+
+
+######
+## Correlations
+
 
 smootheddata=data.frame()
 for(i in 1:nrow(sindics)){

@@ -3,6 +3,7 @@
 
 library(cartography)
 library(classInt)
+library(raster)
 
 #'
 #'

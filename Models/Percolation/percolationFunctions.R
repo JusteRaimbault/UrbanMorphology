@@ -1,0 +1,88 @@
+
+library(dplyr)
+library(sp)
+library(rgeos)
+library(sf)
+library(tidyverse)
+library(ggplot2)
+
+#library(devtools)
+#devtools::install_github("tidyverse/ggplot2")
+#require(ggplot2)
+
+#'
+#'
+conditionalPercolation <- function(d,popthq,nwthq,radius,minclustsize=5,
+                                   xcol="lonmin",ycol="latmin",popcol="totalPop",nwcol="euclPerf",
+                                   resdir=paste0(Sys.getenv('CS_HOME'),'/UrbanMorphology/Results/Percolation/Maps/')
+                                   ){
+  #popth=5000000;nwth=3000;radius=50000
+  #xcol="lonmin";ycol="latmin";popcol="totalPop";nwcol="mu";d=indics
+  #x=data[,xcol];y=data[,ycol];population=data[,popcol];network=data[,nwcol]
+  #sppoints = SpatialPoints(data.frame(lon=x,lat==y),proj4string = countries@proj4string)
+  
+  popth = quantile(d[[popcol]],c(popthq));nwth=quantile(d[[nwcol]],c(nwthq))
+  
+  sppoints <- st_as_sf(d, coords = c(xcol, ycol), crs = 4326) %>% st_transform(3035)
+  sppoints$index=1:nrow(sppoints)
+  clusters = rep(NA,nrow(sppoints))
+  currentclusternumber=1
+  remainingpoints=T
+  
+  while(remainingpoints==T){
+ 
+    cpoints = sppoints[is.na(clusters)&sppoints[[popcol]]>popth&sppoints[[nwcol]]>nwth,]
+    show(nrow(cpoints))
+    
+    if(nrow(cpoints)>0){
+    currentcluster = cpoints[cpoints[[popcol]]==max(cpoints[[popcol]]),]
+  
+    newpoints=T
+    while(newpoints==T){
+      buffer = st_buffer(currentcluster, dist = radius)
+      prevpoints = nrow(currentcluster)
+      currentcluster <- cpoints[buffer,op=st_within]
+      newpoints=(nrow(currentcluster) - prevpoints > 0)
+      #show(nrow(currentcluster))
+    }
+    #plot(currentcluster,max.plot=1)
+    # get indices in all points
+    clusters[sppoints[currentcluster,op=st_intersects][["index"]]]=currentclusternumber
+    currentclusternumber=currentclusternumber+1
+    }
+    remainingpoints=(nrow(cpoints)>0)&(nrow(currentcluster)>minclustsize)
+  }
+  
+  sppoints$cluster = clusters
+  
+  #plot(sppoints%>%transmute(cluster=cluster))
+  g=ggplot(data.frame(x=indics$lonmin,y=indics$latmin,cluster=clusters),aes(x=x,y=y,fill=as.character(cluster)))
+  ggsave(g+geom_raster()+scale_fill_discrete(name="cluster"),file=paste0(resdir,popcol,popth,'_',nwcol,nwth,'_radius',radius,'.png'),width=15,height=10,units='cm')
+  
+  return(computeClustersIndics(sppoints))
+}
+
+
+
+#'
+#'
+computeClustersIndics <- function(sppoints,popcol="totalPop"){
+  clusteredpoints=sppoints[!is.na(sppoints$cluster),]
+  areas=c();pops=c()
+  for(k in unique(clusteredpoints$cluster)){
+    cluster = clusteredpoints[clusteredpoints$cluster==k,]
+    envelope=st_convex_hull(st_union(cluster))
+    areas=append(areas,as.numeric(st_area(envelope)))
+    allpoints=sppoints[envelope,op=st_within]
+    pops=append(pops,sum(allpoints[[popcol]]))
+  }
+  return(list(areas=areas,pops=pops))
+}
+
+
+
+
+
+
+
+
