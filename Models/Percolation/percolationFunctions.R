@@ -1,7 +1,7 @@
 
 library(dplyr)
-library(sp)
-library(rgeos)
+#library(sp)
+#library(rgeos)
 library(sf)
 library(tidyverse)
 library(ggplot2)
