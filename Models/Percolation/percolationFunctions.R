@@ -73,6 +73,7 @@ conditionalPercolation <- function(d,popthq,nwthq,radius,minclustsize=5,
   }
   
   return(computeClustersIndics(sppoints))
+  #return(sppoints)
 }
 
 
@@ -83,10 +84,12 @@ computeClustersIndics <- function(sppoints,popcol="totalPop"){
   clusteredpoints=sppoints[!is.na(sppoints$cluster),]
   areas=c();pops=c()
   for(k in unique(clusteredpoints$cluster)){
+    show(k)
     cluster = clusteredpoints[clusteredpoints$cluster==k,]
     envelope=st_convex_hull(st_union(cluster))
     areas=append(areas,as.numeric(st_area(envelope)))
-    allpoints=sppoints[envelope,op=st_within]
+    allpoints=sppoints[envelope,op=function(x,y){st_is_within_distance(x,y,dist=10)}]
+    #allpoints=sppoints[envelope,op=st_contains]
     pops=append(pops,sum(allpoints[[popcol]]))
   }
   return(list(areas=areas,pops=pops))
@@ -100,6 +103,8 @@ computeClustersIndics <- function(sppoints,popcol="totalPop"){
 interactionPotential <- function(sppoints,gravityGamma=1,gravityDistance=1,popcol="totalPop"){
   
 }
+
+
 
 
 
