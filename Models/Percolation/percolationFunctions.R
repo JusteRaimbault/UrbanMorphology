@@ -80,6 +80,13 @@ computeClustersIndics <- function(sppoints,popcol="totalPop"){
 }
 
 
+#'
+#' Compute morphological indices
+morphoIndices <-function(sppoints,popcol="totalPop"){
+  
+}
+
+
 
 
 
