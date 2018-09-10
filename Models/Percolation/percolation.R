@@ -40,6 +40,11 @@ stopCluster(cl)
 
 save(res,file='directSampling.RData')
 
+#############
+
+
+
+
 
 
 

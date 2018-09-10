@@ -99,6 +99,9 @@ computeClustersIndics <- function(sppoints,popcol="totalPop"){
 #'
 #' Compute morphological indices
 morphoIndices <-function(sppoints,popcol="totalPop"){
+  
+}
+  
 #' Compute a gravity potential between spatial points with population, of the form
 #'   (P_i P_j / P_tot)^gamma * exp(-d_{ij} / d_0)
 #'   TODO : influence of normalizing by pmax vs ptot ? -> investigate in interaction models
