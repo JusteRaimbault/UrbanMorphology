@@ -16,6 +16,7 @@ conditionalPercolation <- function(d,popthq,nwthq,radius,minclustsize=5,
                                    xcol="lonmin",ycol="latmin",popcol="totalPop",nwcol="euclPerf",
                                    resdir=paste0(Sys.getenv('CS_HOME'),'/UrbanMorphology/Results/Percolation/Maps/')
                                    ){
+  dir.create(resdir)
   #popth=5000000;nwth=3000;radius=50000
   #xcol="lonmin";ycol="latmin";popcol="totalPop";nwcol="mu";d=indics
   #x=data[,xcol];y=data[,ycol];population=data[,popcol];network=data[,nwcol]

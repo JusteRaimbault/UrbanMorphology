@@ -14,7 +14,7 @@ indics = as.tbl(loadIndicatorData(paste0(Sys.getenv('CS_HOME'),"/UrbanMorphology
 
 quantiles = c(0.75,0.8,0.85,0.9,0.95)
 radiuses=c(8000,10000,15000,20000,50000,75000,100000)
-nwindics= c("ecount","mu","vcount")
+nwindics= c("ecount","mu","vcount","euclPerf")
 
 params=matrix(0,length(quantiles)*(length(quantiles)+1)*length(radiuses)*length(nwindics),4)
 i=1
@@ -34,7 +34,12 @@ registerDoParallel(cl)
 res <- foreach(i=1:nrow(params)) %dopar% {
   source('percolationFunctions.R')
   #p = conditionalPercolation(d=indics,popthq=params$popthq[i],nwthq=params$nwthq[i],radius=params$radius[i])
-  return(conditionalPercolation(d=indics,popthq=params$popthq[i],nwthq=params$nwthq[i],radius=params$radius[i]))
+  return(conditionalPercolation(d=indics,
+                                popthq=params$popthq[i],
+                                nwthq=params$nwthq[i],
+                                radius=params$radius[i],
+                                nwcol=params$nwcol[i]
+         ))
 }
 stopCluster(cl)
 
