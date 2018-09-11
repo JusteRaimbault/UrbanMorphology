@@ -47,6 +47,7 @@ save(res,file='directSampling.RData')
 
 #############
 
+# load('directSampling.RData')
 
 
 
