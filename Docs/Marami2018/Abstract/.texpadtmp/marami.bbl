@@ -1,0 +1,60 @@
+\begin{thebibliography}{}
+
+\bibitem[Arcaute et~al., 2016]{arcaute2016cities}
+Arcaute, E., Molinero, C., Hatna, E., Murcio, R., Vargas-Ruiz, C., Masucci,
+  A.~P., and Batty, M. (2016).
+\newblock Cities and regions in britain through hierarchical percolation.
+\newblock {\em Royal Society open science}, 3(4):150691.
+
+\bibitem[Boccaletti et~al., 2014]{boccaletti2014structure}
+Boccaletti, S., Bianconi, G., Criado, R., Del~Genio, C.~I., G{\'o}mez-Gardenes,
+  J., Romance, M., Sendina-Nadal, I., Wang, Z., and Zanin, M. (2014).
+\newblock The structure and dynamics of multilayer networks.
+\newblock {\em Physics Reports}, 544(1):1--122.
+
+\bibitem[Burger and Meijers, 2012]{burger2012form}
+Burger, M. and Meijers, E. (2012).
+\newblock Form follows function? linking morphological and functional
+  polycentricity.
+\newblock {\em Urban studies}, 49(5):1127--1149.
+
+\bibitem[Hall and Pain, 2006]{hall2006polycentric}
+Hall, P.~G. and Pain, K. (2006).
+\newblock {\em The polycentric metropolis: learning from mega-city regions in
+  Europe}.
+\newblock Routledge.
+
+\bibitem[Huynh et~al., 2018]{huynh2018characterisation}
+Huynh, H.~N., Makarov, E., Legara, E.~F., Monterola, C., and Chew, L.~Y.
+  (2018).
+\newblock Characterisation and comparison of spatial patterns in urban systems:
+  A case study of us cities.
+\newblock {\em Journal of computational science}, 24:34--43.
+
+\bibitem[Janssens-Maenhout et~al., 2017]{janssens2017edgar}
+Janssens-Maenhout, G., Crippa, M., Guizzardi, D., Muntean, M., Schaaf, E.,
+  Dentener, F., Bergamaschi, P., Pagliari, V., Olivier, J., Peters, J., et~al.
+  (2017).
+\newblock Edgar v4. 3.2 global atlas of the three major greenhouse gas
+  emissions for the period 1970--2012.
+\newblock {\em Earth Syst. Sci. Data Discuss}.
+
+\bibitem[Makse et~al., 1998]{makse1998modeling}
+Makse, H.~A., Andrade, J.~S., Batty, M., Havlin, S., Stanley, H.~E., et~al.
+  (1998).
+\newblock Modeling urban growth patterns with correlated percolation.
+\newblock {\em Physical Review E}, 58(6):7054.
+
+\bibitem[Raimbault, 2018]{raimbault2018urban}
+Raimbault, J. (2018).
+\newblock An urban morphogenesis model capturing interactions between networks
+  and territories.
+\newblock {\em arXiv preprint arXiv:1805.05195}.
+
+\bibitem[Reuillon et~al., 2013]{reuillon2013openmole}
+Reuillon, R., Leclaire, M., and Rey-Coyrehourcq, S. (2013).
+\newblock Openmole, a workflow engine specifically tailored for the distributed
+  exploration of simulation models.
+\newblock {\em Future Generation Computer Systems}, 29(8):1981--1990.
+
+\end{thebibliography}

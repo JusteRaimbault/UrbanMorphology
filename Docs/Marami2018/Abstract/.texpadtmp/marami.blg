@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2017)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: /Users/juste/ComplexSystems/UrbanMorphology/Docs/Marami2018/Abstract/.texpadtmp/marami.aux
+The style file: apalike.bst
+Database file #1: ../biblio.bib
+You've used 9 entries,
+            1935 wiz_defined-function locations,
+            532 strings with 5941 characters,
+and the built_in function-call counts, 4140 in all, are:
+= -- 377
+> -- 256
+< -- 3
++ -- 98
+- -- 92
+* -- 390
+:= -- 750
+add.period$ -- 27
+call.type$ -- 9
+change.case$ -- 88
+chr.to.int$ -- 9
+cite$ -- 9
+duplicate$ -- 124
+empty$ -- 239
+format.name$ -- 105
+if$ -- 767
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 10
+newline$ -- 48
+num.names$ -- 27
+pop$ -- 77
+preamble$ -- 1
+purify$ -- 89
+quote$ -- 0
+skip$ -- 95
+stack$ -- 0
+substring$ -- 244
+swap$ -- 9
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 52
+warning$ -- 0
+while$ -- 28
+width$ -- 0
+write$ -- 116

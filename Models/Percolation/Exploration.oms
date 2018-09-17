@@ -1,0 +1,64 @@
+import java.text.SimpleDateFormat
+import java.util.Date
+
+logger.level("FINE")
+
+// parameters
+val popThQuantile = Val[Double]
+val nwThQuantile = Val[Double]
+val radius = Val[Double]
+
+val nwIndic = Val[String]
+
+val id = Val[Int]
+
+// indicators
+val emissions = Val[Double]
+val ecoperf = Val[Double]
+
+
+val analyse =
+  RTask("""
+        source('percolationFunctions.R')
+        clustered = conditionalPercolation(d=indics,popthq=popThQuantile,nwthq=nwThQuantile,
+                                radius=radius,
+                                nwcol=params$nwcol[i]
+         )
+        indics = computeIndics()
+        emissions=indics$emissions;ecoperf=indics$ecoperf
+        """,
+        libraries = Seq("")
+  ) set (
+    inputs += (popThQuantile, nwThQuantile, radius),
+    outputs += (emissions,ecoperf),
+    resources += workDirectory / "percolationFunctions.R"
+  )
+
+
+//val purpose = "DIRECTSAMPLING_GRID"
+val purpose = "TEST"
+
+
+//val env = EGIEnvironment("vo.complex-systems.eu",openMOLEMemory = 2000 megabytes)
+val env = LocalEnvironment(2)
+
+val indics_hook = AppendToCSVFileHook(workDirectory / "exploration" / ((new SimpleDateFormat("yyyyMMdd_HHmmss")).format(new Date()))+"_"+purpose+".csv") set (arraysOnSingleRow := true)
+
+
+  val exploration = DirectSampling(
+        //evaluation = ((setConfig -- (model on env by 50) -- computeIndicators) hook indics_hook),
+        evaluation = ((setConfig -- (model on env) -- computeIndicators) hook indics_hook),
+        //evaluation = setConfig,
+        sampling = (
+          (LHS(1000,
+            popThQuantile in Range(0.8,0.95),
+            nwThQuantile in Range(0.1,0.9),
+            radius in Range(10000.0,100000.0)
+          ) withIndex id)
+          x (sampleSize in Seq(50000))
+          x (replication in (UniformDistribution[Int](10000) take 100))
+        )
+      )
+
+
+  exploration

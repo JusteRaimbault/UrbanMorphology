@@ -49,6 +49,28 @@ save(res,file='directSampling.RData')
 
 # load('directSampling.RData')
 
+# get summary indicators of pop / areas distrib
+
+areasalpha = unlist(lapply(res,function(l){
+  areas = l$areas
+  return(ifelse(length(which(areas>0)),lm(data=data.frame(rank=log(1:length(areas[areas>0])),size=log(areas[areas>0])),size~rank)$coefficients[2],NA))
+}))
+
+popsalpha = unlist(lapply(res,function(l){
+  pops = l$pops
+  return(ifelse(length(which(pops>0)),lm(data=data.frame(rank=log(1:length(pops[pops>0])),size=log(pops[pops>0])),size~rank)$coefficients[2],NA))
+}))
+
+clustnum = unlist(lapply(res,function(l){length(l$pops)}))
+
+d=data.frame(areasalpha,popsalpha,clustnum)
+
+g=ggplot(d[clustnum>15,],aes(x=areasalpha,y=popsalpha,colour=clustnum))
+g+geom_point()
+
+# -> hierarchy of "endogenous city system" ?
+# : find criteria on which to optimize !
+
 
 
 

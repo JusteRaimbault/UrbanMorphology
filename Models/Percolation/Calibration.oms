@@ -1,0 +1,59 @@
+
+import java.text.SimpleDateFormat
+import java.util.Date
+
+logger.level("FINE")
+
+// parameters
+val popThQuantile = Val[Double]
+val nwThQuantile = Val[Double]
+val radius = Val[Double]
+
+// indicators
+val
+
+
+val analyse =
+  RTask("""
+        source('percolationFunctions.R')
+        indics =
+        """,
+        libraries = Seq("")
+  ) set (
+    inputs += (popThQuantile, nwThQuantile, radius),
+    rOutputs += ("distribs",distribs),
+    resources += workDirectory / "percolationFunctions.R"
+  )
+
+  val evolution =
+    SteadyStateEvolution(
+      algorithm = NSGA2(
+        mu = 50,
+        genome = Seq(
+          relocationRate in (0.0 to 1.0 by 0.1),
+          gammaCDA in (0.0 to 1.0 by 0.1),
+          gammaCDE in (0.0 to 1.0 by 0.1),
+          betaDC in (0.0 to 5.0 by 0.1),
+          finalTime in (20 to 200 by 1),
+          scenario in (0 to 7 by 1)),
+        objectives = Seq(oppositeRelativeAccessibility,relativeCongestion),
+        stochastic = Stochastic(seed = replication)
+      ),
+      evaluation = model -- post,
+      termination = 1 hours
+    )
+
+  val island =
+    IslandEvolution(
+      island = evolution,
+      parallelism = 500,
+      termination = 10000
+    )
+
+  val savePopulationHook = SavePopulationHook(island, workDirectory /  "exploration" / ((new SimpleDateFormat("yyyyMMdd_HHmm")).format(new Date()))+"_"+purpose)
+
+  val grid = EGIEnvironment("vo.complex-systems.eu",openMOLEMemory = 4000 megabytes)
+  //val local = LocalEnvironment(15)
+
+  island on grid hook savePopulationHook
+  //island on local hook savePopulationHook

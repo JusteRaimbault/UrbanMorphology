@@ -74,9 +74,17 @@ conditionalPercolation <- function(d,popthq,nwthq,radius,minclustsize=5,
     ggsave(g+geom_raster()+scale_fill_discrete(name="cluster"),file=paste0(resdir,popcol,popth,'_',nwcol,nwth,'_radius',radius,'.png'),width=15,height=10,units='cm')
   }
   
-  return(computeClustersIndics(sppoints))
-  #return(sppoints)
+  #return(computeClustersIndics(sppoints))
+  return(sppoints)
 }
+
+
+#'
+#'
+computeIndics <- function(sppoints,popcol="totalPop"){
+  
+}
+
 
 
 

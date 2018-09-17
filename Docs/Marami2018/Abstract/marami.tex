@@ -1,0 +1,124 @@
+\documentclass[12pt]{article}
+
+\usepackage{times}
+
+% general packages without options
+\usepackage{amsmath,amssymb,bbm}
+% graphics
+\usepackage{graphicx}
+% text formatting
+\usepackage[document]{ragged2e}
+\usepackage{pagecolor,color}
+
+\newcommand{\noun}[1]{\textsc{#1}}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% geometry
+\usepackage[margin=2.5cm]{geometry}
+
+\usepackage{multicol}
+\usepackage{setspace}
+
+\usepackage{natbib}
+\setlength{\bibsep}{0.0pt}
+
+%\usepackage[french]{babel}
+
+% layout : use fancyhdr package
+%\usepackage{fancyhdr}
+%\pagestyle{fancy}
+
+% variable to include comments or not in the compilation ; set to 1 to include
+\def \draft {1}
+
+
+% writing utilities
+
+% comments and responses
+%  -> use this comment to ask questions on what other wrote/answer questions with optional arguments (up to 4 answers)
+\usepackage{xparse}
+\usepackage{ifthen}
+\DeclareDocumentCommand{\comment}{m o o o o}
+{\ifthenelse{\draft=1}{
+    \textcolor{red}{\textbf{C : }#1}
+    \IfValueT{#2}{\textcolor{blue}{\textbf{A1 : }#2}}
+    \IfValueT{#3}{\textcolor{ForestGreen}{\textbf{A2 : }#3}}
+    \IfValueT{#4}{\textcolor{red!50!blue}{\textbf{A3 : }#4}}
+    \IfValueT{#5}{\textcolor{Aquamarine}{\textbf{A4 : }#5}}
+ }{}
+}
+
+% todo
+\newcommand{\todo}[1]{
+\ifthenelse{\draft=1}{\textcolor{red!50!blue}{\textbf{TODO : \textit{#1}}}}{}
+}
+
+
+\makeatletter
+
+
+\makeatother
+
+
+\linespread{1.25}
+
+\begin{document}
+
+
+
+
+
+
+
+\title{
+A multi-dimensional percolation approach to characterize sustainable mega-city regions
+\medskip\\
+\textit{Marami 2018\\
+Communication proposal
+}
+}
+\author{\noun{Juste Raimbault}\medskip\\
+(UPS CNRS 3611 ISC-PIF et UMR CNRS 8504 Géographie-cités)\\
+}
+\date{}
+
+\maketitle
+
+\justify
+
+\pagenumbering{gobble}
+
+
+\textbf{Keywords : }\textit{Road network; multilayer percolation; mega-city region}
+
+\medskip
+
+The structure of road networks both translates its past growth dynamics and has a significant impact on the sustainability of territories it irrigates. A method to characterize topologies of these spatial networks is network percolation. Such approaches have been applied to the modeling of urban growth \citep{makse1998modeling} and to the analysis of street networks for example to extract endogenous urban regions \citep{arcaute2016cities} or to characterize the spatial morphology of point patterns \cite{huynh2018characterisation}. Existing heuristics however generally focus on a single morphological dimension of networks, and leave out the functional properties of urban systems \citep{burger2012form}.
+
+This communication addresses such a gap by introducing a multi-dimensional percolation heuristic, which is analog to multilayer network percolation \citep{boccaletti2014structure}. Given discrete spatial fields, site percolation is operated between two cells given a threshold parameter for each dimension and a distance threshold. We apply the heuristic to urban morphology and road network topology measures in Europe. More precisely, a grid with resolution 50km of population density morphology indicators and road network topology indicators, has been computed on spatial moving windows for all European Union by \cite{raimbault2018urban}. We percolate the population density layer with a network characteristic layer, that we test among number of edges, number of vertices, cyclomatic number and euclidian efficiency, which capture functional properties especially for the two last.
+
+We systematically explore the clusters obtained for 840 parameter configurations. Maps reveal that most configurations resemble the actual distribution of European mega-city regions, which are functionally integrated polycentric urban areas \citep{hall2006polycentric}. We use this endogenous definition of regional urban systems the percolation algorithm produced to evaluate their sustainability, in terms of conflicting objectives of economic integration and greenhouse gases emissions. Applying a gravity model to each region, we estimate transportation flows within each and extrapolate emissions by coupling with the Edgar emission database \citep{janssens2017edgar} and economic activities with a scaling law of population. We show therein that different population, network and distance thresholds yield different performances in terms of sustainability, exhibiting a Pareto front. This suggests policies in terms of regional integration to increase the sustainability of mega-city regions. Further work will consist in the use of calibration heuristics \citep{reuillon2013openmole} to find in a more robust way optimal parameter values.
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+%% Biblio
+%%%%%%%%%%%%%%%%%%%%
+%\tiny
+
+%\begin{multicols}{2}
+
+%\setstretch{0.3}
+%\setlength{\parskip}{-0.4em}
+
+
+\bibliographystyle{apalike}
+\bibliography{biblio}
+%\end{multicols}
+
+
+
+\end{document}
