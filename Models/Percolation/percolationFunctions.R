@@ -117,15 +117,17 @@ morphoIndices <-function(sppoints,popcol="totalPop"){
 #' Compute a gravity potential between spatial points with population, of the form
 #'   (P_i P_j / P_tot)^gamma * exp(-d_{ij} / d_0)
 #'   TODO : influence of normalizing by pmax vs ptot ? -> investigate in interaction models
-#'   
-#'   - normalized such that sum = 1
-interactionPotential <- function(sppoints,gravityGamma=1,gravityDistance=1,popcol="totalPop"){
+#'   - normalized such that sum = 1 ? NO to be able to have a size effects in comparing configurations
+interactionPotential <- function(sppoints,gravityGamma=1,gravityDistance=1,weightcol="totalPop"){
   dmat = exp(-st_distance(sppoints)/gravityDistance)
   diag(dmat)<-0
   dmat = Matrix(dmat)
-  pops = sppoints[[popcol]]
-  popmat = Diagonal(x=(pops/sum(pops))^gravityGamma)
-  potentials = popmat%*%dmat%*%popmat
+  #pops = sppoints[[weightcol]]
+  #popmat = Diagonal(x=(pops/sum(pops))^gravityGamma)
+  weights=sppoints[[weightcol]]
+  # weights assumed already normalized
+  weightmat=Diagonal(x=(weights)^gravityGamma)
+  potentials = weightmat%*%dmat%*%weightmat
   return(as.matrix(potentials))
 }
 
