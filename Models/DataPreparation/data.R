@@ -17,13 +17,16 @@ emissions <- as.tbl(read.csv('Data/EDGAR/v432_CO2_excl_short-cycle_org_C_2012/v4
 # by hand "join" (aggreg)
 
 library(doParallel)
-cl <- makeCluster(60,outfile='log')
+cl <- makeCluster(10,outfile='log')
 registerDoParallel(cl)
 rows <- foreach(i=1:nrow(emissions)) %dopar% {
   #dif=abs(emissions$lon-indics$lonmin[i])+abs(emissions$lat-indics$latmin[i])
   #dif=abs(emissions$lon[i]-indics$lonmin)+abs(emissions$lat[i]-indics$latmin)
+  show(paste0(100*i/nrow(emissions),'%'))
   dif=sqrt((emissions$lon[i]-indics$lonmin)^2+(emissions$lat[i]-indics$latmin)^2)
-  return(which(dif==min(dif))[1])
+  indmin = which(dif==min(dif))[1]
+  show(indmin)
+  return(indmin)
 }
 stopCluster(cl)
 save(rows,file='Models/DataPreparation/rowsemissions.RData')
