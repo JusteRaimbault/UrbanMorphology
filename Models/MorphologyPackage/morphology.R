@@ -4,11 +4,14 @@
 # TODO creating R packages
 # https://cran.r-project.org/doc/contrib/Leisch-CreatingPackages.pdf
 
+#setwd(paste0(Sys.getenv('CS_HOME'),'/UrbanMorphology/Models/MorphologyPackage'))
+
+
+#######
+
 library(raster)
 library(sf)
-
-
-
+library(Matrix)
 
 #########
 ## Vector functions
@@ -18,7 +21,7 @@ library(sf)
 moranPoints <-function(points,varcol,weights=spatialWeightsPoints(points)){
   v = points[[varcol]]
   v = v-mean(v)
-  num = sum(weights*(Diagonal(v)%*%Diagonal(v)))
+  num = sum(Diagonal(x = v)%*%weights%*%Diagonal(x = v))
   denom = sum(v^2)
   normalization = nrow(points) / sum(weights)
   return(normalization*num/denom)
@@ -28,13 +31,22 @@ moranPoints <-function(points,varcol,weights=spatialWeightsPoints(points)){
 #'
 spatialWeightsPoints<-function(points){
   distances <- 1/st_distance(points)
-  distances[distances==Inf]=0
-  return(distances)
+  #distances[as.matrix(distances)==matrix(rep(Inf,nrow(distances)*ncol(distances)),nrow=nrow(distances))]=0
+  # no point at the same place
+  diag(distances)<-0
+  return(Matrix(drop_units(distances)))
 }
 
-avgDistancePoints<-function(){
-  
+#'
+#'
+avgDistancePoints<-function(points,varcol){
+  v = points[[varcol]]
+  distances <- 1/st_distance(points)
+  distances[distances==Inf]=0
+  vv = Diagonal(v)%*%Diagonal(v)
+  return(distances*vv/(sum(vv)^2)/max(distances))
 }
+
 
 
 
@@ -178,6 +190,8 @@ getCoordinates<-function(file,r,c){
 
 
 
+#system('rm -rf morphology')
+#package.skeleton(name='morphology')
 
-
+#install.packages(paste0(Sys.getenv('CS_HOME'),'/UrbanMorphology/Models/MorphologyPackage/morphology/'),repos=NULL,type='source')
 

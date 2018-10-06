@@ -1,0 +1,3 @@
+[submodule "Models/MorphologyPackage/morphology"]
+	path = Models/MorphologyPackage/morphology
+	url = git@github.com:JusteRaimbault/r-spatialmorphology.git

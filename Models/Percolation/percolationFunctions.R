@@ -13,15 +13,14 @@ library(Matrix)
 
 #'
 #'
-conditionalPercolation <- function(d,popthq,nwthq,radius,minclustsize=5,
-                                   xcol="lonmin",ycol="latmin",popcol="totalPop",nwcol="euclPerf",
+conditionalPercolation <- function(d,radius,popthq,nwcol,nwthq,minclustsize=5,
+                                   xcol="lonmin",ycol="latmin",popcol="totalPop",
+                                   withMaps=F,
                                    resdir=paste0(Sys.getenv('CS_HOME'),'/UrbanMorphology/Results/Percolation/Maps/')
                                    ){
   dir.create(resdir)
-  #popth=5000000;nwth=3000;radius=50000
+  #popthq=0.95;nwthq=0.95;radius=50000;nwcol="euclPerf";popcol="totalPop";minclustsize=5
   #xcol="lonmin";ycol="latmin";popcol="totalPop";nwcol="mu";d=indics
-  #x=data[,xcol];y=data[,ycol];population=data[,popcol];network=data[,nwcol]
-  #sppoints = SpatialPoints(data.frame(lon=x,lat==y),proj4string = countries@proj4string)
   
   show(paste0("radius = ",radius))
   
@@ -68,31 +67,26 @@ conditionalPercolation <- function(d,popthq,nwthq,radius,minclustsize=5,
   #show(sppoints)
   #show(clusters)
   
-  #plot(sppoints%>%transmute(cluster=cluster))
-  if(length(which(!is.na(clusters)))>0){
-    g=ggplot(data.frame(x=indics$lonmin,y=indics$latmin,cluster=clusters),aes(x=x,y=y,fill=as.character(cluster)))
-    ggsave(g+geom_raster()+scale_fill_discrete(name="cluster"),file=paste0(resdir,popcol,popth,'_',nwcol,nwth,'_radius',radius,'.png'),width=15,height=10,units='cm')
+  if(withMaps==T){
+    #plot(sppoints%>%transmute(cluster=cluster))
+    if(length(which(!is.na(clusters)))>0){
+      g=ggplot(data.frame(x=indics$lonmin,y=indics$latmin,cluster=clusters),aes(x=x,y=y,fill=as.character(cluster)))
+      ggsave(g+geom_raster()+scale_fill_discrete(name="cluster"),file=paste0(resdir,popcol,popth,'_',nwcol,nwth,'_radius',radius,'.png'),width=15,height=10,units='cm')
+    }
   }
-  
-  #return(computeClustersIndics(sppoints))
-  return(sppoints)
+    
+  return(computeIndics(sppoints))
+  #return(sppoints)
 }
+
+
 
 
 #'
 #'
 computeIndics <- function(sppoints,popcol="totalPop"){
-  
-}
-
-
-
-
-#'
-#'
-computeClustersIndics <- function(sppoints,popcol="totalPop"){
   clusteredpoints=sppoints[!is.na(sppoints$cluster),]
-  areas=c();pops=c()
+  areas=c();pops=c();morans=c();avgdists=c()
   for(k in unique(clusteredpoints$cluster)){
     show(k)
     cluster = clusteredpoints[clusteredpoints$cluster==k,]
@@ -101,8 +95,10 @@ computeClustersIndics <- function(sppoints,popcol="totalPop"){
     allpoints=sppoints[envelope,op=function(x,y){st_is_within_distance(x,y,dist=10)}]
     #allpoints=sppoints[envelope,op=st_contains]
     pops=append(pops,sum(allpoints[[popcol]]))
+    morans=append(morans,moranPoints(allpoints,popcol))
+    avgdists=append(avgdists,)
   }
-  return(list(areas=areas,pops=pops))
+  return(list(areas=areas,pops=pops,morans=morans,avgdists=avgdists))
 }
 
 
