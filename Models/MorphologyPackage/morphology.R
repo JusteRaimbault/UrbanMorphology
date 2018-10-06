@@ -43,11 +43,24 @@ avgDistancePoints<-function(points,varcol){
   v = points[[varcol]]
   distances <- 1/st_distance(points)
   distances[distances==Inf]=0
-  vv = Diagonal(v)%*%Diagonal(v)
-  return(distances*vv/(sum(vv)^2)/max(distances))
+  vv = Diagonal(v/sum(v^2))%*%distances%*%Diagonal(v/sum(v^2))
+  return(sum(vv)/max(distances))
 }
 
+entropyPoints<-function(points,varcol){
+  v = points[[varcol]]
+  v=v[v>0]
+  return(-sum(v*log(v))/log(length(v)))
+}
 
+slopePoints<-function(points,varcol){
+  v = points[[varcol]]
+  v=v[v>0]
+  v=sort(v,decreasing=TRUE)
+  rank = log(1:length(v))
+  reg = lm(v~rank,data.frame(rank,v))
+  return(reg$coefficients[2])
+}
 
 
 #########

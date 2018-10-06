@@ -2,9 +2,7 @@
 setwd(paste0(Sys.getenv('CS_HOME'),'/UrbanMorphology/Models/Percolation'))
 
 library(dplyr)
-#library(viridis)
 
-source('../StaticCorrelations/mapFunctions.R')
 source('percolationFunctions.R')
 
 # assumes data has been consolidated before

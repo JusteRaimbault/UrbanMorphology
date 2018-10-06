@@ -3,8 +3,8 @@ library(dplyr)
 #library(sp)
 #library(rgeos)
 library(sf)
-library(tidyverse)
-library(ggplot2)
+#library(tidyverse)
+#library(ggplot2)
 library(Matrix)
 
 #library(devtools)
@@ -13,7 +13,7 @@ library(Matrix)
 
 #'
 #'
-conditionalPercolation <- function(d,radius,popthq,nwcol,nwthq,minclustsize=5,
+conditionalPercolation <- function(d,radius,popthq,nwcol,nwthq,gamma,decay,minclustsize=5,
                                    xcol="lonmin",ycol="latmin",popcol="totalPop",
                                    withMaps=F,
                                    resdir=paste0(Sys.getenv('CS_HOME'),'/UrbanMorphology/Results/Percolation/Maps/')
@@ -67,26 +67,40 @@ conditionalPercolation <- function(d,radius,popthq,nwcol,nwthq,minclustsize=5,
   #show(sppoints)
   #show(clusters)
   
-  if(withMaps==T){
-    #plot(sppoints%>%transmute(cluster=cluster))
-    if(length(which(!is.na(clusters)))>0){
-      g=ggplot(data.frame(x=indics$lonmin,y=indics$latmin,cluster=clusters),aes(x=x,y=y,fill=as.character(cluster)))
-      ggsave(g+geom_raster()+scale_fill_discrete(name="cluster"),file=paste0(resdir,popcol,popth,'_',nwcol,nwth,'_radius',radius,'.png'),width=15,height=10,units='cm')
-    }
-  }
+  #if(withMaps==T){
+  #  #plot(sppoints%>%transmute(cluster=cluster))
+  #  if(length(which(!is.na(clusters)))>0){
+  #    g=ggplot(data.frame(x=indics$lonmin,y=indics$latmin,cluster=clusters),aes(x=x,y=y,fill=as.character(cluster)))
+  #    ggsave(g+geom_raster()+scale_fill_discrete(name="cluster"),file=paste0(resdir,popcol,popth,'_',nwcol,nwth,'_radius',radius,'.png'),width=15,height=10,units='cm')
+  #  }
+  #}
     
-  return(computeIndics(sppoints))
+  return(computeIndics(sppoints,gamma=gamma,decay=decay))
   #return(sppoints)
 }
 
 
+aggregIndics <- function(res){
+  return(list(
+    area=sum(res$areas),
+    pop=sum(res$areas),
+    moran=mean(res$morans),
+    avgdist=mean(res$avgdists),
+    entropy=mean(res$entropies),
+    slope=mean(res$slopes),
+    efficiency=sum(efficiency),
+    emissions=sum(emissions)
+  ))
+}
+
 
 
 #'
 #'
-computeIndics <- function(sppoints,popcol="totalPop"){
+computeIndics <- function(sppoints,popcol="totalPop",emissioncol="CO2",gamma=1,decay=1){
   clusteredpoints=sppoints[!is.na(sppoints$cluster),]
-  areas=c();pops=c();morans=c();avgdists=c()
+  areas=c();pops=c();morans=c();avgdists=c();entropies=c();slopes=c();
+  efficiencies=c();emissions=c()
   for(k in unique(clusteredpoints$cluster)){
     show(k)
     cluster = clusteredpoints[clusteredpoints$cluster==k,]
@@ -96,18 +110,16 @@ computeIndics <- function(sppoints,popcol="totalPop"){
     #allpoints=sppoints[envelope,op=st_contains]
     pops=append(pops,sum(allpoints[[popcol]]))
     morans=append(morans,moranPoints(allpoints,popcol))
-    avgdists=append(avgdists,)
+    avgdists=append(avgdists,avgDistancePoints(allpoints,popcol))
+    entropies=append(entropies,entropyPoints(allpoints,popcol))
+    slopes=append(slopes,slopePoints(allpoints,popcol))
+    efficiencies=append(efficiencies,sum(interactionPotential(allpoints,gamma,decay,popcol)))
+    emissions=append(emissions,sum(interactionPotential(allpoints,gamma,decay,emissioncol)))
   }
-  return(list(areas=areas,pops=pops,morans=morans,avgdists=avgdists))
+  return(list(areas=areas,pops=pops,morans=morans,avgdists=avgdists,
+              entropies=entropies,slopes=slopes,efficiencies=efficiencies,emissions=emissions))
 }
 
-
-#'
-#' Compute morphological indices
-morphoIndices <-function(sppoints,popcol="totalPop"){
-  
-}
-  
 
 
 #' Compute a gravity potential between spatial points with population, of the form
@@ -121,8 +133,9 @@ interactionPotential <- function(sppoints,gravityGamma=1,gravityDistance=1,weigh
   #pops = sppoints[[weightcol]]
   #popmat = Diagonal(x=(pops/sum(pops))^gravityGamma)
   weights=sppoints[[weightcol]]
+  weights=weights/sum(weights) # ensure normalization
   # weights assumed already normalized
-  weightmat=Diagonal(x=(weights)^gravityGamma)
+  weightmat=Diagonal(x=weights^gravityGamma)
   potentials = weightmat%*%dmat%*%weightmat
   return(as.matrix(potentials))
 }
