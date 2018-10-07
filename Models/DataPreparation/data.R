@@ -23,17 +23,20 @@ emissions=emissions[emissions$lon>=min(indics$lonmin)&emissions$lon<=max(indics$
 #cl <- makeCluster(4,outfile='log')
 #registerDoParallel(cl)
 #rows <- foreach(i=1:nrow(emissions)) %dopar% {
-rows=c()
+rows=c();mins=c()
 for(i in 1:nrow(emissions)){
   #dif=abs(emissions$lon-indics$lonmin[i])+abs(emissions$lat-indics$latmin[i])
   #dif=abs(emissions$lon[i]-indics$lonmin)+abs(emissions$lat[i]-indics$latmin)
   if(i%%1000==0){show(paste0(100*i/nrow(emissions),'%'))}
   #dif=sqrt((emissions$lon[i]-indics$lonmin)^2+(emissions$lat[i]-indics$latmin)^2)
   dif = spDistsN1(as.matrix(indics[,c("lonmin","latmin")]),c(emissions$lon[i],emissions$lat[i]),longlat = T)
-  indmin = ifelse(min(dif) < 15 ,which(dif==min(dif))[1],NA)
+  #indmin = ifelse(min(dif) < 15 ,which(dif==min(dif))[1],NA) # check distrib of distances
+  indmin = which(dif==min(dif))[1]
+  mins=append(mins,min(dif))
   rows=append(rows,indmin)
 }
 #stopCluster(cl)
+
 save(rows,file='Models/DataPreparation/rowsemissions.RData')
 #system('rm log')
 #stopCluster(cl)
