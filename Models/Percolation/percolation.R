@@ -3,6 +3,7 @@ setwd(paste0(Sys.getenv('CS_HOME'),'/UrbanMorphology/Models/Percolation'))
 
 library(dplyr)
 
+#source('Models/Percolation/percolationFunctions.R')
 source('percolationFunctions.R')
 
 # assumes data has been consolidated before
@@ -29,19 +30,23 @@ library(doParallel)
 cl <- makeCluster(50,outfile='log')
 registerDoParallel(cl)
 res <- foreach(i=1:nrow(params)) %dopar% {
+  #source('Models/Percolation/percolationFunctions.R')
   source('percolationFunctions.R')
   #p = conditionalPercolation(d=indics,popthq=params$popthq[i],nwthq=params$nwthq[i],radius=params$radius[i])
+  # Mandatory args : d,radius,popthq,nwcol,nwthq,gamma,decay
   return(conditionalPercolation(d=indics,
                                 radius=params$radius[i],
                                 popthq=params$popthq[i],
-                                nwcol=params$nwcol[i],
-                                nwthq=params$nwthq[i]
+                                nwcol=as.character(params$nwcol[i]),
+                                nwthq=params$nwthq[i],
+                                gamma=1,
+                                decay=500
                                 )
          )
 }
 stopCluster(cl)
 
-save(res,file='directSampling.RData')
+save(res,file=paste0('res/directSampling_',format(Sys.time(), "%Y%m%d_%H%M%S"),'.RData'))
 
 #############
 

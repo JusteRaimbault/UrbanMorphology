@@ -6,6 +6,7 @@
 
 #setwd(paste0(Sys.getenv('CS_HOME'),'/UrbanMorphology/Models/MorphologyPackage'))
 
+library(units)
 
 #######
 
@@ -41,9 +42,9 @@ spatialWeightsPoints<-function(points){
 #'
 avgDistancePoints<-function(points,varcol){
   v = points[[varcol]]
-  distances <- 1/st_distance(points)
+  distances <- drop_units(1/st_distance(points))
   distances[distances==Inf]=0
-  vv = Diagonal(v/sum(v^2))%*%distances%*%Diagonal(v/sum(v^2))
+  vv = Diagonal(x=v/sum(v^2))%*%distances%*%Diagonal(x=v/sum(v^2))
   return(sum(vv)/max(distances))
 }
 

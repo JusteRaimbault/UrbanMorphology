@@ -7,18 +7,24 @@ library(sf)
 #library(ggplot2)
 library(Matrix)
 
+#source(paste0(Sys.getenv('CS_HOME'),'/UrbanMorphology/Models/MorphologyPackage/morphology.R'))
+# for oml : must be in the same dir
+source('morphology.R')
+
 #library(devtools)
 #devtools::install_github("tidyverse/ggplot2")
 #require(ggplot2)
 
 #'
 #'
-conditionalPercolation <- function(d,radius,popthq,nwcol,nwthq,gamma,decay,minclustsize=5,
+conditionalPercolation <- function(d,radius,popthq,nwcol,nwthq,gamma,decay,
+                                   minclustsize=5,
                                    xcol="lonmin",ycol="latmin",popcol="totalPop",
                                    withMaps=F,
                                    resdir=paste0(Sys.getenv('CS_HOME'),'/UrbanMorphology/Results/Percolation/Maps/')
                                    ){
-  dir.create(resdir)
+  
+  if(withMaps==T){dir.create(resdir)}
   #popthq=0.95;nwthq=0.95;radius=50000;nwcol="euclPerf";popcol="totalPop";minclustsize=5
   #xcol="lonmin";ycol="latmin";popcol="totalPop";nwcol="mu";d=indics
   
@@ -127,7 +133,7 @@ computeIndics <- function(sppoints,popcol="totalPop",emissioncol="CO2",gamma=1,d
 #'   TODO : influence of normalizing by pmax vs ptot ? -> investigate in interaction models
 #'   - normalized such that sum = 1 ? NO to be able to have a size effects in comparing configurations
 interactionPotential <- function(sppoints,gravityGamma=1,gravityDistance=1,weightcol="totalPop"){
-  dmat = exp(-st_distance(sppoints)/gravityDistance)
+  dmat = exp(-drop_units(st_distance(sppoints))/gravityDistance)
   diag(dmat)<-0
   dmat = Matrix(dmat)
   #pops = sppoints[[weightcol]]

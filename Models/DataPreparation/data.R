@@ -24,12 +24,14 @@ emissions=emissions[emissions$lon>=min(indics$lonmin)&emissions$lon<=max(indics$
 #registerDoParallel(cl)
 #rows <- foreach(i=1:nrow(emissions)) %dopar% {
 rows=c();mins=c()
-for(i in 1:nrow(emissions)){
+#for(i in 1:nrow(emissions)){
+for(i in 1:nrow(indics)){
   #dif=abs(emissions$lon-indics$lonmin[i])+abs(emissions$lat-indics$latmin[i])
   #dif=abs(emissions$lon[i]-indics$lonmin)+abs(emissions$lat[i]-indics$latmin)
-  if(i%%1000==0){show(paste0(100*i/nrow(emissions),'%'))}
+  if(i%%1000==0){show(paste0(100*i/nrow(indics),'%'))}
   #dif=sqrt((emissions$lon[i]-indics$lonmin)^2+(emissions$lat[i]-indics$latmin)^2)
-  dif = spDistsN1(as.matrix(indics[,c("lonmin","latmin")]),c(emissions$lon[i],emissions$lat[i]),longlat = T)
+  #dif = spDistsN1(as.matrix(indics[,c("lonmin","latmin")]),c(emissions$lon[i],emissions$lat[i]),longlat = T)
+  dif = spDistsN1(as.matrix(emissions[,c("lon","lat")]),c(indics$lonmin[i],indics$latmin[i]),longlat = T)
   #indmin = ifelse(min(dif) < 15 ,which(dif==min(dif))[1],NA) # check distrib of distances
   indmin = which(dif==min(dif))[1]
   mins=append(mins,min(dif))
@@ -37,7 +39,19 @@ for(i in 1:nrow(emissions)){
 }
 #stopCluster(cl)
 
-save(rows,file='Models/DataPreparation/rowsemissions.RData')
+#hist(log(mins),breaks=500)
+#hist(mins[mins<20],breaks=500)
+# need to check visually
+#library(ggplot2)
+#library(viridis)
+#g=ggplot(data.frame(emissions,mins)[mins<20,],aes(x=lon,y=lat,fill=mins))
+#g+geom_raster()+scale_fill_viridis(option = "magma", direction = -1)
+#ggsave(file=paste0('Results/Maps/Test/spatialaliasing.png'),width=30,height=20,units='cm')
+#length(which(mins<20)) # -> actually the resolution of emissions is smaller than our indics : redo with rows for indics
+
+# keep all rows, put na in consolidation by keepping also mins
+#save(rows,mins,file='Models/DataPreparation/rowsemissions.RData')
+save(rows,mins,file='Models/DataPreparation/rowsindics.RData')
 #system('rm log')
 #stopCluster(cl)
 
