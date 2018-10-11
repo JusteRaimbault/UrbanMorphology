@@ -28,11 +28,11 @@ conditionalPercolation <- function(d,radius,popthq,nwcol,nwthq,gamma,decay,
   #popthq=0.95;nwthq=0.95;radius=50000;nwcol="euclPerf";popcol="totalPop";minclustsize=5
   #xcol="lonmin";ycol="latmin";popcol="totalPop";nwcol="mu";d=indics
   
-  show(paste0("radius = ",radius))
+  show(paste0("Parameter : radius = ",radius,' ; popthq = ',popthq,' ; nwcol = ',nwcol,' ; nwthq = ',nwthq,' ; gamma = ',gamma,' ; decay = ',decay))
   
   popth = quantile(d[[popcol]],c(popthq));nwth=quantile(d[[nwcol]],c(nwthq))
   
-  show(paste0("popth = ",popth));show(paste0("nwth = ",nwth));
+  show(paste0("Values : popth = ",popth));show(paste0("nwth = ",nwth));
   
   sppoints <- st_as_sf(d, coords = c(xcol, ycol), crs = 4326) %>% st_transform(3035)
   sppoints$index=1:nrow(sppoints)
@@ -81,12 +81,15 @@ conditionalPercolation <- function(d,radius,popthq,nwcol,nwthq,gamma,decay,
   #  }
   #}
     
-  return(computeIndics(sppoints,gamma=gamma,decay=decay))
+  return(computeIndics(sppoints,gamma,decay))
   #return(sppoints)
 }
 
 
+#'
+#' Aggregatd indices
 aggregIndics <- function(res){
+  show(paste0('Aggregating indicators for result with ',length(res$areas),' clusters'))
   return(list(
     area=sum(res$areas),
     pop=sum(res$areas),
@@ -94,7 +97,7 @@ aggregIndics <- function(res){
     avgdist=mean(res$avgdists),
     entropy=mean(res$entropies),
     slope=mean(res$slopes),
-    efficiency=sum(efficiency),
+    efficiency=sum(efficiencies),
     emissions=sum(emissions)
   ))
 }
@@ -103,24 +106,29 @@ aggregIndics <- function(res){
 
 #'
 #'
-computeIndics <- function(sppoints,popcol="totalPop",emissioncol="CO2",gamma=1,decay=1){
+computeIndics <- function(sppoints,gamma,decay,popcol="totalPop",emissioncol="CO2"){
+  show(paste0('Computing indicators for ',nrow(sppoints),'points ; gamma = ',gamma,' ; decay = ',decay))
   clusteredpoints=sppoints[!is.na(sppoints$cluster),]
   areas=c();pops=c();morans=c();avgdists=c();entropies=c();slopes=c();
   efficiencies=c();emissions=c()
-  for(k in unique(clusteredpoints$cluster)){
-    show(k)
+  clustnums = unique(clusteredpoints$cluster)
+  for(i in 1:length(clustnums)){
+    k=clustnums[i]
+    show(paste0('Cluster ',i,'/',length(clustnums)))
     cluster = clusteredpoints[clusteredpoints$cluster==k,]
     envelope=st_convex_hull(st_union(cluster))
+    #show(envelope)
     areas=append(areas,as.numeric(st_area(envelope)))
     allpoints=sppoints[envelope,op=function(x,y){st_is_within_distance(x,y,dist=10)}]
+    show(paste0(nrow(allpoints),' points'))
     #allpoints=sppoints[envelope,op=st_contains]
     pops=append(pops,sum(allpoints[[popcol]]))
     morans=append(morans,moranPoints(allpoints,popcol))
     avgdists=append(avgdists,avgDistancePoints(allpoints,popcol))
     entropies=append(entropies,entropyPoints(allpoints,popcol))
     slopes=append(slopes,slopePoints(allpoints,popcol))
-    efficiencies=append(efficiencies,sum(interactionPotential(allpoints,gamma,decay,popcol)))
-    emissions=append(emissions,sum(interactionPotential(allpoints,gamma,decay,emissioncol)))
+    efficiencies=append(efficiencies,sum(interactionPotential(allpoints,gravityGamma=gamma,gravityDistance=decay,weightcol=popcol)))
+    emissions=append(emissions,sum(interactionPotential(allpoints,gravityGamma=gamma,gravityDistance=decay,weightcol=emissioncol)))
   }
   return(list(areas=areas,pops=pops,morans=morans,avgdists=avgdists,
               entropies=entropies,slopes=slopes,efficiencies=efficiencies,emissions=emissions))
@@ -133,6 +141,7 @@ computeIndics <- function(sppoints,popcol="totalPop",emissioncol="CO2",gamma=1,d
 #'   TODO : influence of normalizing by pmax vs ptot ? -> investigate in interaction models
 #'   - normalized such that sum = 1 ? NO to be able to have a size effects in comparing configurations
 interactionPotential <- function(sppoints,gravityGamma=1,gravityDistance=1,weightcol="totalPop"){
+  show(paste0('Interaction potential for ',nrow(sppoints),' points ; gravityGamma = ',gravityGamma,' ; gravityDistance = ',gravityDistance))
   dmat = exp(-drop_units(st_distance(sppoints))/gravityDistance)
   diag(dmat)<-0
   dmat = Matrix(dmat)
