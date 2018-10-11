@@ -7,7 +7,7 @@ library(dplyr)
 source('percolationFunctions.R')
 
 # assumes data has been consolidated before
-load('Data/consolidated/indics.RData')
+load('../../Data/consolidated/indics.RData')
 
 # parameter values
 quantiles = c(0.75,0.8,0.85,0.9,0.95)
