@@ -18,10 +18,10 @@ source('morphology.R')
 #'
 #'
 conditionalPercolation <- function(d,radius,popthq,nwcol,nwthq,gamma,decay,
-                                   minclustsize=5,
+                                   minclustsize=25,
                                    xcol="lonmin",ycol="latmin",popcol="totalPop",
-                                   withMaps=F,
-                                   resdir=paste0(Sys.getenv('CS_HOME'),'/UrbanMorphology/Results/Percolation/Maps/')
+                                   withMaps=T,
+                                   resdir=paste0(Sys.getenv('CS_HOME'),'/UrbanMorphology/Results/Percolation/Maps2/')
                                    ){
   
   if(withMaps==T){dir.create(resdir)}
@@ -48,6 +48,7 @@ conditionalPercolation <- function(d,radius,popthq,nwcol,nwthq,gamma,decay,
     
     if(nrow(cpoints)>0){
       #' TODO this selection function should be passed as an argument -> can eg test random selection
+      #' Rq : the process is independant of the choice of initial points
       currentcluster = cpoints[cpoints[[popcol]]==max(cpoints[[popcol]]),]
     newpoints=T
     while(newpoints==T){
@@ -59,28 +60,35 @@ conditionalPercolation <- function(d,radius,popthq,nwcol,nwthq,gamma,decay,
     }
     #plot(currentcluster,max.plot=1)
     # get indices in all points
-    clusters[sppoints[currentcluster,op=st_intersects][["index"]]]=currentclusternumber
-    currentclusternumber=currentclusternumber+1
+    if(nrow(currentcluster)>minclustsize){
+      clusters[sppoints[currentcluster,op=st_intersects][["index"]]]=currentclusternumber
+      currentclusternumber=currentclusternumber+1
+    }else{
+      clusters[sppoints[currentcluster,op=st_intersects][["index"]]]=-1
+    }
     
-    remainingpoints=(nrow(cpoints)>0)&(nrow(currentcluster)>minclustsize)
+    # this is wrong : could have a next cluster larger than minclustsize
+    #remainingpoints=(nrow(cpoints)>0)&(nrow(currentcluster)>minclustsize)
+    remainingpoints=(nrow(cpoints)>0)
     }else{
       remainingpoints=F
     }
     
   }
   
+  clusters[clusters==-1]=NA
   sppoints$cluster = clusters
   
   #show(sppoints)
   #show(clusters)
   
-  #if(withMaps==T){
-  #  #plot(sppoints%>%transmute(cluster=cluster))
-  #  if(length(which(!is.na(clusters)))>0){
-  #    g=ggplot(data.frame(x=indics$lonmin,y=indics$latmin,cluster=clusters),aes(x=x,y=y,fill=as.character(cluster)))
-  #    ggsave(g+geom_raster()+scale_fill_discrete(name="cluster"),file=paste0(resdir,popcol,popth,'_',nwcol,nwth,'_radius',radius,'.png'),width=15,height=10,units='cm')
-  #  }
-  #}
+  if(withMaps==T){
+    #plot(sppoints%>%transmute(cluster=cluster))
+    if(length(which(!is.na(clusters)))>0){
+      g=ggplot(data.frame(x=indics$lonmin,y=indics$latmin,cluster=clusters),aes(x=x,y=y,fill=as.character(cluster)))
+      ggsave(g+geom_raster()+scale_fill_discrete(guide=FALSE),file=paste0(resdir,popcol,popth,'_',nwcol,nwth,'_radius',radius,'.png'),width=15,height=10,units='cm')
+    }
+  }
     
   return(computeIndics(sppoints,gamma,decay))
   #return(sppoints)
@@ -128,7 +136,7 @@ computeIndics <- function(sppoints,gamma,decay,popcol="totalPop",emissioncol="CO
     currentmoran = moranPoints(allpoints,popcol);show(paste0('moran = ',currentmoran));morans=append(morans,currentmoran)
     currentdist = avgDistancePoints(allpoints,popcol);show(paste0('avgdist = ',currentdist));avgdists=append(avgdists,currentdist)
     currententropy = entropyPoints(allpoints,popcol);show(paste0('entropy = ',currententropy));entropies=append(entropies,currententropy)
-    currentslope = slopePoints(allpoints,popcol);show(paste0('entropy = ',currentslope));slopes=append(slopes,currentslope)
+    currentslope = slopePoints(allpoints,popcol);show(paste0('slope = ',currentslope));slopes=append(slopes,currentslope)
     currentefficiency = sum(interactionPotential(allpoints,gravityGamma=gamma,gravityDistance=decay,weightcol=popcol));show(paste0('efficiency = ',currentefficiency))
     efficiencies=append(efficiencies,currentefficiency)
     currentemissions = sum(interactionPotential(allpoints,gravityGamma=gamma,gravityDistance=decay,weightcol=emissioncol));show(paste0('emissions = ',currentemissions))
