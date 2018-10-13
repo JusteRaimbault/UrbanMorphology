@@ -19,8 +19,13 @@ library(Matrix)
 
 #'
 #'
-moranPoints <-function(points,varcol,weights=spatialWeightsPoints(points)){
-  v = points[[varcol]]
+moranPoints <-function(points,varcol){
+  if(nrow(points)<10000){sppoints = points}else{
+    th = quantile(points[[weightcol]],c(1 - 10000/nrow(points)))
+    sppoints = points[points[[weightcol]]>th,]
+  }
+  weights=spatialWeightsPoints(sppoints)
+  v = sppoints[[varcol]]
   v = v-mean(v)
   num = sum(Diagonal(x = v)%*%weights%*%Diagonal(x = v))
   denom = sum(v^2)
@@ -35,16 +40,25 @@ spatialWeightsPoints<-function(points){
   #distances[as.matrix(distances)==matrix(rep(Inf,nrow(distances)*ncol(distances)),nrow=nrow(distances))]=0
   # no point at the same place
   diag(distances)<-0
-  return(Matrix(drop_units(distances)))
+  mat = drop_units(distances)
+  #mat[mat<0.01]=0
+  #return(Matrix(mat,sparse = T))
+  return(Matrix(mat))
 }
 
 #'
 #'
 avgDistancePoints<-function(points,varcol){
-  v = points[[varcol]]
-  distances <- drop_units(1/st_distance(points))
+  if(nrow(points)<10000){sppoints = points}else{
+    th = quantile(points[[weightcol]],c(1 - 10000/nrow(points)))
+    sppoints = points[points[[weightcol]]>th,]
+  }
+  v = sppoints[[varcol]]
+  distances <- drop_units(1/st_distance(sppoints))
   distances[distances==Inf]=0
-  vv = Diagonal(x=v/sum(v^2))%*%distances%*%Diagonal(x=v/sum(v^2))
+  #distances[distances<0.01]=0
+  #vv = (Diagonal(x=v/sum(v^2))%*%Matrix(distances,sparse=T))%*%Diagonal(x=v/sum(v^2))
+  vv = (Diagonal(x=v/sum(v^2))%*%Matrix(distances))%*%Diagonal(x=v/sum(v^2))
   return(sum(vv)/max(distances))
 }
 

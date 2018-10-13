@@ -47,6 +47,7 @@ conditionalPercolation <- function(d,radius,popthq,nwcol,nwthq,gamma,decay,
     
     
     if(nrow(cpoints)>0){
+      #' TODO this selection function should be passed as an argument -> can eg test random selection
       currentcluster = cpoints[cpoints[[popcol]]==max(cpoints[[popcol]]),]
     newpoints=T
     while(newpoints==T){
@@ -116,19 +117,22 @@ computeIndics <- function(sppoints,gamma,decay,popcol="totalPop",emissioncol="CO
     k=clustnums[i]
     show(paste0('Cluster ',i,'/',length(clustnums)))
     cluster = clusteredpoints[clusteredpoints$cluster==k,]
+    show(paste0(length(cluster),' points'))
     envelope=st_convex_hull(st_union(cluster))
     #show(envelope)
     areas=append(areas,as.numeric(st_area(envelope)))
     allpoints=sppoints[envelope,op=function(x,y){st_is_within_distance(x,y,dist=10)}]
-    show(paste0(nrow(allpoints),' points'))
+    
     #allpoints=sppoints[envelope,op=st_contains]
-    pops=append(pops,sum(allpoints[[popcol]]))
-    morans=append(morans,moranPoints(allpoints,popcol))
-    avgdists=append(avgdists,avgDistancePoints(allpoints,popcol))
-    entropies=append(entropies,entropyPoints(allpoints,popcol))
-    slopes=append(slopes,slopePoints(allpoints,popcol))
-    efficiencies=append(efficiencies,sum(interactionPotential(allpoints,gravityGamma=gamma,gravityDistance=decay,weightcol=popcol)))
-    emissions=append(emissions,sum(interactionPotential(allpoints,gravityGamma=gamma,gravityDistance=decay,weightcol=emissioncol)))
+    currentpop=sum(allpoints[[popcol]]);show(paste0('pop = ',currentpop));pops=append(pops,currentpop)
+    currentmoran = moranPoints(allpoints,popcol);show(paste0('moran = ',currentmoran));morans=append(morans,currentmoran)
+    currentdist = avgDistancePoints(allpoints,popcol);show(paste0('avgdist = ',currentdist));avgdists=append(avgdists,currentdist)
+    currententropy = entropyPoints(allpoints,popcol);show(paste0('entropy = ',currententropy));entropies=append(entropies,currententropy)
+    currentslope = slopePoints(allpoints,popcol);show(paste0('entropy = ',currentslope));slopes=append(slopes,currentslope)
+    currentefficiency = sum(interactionPotential(allpoints,gravityGamma=gamma,gravityDistance=decay,weightcol=popcol));show(paste0('efficiency = ',currentefficiency))
+    efficiencies=append(efficiencies,currentefficiency)
+    currentemissions = sum(interactionPotential(allpoints,gravityGamma=gamma,gravityDistance=decay,weightcol=emissioncol));show(paste0('emissions = ',currentemissions))
+    emissions=append(emissions,currentemissions)
   }
   return(list(areas=areas,pops=pops,morans=morans,avgdists=avgdists,
               entropies=entropies,slopes=slopes,efficiencies=efficiencies,emissions=emissions))
@@ -140,18 +144,26 @@ computeIndics <- function(sppoints,gamma,decay,popcol="totalPop",emissioncol="CO
 #'   (P_i P_j / P_tot)^gamma * exp(-d_{ij} / d_0)
 #'   TODO : influence of normalizing by pmax vs ptot ? -> investigate in interaction models
 #'   - normalized such that sum = 1 ? NO to be able to have a size effects in comparing configurations
-interactionPotential <- function(sppoints,gravityGamma=1,gravityDistance=1,weightcol="totalPop"){
-  show(paste0('Interaction potential for ',nrow(sppoints),' points ; gravityGamma = ',gravityGamma,' ; gravityDistance = ',gravityDistance))
+interactionPotential <- function(points,gravityGamma=1,gravityDistance=1,weightcol="totalPop"){
+  show(paste0('Interaction potential for ',nrow(points),' points ; gravityGamma = ',gravityGamma,' ; gravityDistance = ',gravityDistance))
+  # need a sampling if too much points -> take points with max value of weight
+  if(nrow(points)<10000){sppoints = points}else{
+    th = quantile(points[[weightcol]],c(1 - 10000/nrow(points)))
+    sppoints = points[points[[weightcol]]>th,]
+  }
+  
   dmat = exp(-drop_units(st_distance(sppoints))/gravityDistance)
-  diag(dmat)<-0
-  dmat = Matrix(dmat)
+  diag(dmat)<-0;
+  #dmat[dmat<0.01]=0
+  #dmat = Matrix(dmat,sparse=T)
   #pops = sppoints[[weightcol]]
   #popmat = Diagonal(x=(pops/sum(pops))^gravityGamma)
+  dmat = Matrix(dmat)
   weights=sppoints[[weightcol]]
   weights=weights/sum(weights) # ensure normalization
   # weights assumed already normalized
   weightmat=Diagonal(x=weights^gravityGamma)
-  potentials = weightmat%*%dmat%*%weightmat
+  potentials = (weightmat%*%dmat)%*%weightmat
   return(as.matrix(potentials))
 }
 

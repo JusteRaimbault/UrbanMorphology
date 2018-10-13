@@ -13,8 +13,8 @@ load('../../Data/consolidated/indics.RData')
 quantiles = c(0.75,0.8,0.85,0.9,0.95)
 radiuses=c(8000,10000,15000,20000,50000,75000,100000)
 nwindics= c("ecount","mu","vcount","euclPerf")
-gammas=c(1)
-decays=c(500)
+gammas=c(0.5,1,1.5)
+decays=c(10,100,500,1000)
 
 params=matrix(0,length(quantiles)*(length(quantiles)+1)*length(radiuses)*length(nwindics)*length(gammas)*length(decays),6)
 i=1
