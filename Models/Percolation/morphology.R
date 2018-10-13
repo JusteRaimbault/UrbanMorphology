@@ -54,24 +54,25 @@ avgDistancePoints<-function(points,varcol){
     sppoints = points[points[[weightcol]]>th,]
   }
   v = sppoints[[varcol]]
-  distances <- drop_units(1/st_distance(sppoints))
-  distances[distances==Inf]=0
+  distances <- drop_units(st_distance(sppoints))
+  #distances[distances==Inf]=0
   #distances[distances<0.01]=0
   #vv = (Diagonal(x=v/sum(v^2))%*%Matrix(distances,sparse=T))%*%Diagonal(x=v/sum(v^2))
-  vv = (Diagonal(x=v/sum(v^2))%*%Matrix(distances))%*%Diagonal(x=v/sum(v^2))
-  return(sum(vv)/max(distances))
+  vv = (Diagonal(x=v)%*%Matrix(distances))%*%Diagonal(x=v)
+  return(sum(vv)/(sum(v)^2*max(distances)))
 }
 
 entropyPoints<-function(points,varcol){
   v = points[[varcol]]
   v=v[v>0]
+  v = v / sum(v)
   return(-sum(v*log(v))/log(length(v)))
 }
 
 slopePoints<-function(points,varcol){
   v = points[[varcol]]
   v=v[v>0]
-  v=sort(v,decreasing=TRUE)
+  v=log(sort(v,decreasing=TRUE))
   rank = log(1:length(v))
   reg = lm(v~rank,data.frame(rank,v))
   return(reg$coefficients[2])
