@@ -27,7 +27,7 @@ colnames(params)=c("nwcol","popthq","nwthq","radius","gamma","decay")
 params$nwthq=as.numeric(as.character(params$nwthq));params$popthq=as.numeric(as.character(params$popthq));params$radius=as.numeric(as.character(params$radius));params$gamma=as.numeric(as.character(params$gamma));params$decay=as.numeric(as.character(params$decay))
 
 library(doParallel)
-cl <- makeCluster(20,outfile='log')
+cl <- makeCluster(60,outfile='log')
 registerDoParallel(cl)
 res <- foreach(i=1:nrow(params)) %dopar% {
   #source('Models/Percolation/percolationFunctions.R')
