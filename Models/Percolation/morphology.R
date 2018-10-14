@@ -19,12 +19,13 @@ library(Matrix)
 
 #'
 #'
-moranPoints <-function(points,varcol){
-  if(nrow(points)<10000){sppoints = points}else{
-    th = quantile(points[[weightcol]],c(1 - 10000/nrow(points)))
+moranPoints <-function(points,varcol,dmat=NULL){
+  show(paste0('Moran for ',nrow(points),' points'))
+  if(nrow(points)<5000){sppoints = points}else{
+    th = quantile(points[[weightcol]],c(1 - 5000/nrow(points)))
     sppoints = points[points[[weightcol]]>th,]
   }
-  weights=spatialWeightsPoints(sppoints)
+  if(is.null(dmat)){weights=spatialWeightsPoints(sppoints)}else{weights = Matrix(1/dmat);diag(weights)<-0}
   v = sppoints[[varcol]]
   v = v-mean(v)
   num = sum(Diagonal(x = v)%*%weights%*%Diagonal(x = v))
@@ -48,13 +49,14 @@ spatialWeightsPoints<-function(points){
 
 #'
 #'
-avgDistancePoints<-function(points,varcol){
-  if(nrow(points)<10000){sppoints = points}else{
-    th = quantile(points[[weightcol]],c(1 - 10000/nrow(points)))
+avgDistancePoints<-function(points,varcol,dmat=NULL){
+  show(paste0('Avg dist for ',nrow(points),' points'))
+  if(nrow(points)<5000){sppoints = points}else{
+    th = quantile(points[[weightcol]],c(1 - 5000/nrow(points)))
     sppoints = points[points[[weightcol]]>th,]
   }
   v = sppoints[[varcol]]
-  distances <- drop_units(st_distance(sppoints))
+  if(is.null(dmat)){distances <- drop_units(st_distance(sppoints))}else{distances = dmat}
   #distances[distances==Inf]=0
   #distances[distances<0.01]=0
   #vv = (Diagonal(x=v/sum(v^2))%*%Matrix(distances,sparse=T))%*%Diagonal(x=v/sum(v^2))

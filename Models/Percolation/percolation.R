@@ -10,15 +10,21 @@ source('percolationFunctions.R')
 load('../../Data/consolidated/indics.RData')
 
 # parameter values
-quantiles = c(0.75,0.8,0.85,0.9,0.95)
-radiuses=c(8000,10000,15000,20000,50000,75000,100000)
+#quantiles = c(0.85,0.9,0.95)
+popquantiles=c(0.9,0.95)
+nwquantiles=c(0.0,0.4,0.8)
+radiuses=c(8000,10000,15000,20000,50000)
+#radiuses=c(8000)
 nwindics= c("ecount","mu","vcount","euclPerf")
+#nwindics= c("ecount")
 gammas=c(0.5,1,1.5)
-decays=c(10,100,500,1000)
+#gammas=c(1)
+decays=c(1000,10000,50000,100000)
+#decays=c(1000)
 
-params=matrix(0,length(quantiles)*(length(quantiles)+1)*length(radiuses)*length(nwindics)*length(gammas)*length(decays),6)
+params=matrix(0,length(popquantiles)*length(nwquantiles)*length(radiuses)*length(nwindics)*length(gammas)*length(decays),6)
 i=1
-for(nwcol in nwindics){for(nwthq in c(0,quantiles)){for(popthq in quantiles){for(radius in radiuses){for(gamma in gammas){for(decay in decays){
+for(nwcol in nwindics){for(nwthq in nwquantiles){for(popthq in popquantiles){for(radius in radiuses){for(gamma in gammas){for(decay in decays){
     params[i,]=c(nwcol,popthq,nwthq,radius,gamma,decay)
     i=i+1
   }}}}}}
@@ -27,14 +33,16 @@ colnames(params)=c("nwcol","popthq","nwthq","radius","gamma","decay")
 params$nwthq=as.numeric(as.character(params$nwthq));params$popthq=as.numeric(as.character(params$popthq));params$radius=as.numeric(as.character(params$radius));params$gamma=as.numeric(as.character(params$gamma));params$decay=as.numeric(as.character(params$decay))
 
 library(doParallel)
-cl <- makeCluster(20,outfile='log')
+cl <- makeCluster(50,outfile='log')
 registerDoParallel(cl)
 res <- foreach(i=1:nrow(params)) %dopar% {
-  #source('Models/Percolation/percolationFunctions.R')
+#res=list()
+#for(i in 1:nrow(params)){
+    #source('Models/Percolation/percolationFunctions.R')
   source('percolationFunctions.R')
   #p = conditionalPercolation(d=indics,popthq=params$popthq[i],nwthq=params$nwthq[i],radius=params$radius[i])
   # Mandatory args : d,radius,popthq,nwcol,nwthq,gamma,decay
-  return(aggregIndics(conditionalPercolation(d=indics,
+  return(graphPercolation(d=indics,
                                 radius=params$radius[i],
                                 popthq=params$popthq[i],
                                 nwcol=as.character(params$nwcol[i]),
@@ -42,7 +50,7 @@ res <- foreach(i=1:nrow(params)) %dopar% {
                                 gamma=params$gamma[i],
                                 decay=params$decay[i]
                                 )
-         ))
+    )
 }
 stopCluster(cl)
 
