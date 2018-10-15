@@ -22,8 +22,8 @@ library(Matrix)
 moranPoints <-function(points,varcol,dmat=NULL){
   show(paste0('Moran for ',nrow(points),' points'))
   if(nrow(points)<5000){sppoints = points}else{
-    th = quantile(points[[weightcol]],c(1 - 5000/nrow(points)))
-    sppoints = points[points[[weightcol]]>th,]
+    th = quantile(points[[varcol]],c(1 - 5000/nrow(points)))
+    sppoints = points[points[[varcol]]>th,]
   }
   if(is.null(dmat)){weights=spatialWeightsPoints(sppoints)}else{weights = Matrix(1/dmat);diag(weights)<-0}
   v = sppoints[[varcol]]
@@ -52,8 +52,8 @@ spatialWeightsPoints<-function(points){
 avgDistancePoints<-function(points,varcol,dmat=NULL){
   show(paste0('Avg dist for ',nrow(points),' points'))
   if(nrow(points)<5000){sppoints = points}else{
-    th = quantile(points[[weightcol]],c(1 - 5000/nrow(points)))
-    sppoints = points[points[[weightcol]]>th,]
+    th = quantile(points[[varcol]],c(1 - 5000/nrow(points)))
+    sppoints = points[points[[varcol]]>th,]
   }
   v = sppoints[[varcol]]
   if(is.null(dmat)){distances <- drop_units(st_distance(sppoints))}else{distances = dmat}
