@@ -12,7 +12,7 @@ load('../../Data/consolidated/indics.RData')
 # parameter values
 #quantiles = c(0.85,0.9,0.95)
 popquantiles=c(0.9,0.95)
-nwquantiles=c(0.0,0.4,0.8)
+nwquantiles=c(0.0,0.8,0.9)
 radiuses=c(8000,10000,15000,20000,50000)
 #radiuses=c(8000)
 nwindics= c("ecount","mu","vcount","euclPerf")
