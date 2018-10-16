@@ -148,19 +148,34 @@ graphPercolation <- function(d,radius,popthq,nwcol,nwthq,gamma,decay,
 #'
 #' Aggregatd indices
 aggregIndics <- function(res){
-  show(paste0('Aggregating indicators for result with ',length(res$areas),' clusters'))
-  return(list(
+  #show(paste0('Aggregating indicators for result with ',length(res$areas),' clusters'))
+  return(c(
     area=sum(res$areas),
-    pop=sum(res$areas),
+    pop=sum(res$pops),
+    avgpop=mean(res$pops),
+    pophierarchy=hierarchy(res$pops),
     moran=mean(res$morans),
     avgdist=mean(res$avgdists),
     entropy=mean(res$entropies),
     slope=mean(res$slopes),
     efficiency=sum(res$efficiencies),
-    emissions=sum(res$emissions)
+    avgefficiency=mean(res$efficiencies),
+    emissions=sum(res$emissions),
+    avgemissions=mean(res$emissions),
+    totalemissions=sum(res$totalemissions),
+    avgtotemissions=mean(res$totalemissions)
   ))
 }
 
+hierarchy <- function(x){
+  x=x[x>0]
+  if(length(x)>1){
+    #show(log(1:length(x)));show(log(sort(x,decreasing = T)))
+    d=data.frame(rank=log(1:length(x)),size=log(sort(x,decreasing = T)))
+  reg = lm(size~rank,data=d)
+  return(reg$coefficients[2])
+  }else{return(0)}
+}
 
 
 #'
