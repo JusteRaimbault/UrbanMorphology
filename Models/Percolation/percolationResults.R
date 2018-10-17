@@ -102,25 +102,52 @@ for(gamma in gammas){for (decay in decays){
 
 
 g=ggplot(sres,aes(x=emissions,y=efficiency,col=pop/totalPop))
-g+geom_point()+facet_grid(decay~gamma)+xlab("Relative potential emissions")+ylab("1 - Relative potential efficiency")+scale_color_continuous(name="Relative\nPopulation")+stdtheme
+g+geom_point()+facet_grid(decay~gamma)+xlab("Normalized potential emissions")+ylab("1 - Normalized potential efficiency")+scale_color_continuous(name="Relative\nPopulation")+stdtheme
 ggsave(file=paste0(resdir,'aggreg_paretos.png'),width=30,height=25,units='cm')
+
+g=ggplot(sres,aes(x=emissions*totalPop/pop,y=efficiency*totalPop/pop,col=pop/totalPop))
+g+geom_point()+facet_grid(decay~gamma)+xlab("Relative potential emissions")+ylab("Relative potential unefficiency")+scale_color_continuous(name="Relative\nPopulation")+stdtheme
+ggsave(file=paste0(resdir,'aggreg_paretos_relative.png'),width=30,height=25,units='cm')
+
+
 
 # test : which params produce pareto fronts ?
 g=ggplot(sres,aes(x=emissions,y=efficiency,col=nwcol))
-g+geom_point(alpha=0.5)+facet_grid(decay~gamma)+xlab("Relative potential emissions")+ylab("1 - Relative potential efficiency")+scale_color_discrete(name="Percolation\nIndicator")+stdtheme
+g+geom_point(alpha=0.5)+facet_grid(decay~gamma)+xlab("Normalized potential emissions")+ylab("1 - Normalized potential efficiency")+scale_color_discrete(name="Percolation\nIndicator")+stdtheme
 ggsave(file=paste0(resdir,'aggreg_paretos_nwcol.png'),width=30,height=25,units='cm')
 
+g=ggplot(sres,aes(x=emissions*totalPop/pop,y=efficiency*totalPop/pop,col=nwcol))
+g+geom_point(alpha=0.5)+facet_grid(decay~gamma)+xlab("Relative potential emissions")+ylab("Relative potential unefficiency")+scale_color_discrete(name="Percolation\nIndicator")+stdtheme
+ggsave(file=paste0(resdir,'aggreg_paretos_nwcol_relative.png'),width=30,height=25,units='cm')
+
+
 g=ggplot(sres,aes(x=emissions,y=efficiency,col=radius,size=popthq))
-g+geom_point(alpha=0.5)+facet_grid(decay~gamma)+xlab("Relative potential emissions")+ylab("1 - Relative potential efficiency")+scale_color_continuous(name=expression(r[0]))+scale_size_continuous(name=expression(theta[P]))+stdtheme
+g+geom_point(alpha=0.5)+facet_grid(decay~gamma)+xlab("Normalized potential emissions")+ylab("1 - Normalized potential efficiency")+scale_color_continuous(name=expression(r[0]))+scale_size_continuous(name=expression(theta[P]))+stdtheme
 ggsave(file=paste0(resdir,'aggreg_paretos_radiuspopthq.png'),width=30,height=25,units='cm')
 
+g=ggplot(sres,aes(x=emissions*totalPop/pop,y=efficiency*totalPop/pop,col=radius,size=popthq))
+g+geom_point(alpha=0.5)+facet_grid(decay~gamma)+xlab("Relative potential emissions")+ylab("Relative potential unefficiency")+scale_color_continuous(name=expression(r[0]))+scale_size_continuous(name=expression(theta[P]))+stdtheme
+ggsave(file=paste0(resdir,'aggreg_paretos_radiuspopthq_relative.png'),width=30,height=25,units='cm')
+
+
 g=ggplot(sres,aes(x=emissions,y=efficiency,col=radius,size=nwthq))
-g+geom_point(alpha=0.5)+facet_grid(decay~gamma)+xlab("Relative potential emissions")+ylab("1 - Relative potential efficiency")+scale_color_continuous(name=expression(r[0]))+scale_size_continuous(name=expression(theta[N]))+stdtheme
+g+geom_point(alpha=0.5)+facet_grid(decay~gamma)+xlab("Normalized potential emissions")+ylab("1 - Normalized potential efficiency")+scale_color_continuous(name=expression(r[0]))+scale_size_continuous(name=expression(theta[N]))+stdtheme
 ggsave(file=paste0(resdir,'aggreg_paretos_radiusnwthq.png'),width=30,height=25,units='cm')
 
+g=ggplot(sres,aes(x=emissions*totalPop/pop,y=efficiency*totalPop/pop,col=radius,size=nwthq))
+g+geom_point(alpha=0.5)+facet_grid(decay~gamma)+xlab("Relative potential emissions")+ylab("Relative potential unefficiency")+scale_color_continuous(name=expression(r[0]))+scale_size_continuous(name=expression(theta[N]))+stdtheme
+ggsave(file=paste0(resdir,'aggreg_paretos_radiusnwthq_relative.png'),width=30,height=25,units='cm')
+
+
+
 g=ggplot(sres,aes(x=emissions,y=efficiency,col=as.character(nwthq),size=popthq))
-g+geom_point(alpha=0.5)+facet_grid(decay~gamma)+xlab("Relative potential emissions")+ylab("1 - Relative potential efficiency")+scale_color_discrete(name=expression(theta[N]))+scale_size_continuous(name=expression(theta[P]))+stdtheme
+g+geom_point(alpha=0.5)+facet_grid(decay~gamma)+xlab("Normalized potential emissions")+ylab("1 - Normalized potential efficiency")+scale_color_discrete(name=expression(theta[N]))+scale_size_continuous(name=expression(theta[P]))+stdtheme
 ggsave(file=paste0(resdir,'aggreg_paretos_popthqnwthq.png'),width=30,height=25,units='cm')
+
+g=ggplot(sres,aes(x=emissions*totalPop/pop,y=efficiency*totalPop/pop,col=as.character(nwthq),size=popthq))
+g+geom_point(alpha=0.5)+facet_grid(decay~gamma)+xlab("Relative potential emissions")+ylab("Relative potential unefficiency")+scale_color_discrete(name=expression(theta[N]))+scale_size_continuous(name=expression(theta[P]))+stdtheme
+ggsave(file=paste0(resdir,'aggreg_paretos_popthqnwthq_relative.png'),width=30,height=25,units='cm')
+
 
 
 alpha = lm(y~x,data=data.frame(x=log(sres$pop/totalPop),y=log(sres$totalemissions)))$coefficients[2]
@@ -160,19 +187,19 @@ sres$PC1 = (as.matrix(morph)%*%pca$rotation)[,1]
 sres$PC2 = (as.matrix(morph)%*%pca$rotation)[,2]
 
 g=ggplot(sres,aes(x=PC1,y=emissions,col=pop/totpop))
-g+geom_point()+facet_grid(decay~gamma)+geom_smooth(method='loess',n=50)+xlab("PC1")+ylab("Relative potential emissions")+scale_color_continuous(name="Relative\nPopulation")+stdtheme
+g+geom_point()+facet_grid(decay~gamma)+geom_smooth(method='loess',n=50)+xlab("PC1")+ylab("Normalized potential emissions")+scale_color_continuous(name="Relative\nPopulation")+stdtheme
 ggsave(file=paste0(resdir,'aggreg_morpho_pc1-emissions.png'),width=30,height=25,units='cm')
 
 g=ggplot(sres,aes(x=PC1,y=emissions,col=radius))
-g+geom_point()+facet_grid(decay~gamma)+geom_smooth(method='loess',span=0.5)+xlab("PC1")+ylab("Relative potential emissions")+scale_color_continuous(name=expression(r[0]))+stdtheme
+g+geom_point()+facet_grid(decay~gamma)+geom_smooth(method='loess',span=0.5)+xlab("PC1")+ylab("Normalized potential emissions")+scale_color_continuous(name=expression(r[0]))+stdtheme
 ggsave(file=paste0(resdir,'aggreg_morpho_pc1-emissions_colr0.png'),width=30,height=25,units='cm')
 
 g=ggplot(sres,aes(x=PC2,y=emissions,col=pop/totpop))
-g+geom_point()+facet_grid(decay~gamma)+geom_smooth(method='loess',n=50)+xlab("PC2")+ylab("Relative potential emissions")+scale_color_continuous(name="Relative\nPopulation")+stdtheme
+g+geom_point()+facet_grid(decay~gamma)+geom_smooth(method='loess',n=50)+xlab("PC2")+ylab("Normalized potential emissions")+scale_color_continuous(name="Relative\nPopulation")+stdtheme
 ggsave(file=paste0(resdir,'aggreg_morpho_pc2-emissions.png'),width=30,height=25,units='cm')
 
 g=ggplot(sres,aes(x=PC2,y=emissions,col=radius))
-g+geom_point()+facet_grid(decay~gamma)+geom_smooth(method='loess',span=0.5)+xlab("PC2")+ylab("Relative potential emissions")+scale_color_continuous(name=expression(r[0]))+stdtheme
+g+geom_point()+facet_grid(decay~gamma)+geom_smooth(method='loess',span=0.5)+xlab("PC2")+ylab("Normalized potential emissions")+scale_color_continuous(name=expression(r[0]))+stdtheme
 ggsave(file=paste0(resdir,'aggreg_morpho_pc2-emissions_colr0.png'),width=30,height=25,units='cm')
 
 # same plots but relative to relative pop : as emissions are summed on clusters, does not make sense to look at absolute emissions
@@ -190,11 +217,11 @@ ggsave(file=paste0(resdir,'aggreg_morpho_pc2-relemissions.png'),width=30,height=
 
 
 g=ggplot(sres,aes(x=PC1,y=efficiency,col=pop/totpop))
-g+geom_point()+facet_grid(decay~gamma)+geom_smooth(method='loess',n=50)+xlab("PC1")+ylab("1 - Relative potential efficiency")+scale_color_continuous(name="Relative\nPopulation")+stdtheme
+g+geom_point()+facet_grid(decay~gamma)+geom_smooth(method='loess',n=50)+xlab("PC1")+ylab("1 - Normalized potential efficiency")+scale_color_continuous(name="Relative\nPopulation")+stdtheme
 ggsave(file=paste0(resdir,'aggreg_morpho_pc1-efficiency.png'),width=30,height=25,units='cm')
 
 g=ggplot(sres,aes(x=PC2,y=efficiency,col=pop/totpop))
-g+geom_point()+facet_grid(decay~gamma)+geom_smooth(method='loess',n=50)+xlab("PC2")+ylab("1 - Relative potential efficiency")+scale_color_continuous(name="Relative\nPopulation")+stdtheme
+g+geom_point()+facet_grid(decay~gamma)+geom_smooth(method='loess',n=50)+xlab("PC2")+ylab("1 - Normalized potential efficiency")+scale_color_continuous(name="Relative\nPopulation")+stdtheme
 ggsave(file=paste0(resdir,'aggreg_morpho_pc2-efficiency.png'),width=30,height=25,units='cm')
 
 g=ggplot(sres,aes(x=emissions,y=efficiency,col=PC1,size=pop/totalPop))
@@ -207,15 +234,17 @@ ggsave(file=paste0(resdir,'aggreg_morpho_emissions-efficiency_colpc2.png'),width
 
 
 g=ggplot(sres,aes(x=1+emissions*totalPop/pop,y=1+efficiency*totalPop/pop,col=PC1,size=pop/totalPop))
-g+geom_point(alpha=0.5)+scale_x_log10()+scale_y_log10()+facet_grid(decay~gamma)+scale_color_viridis_c(name="PC1")+xlab("Relative potential emissions")+ylab("1 - Relative potential efficiency")+scale_size_continuous(name="Relative\nPopulation")+stdtheme
+g+geom_point(alpha=0.5)+scale_x_log10()+scale_y_log10()+facet_grid(decay~gamma)+scale_color_viridis_c(name="PC1")+xlab("Relative potential emissions")+ylab("Relative potential unefficiency")+scale_size_continuous(name="Relative\nPopulation")+stdtheme
 ggsave(file=paste0(resdir,'aggreg_morpho_relemissions-relefficiency_colpc1_logscale.png'),width=30,height=25,units='cm')
 
 g=ggplot(sres,aes(x=1+emissions*totalPop/pop,y=1+efficiency*totalPop/pop,col=PC2,size=pop/totalPop))
-g+geom_point(alpha=0.5)+scale_x_log10()+scale_y_log10()+facet_grid(decay~gamma)+scale_color_viridis_c(name="PC2")+xlab("Relative potential emissions")+ylab("1 - Relative potential efficiency")+scale_size_continuous(name="Relative\nPopulation")+stdtheme
+g+geom_point(alpha=0.5)+scale_x_log10()+scale_y_log10()+facet_grid(decay~gamma)+scale_color_viridis_c(name="PC2")+xlab("Relative potential emissions")+ylab("Relative potential unefficiency")+scale_size_continuous(name="Relative\nPopulation")+stdtheme
 ggsave(file=paste0(resdir,'aggreg_morpho_relemissions-relefficiency_colpc2_logscale.png'),width=30,height=25,units='cm')
 
 
 
+
+## total emissions as a function of morphology
 
 g=ggplot(sres,aes(x=PC1,y=totalemissions,col=pop/totpop))
 g+geom_point()+geom_smooth(method='loess',n=50)+xlab("PC1")+ylab("Total emissions")+scale_color_continuous(name="Relative\nPopulation")+stdtheme
@@ -226,7 +255,72 @@ g+geom_point()+xlab("PC2")+ylab("Total emissions")+scale_color_continuous(name="
 ggsave(file=paste0(resdir,'aggreg_totemissions-pc2.png'),width=20,height=18,units='cm')
 
 
+## try linear model to explain indicators as a function of morphology ?
+# wont fit much given the ushaped relation
+# : put square terms ?
+
+fit = lm(emissions~moran+avgdist+entropy+slope,data=sres)
+summary(fit)
+AIC(fit)
+# -> map the residuals ?
+
+fitparams = lm(emissions~nwcol+popthq+nwthq+radius+gamma+decay,data=sres)
+summary(fitparams)
+AIC(fitparams) - AIC(fit)
+
+summary(lm(emissions~paramrow,data=sres))
 
 
+fitfull = lm(emissions~nwcol+popthq+nwthq+radius+gamma+decay+moran+avgdist+entropy+slope,data=sres)
+summary(fitfull)
+AIC(fitfull) - AIC(fit)
+AIC(fitfull) - AIC(fitparams)
+# -> fit improvement
+
+
+
+# same with efficiency
+
+fit = lm(efficiency~moran+avgdist+entropy+slope,data=sres)
+summary(fit)
+AIC(fit)
+# -> map the residuals ?
+
+fitparams = lm(efficiency~nwcol+popthq+nwthq+radius+gamma+decay,data=sres)
+summary(fitparams)
+AIC(fitparams) - AIC(fit)
+
+summary(lm(efficiency~paramrow,data=sres))
+
+
+fitfull = lm(efficiency~nwcol+popthq+nwthq+radius+gamma+decay+moran+avgdist+entropy+slope,data=sres)
+summary(fitfull)
+AIC(fitfull) - AIC(fit)
+AIC(fitfull) - AIC(fitparams)
+
+# rq : entropy switches from significant to non significant from emissions to efficiency
+
+# add other indics ?
+#
+
+fitindics = lm(emissions~pophierarchy.rank+area+pop,data=sres)
+summary(fitindics)
+
+fitindics2 = lm(emissions~pophierarchy.rank+area+pop+avgpop+avgtotemissions,data=sres)
+summary(fitindics2)
+AIC(fitindics)-AIC(fitindics2)
+
+g=ggplot(sres,aes(x=pop,y=emissions))
+g+geom_point()+geom_smooth()
+# -> explains the decreasing sign
+g=ggplot(sres,aes(x=pop,y=efficiency))
+g+geom_point()+geom_smooth()
+
+fitindics = lm(efficiency~pophierarchy.rank+area+pop,data=sres)
+summary(fitindics)
+
+fitindics2 = lm(efficiency~pophierarchy.rank+area+pop+avgpop+avgtotemissions,data=sres)
+summary(fitindics2)
+AIC(fitindics)-AIC(fitindics2)
 
 
