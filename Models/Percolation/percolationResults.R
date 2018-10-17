@@ -220,9 +220,20 @@ g=ggplot(sres,aes(x=PC1,y=efficiency,col=pop/totpop))
 g+geom_point()+facet_grid(decay~gamma)+geom_smooth(method='loess',n=50)+xlab("PC1")+ylab("1 - Normalized potential efficiency")+scale_color_continuous(name="Relative\nPopulation")+stdtheme
 ggsave(file=paste0(resdir,'aggreg_morpho_pc1-efficiency.png'),width=30,height=25,units='cm')
 
+g=ggplot(sres,aes(x=PC1,y=efficiency,col=pop/totpop))
+g+geom_point()+facet_grid(decay~gamma)+geom_smooth(method='loess',n=50)+xlab("PC1")+ylab("Relative potential unefficiency")+scale_color_continuous(name="Relative\nPopulation")+stdtheme
+ggsave(file=paste0(resdir,'aggreg_morpho_pc1-relefficiency.png'),width=30,height=25,units='cm')
+
+
 g=ggplot(sres,aes(x=PC2,y=efficiency,col=pop/totpop))
 g+geom_point()+facet_grid(decay~gamma)+geom_smooth(method='loess',n=50)+xlab("PC2")+ylab("1 - Normalized potential efficiency")+scale_color_continuous(name="Relative\nPopulation")+stdtheme
 ggsave(file=paste0(resdir,'aggreg_morpho_pc2-efficiency.png'),width=30,height=25,units='cm')
+
+g=ggplot(sres,aes(x=PC2,y=efficiency,col=pop/totpop))
+g+geom_point()+facet_grid(decay~gamma)+geom_smooth(method='loess',n=50)+xlab("PC2")+ylab("Relative potential unefficiency")+scale_color_continuous(name="Relative\nPopulation")+stdtheme
+ggsave(file=paste0(resdir,'aggreg_morpho_pc2-relefficiency.png'),width=30,height=25,units='cm')
+
+
 
 g=ggplot(sres,aes(x=emissions,y=efficiency,col=PC1,size=pop/totalPop))
 g+geom_point(alpha=0.5)+facet_grid(decay~gamma)+scale_color_viridis_c(name="PC1")+xlab("Normalized potential emissions")+ylab("1 - Normalized potential efficiency")+scale_size_continuous(name="Relative\nPopulation")+stdtheme

@@ -172,11 +172,11 @@ $\rightarrow$ similar to \cite{cottineau2018defining} to define urban areas
 
 \justify
 
-$\rightarrow$ 
+$\rightarrow$ Need to combine morphological and functional dimensions of cities \cite{burger2012form}
 
 \medskip
 
-$\rightarrow$ 
+$\rightarrow$ Interaction between networks and territories to capture the form-function link \cite{raimbault2018caracterisation}; potential application to sustainability of urban systems
 
 % research question
 
@@ -184,7 +184,7 @@ $\rightarrow$
 \bigskip
 \bigskip
 
-\textbf{Research objective : } \textit{}
+\textbf{Research objective : } \textit{Investigate a multi-dimensional percolation of territorial networks taking into account urban morphology and road network topology; endogenous characterization of urban regions.}
 
 }
 
@@ -192,36 +192,87 @@ $\rightarrow$
 
 % \section{Method}
 
-\sframe{Formalization}{
+\sframe{Multilayer percolation}{
 
 %This communication addresses such a gap by introducing a multi-dimensional percolation heuristic, which is analog to multilayer network percolation \citep{boccaletti2014structure}. Given discrete spatial fields, site percolation is operated between two cells given a threshold parameter for each dimension and a distance threshold.
 
+\textit{Multi-dimensional network percolation heuristic, similar to multilayer percolation} \cite{boccaletti2014structure}
+
+\bigskip
+
+
+\centering
+\includegraphics[width=0.8\textwidth]{figures/principle.pdf}
+
+
+\bigskip
+
+\raggedright
+
+\textbf{Parameters: } percolation radius $r_0$, percolation thresholds $\theta_i$ for each layer
 
 
 }
+
+
 
 
 \sframe{Empirical data and variables}{
 
-%We apply the heuristic to urban morphology and road network topology measures in Europe. More precisely, a grid with resolution 50km of population density morphology indicators and road network topology indicators, has been computed on spatial moving windows for all European Union by \cite{raimbault2018urban}. We percolate the population density layer with a network characteristic layer, that we test among number of edges, number of vertices, cyclomatic number and euclidian efficiency, which capture functional properties especially for the two last.
+%We apply the heuristic to urban morphology and road network topology measures in Europe. More precisely, a grid with resolution 50km of population density morphology indicators and road network topology indicators, has been computed on spatial moving windows for all European Union by \cite{raimbault2018urban}. 
 
+\justify
 
+\textit{Territorial indicators computed for Europe by \cite{raimbault2018urban}}
+
+% here add maps to better visualize the spatial fields
+
+\medskip
+
+\includegraphics[width=0.49\textwidth]{figures/indics_morpho_discrquantiles.png}
+\includegraphics[width=0.49\textwidth]{figures/indics_network_en_areasize100_offset50_factor0_5.png}
+
+\medskip
+
+\textbf{Population distribution morphology} and \textbf{Network topology} (betweenness, closeness, clustering, efficiency, \ldots) computed on 50km spatial windows (Eurostat density grid and OpenStreetMap)
 
 }
 
+\sframe{Network construction}{
+
+%We percolate the population density layer with a network characteristic layer, that we test among number of edges, number of vertices, cyclomatic number and euclidian efficiency, which capture functional properties especially for the two last.
+
+\justify
+
+\textbf{Two layers: } population density (threshold $\theta_P$) and network characteristics (threshold $\theta_N$) taken among \{Number of edges, Number of vertices, Cyclomatic number $\mu$, Euclidian efficiency $v$ \}; percolated with a radius $r_0$
+
+% banos2012towards
+
+\bigskip
+
+\textbf{Rationale: } \textit{two locations will be in relation if they are close, have a high population density and given network characteristics.}
+
+% note : euclperf should be minimized whereas other maximized : issue ?
+
+\bigskip
 
 
+\textbf{Implementation: } construction of a single layer spatial network given the condition on the two layers and distances; extraction of connected components.
 
 
-\sframe{Experience plan}{
+\bigskip
 
+\textbf{Experience plan: } grid sampling for $r_0,\theta_P,\theta_N$ and network variables; additional gravity potential parameters $\gamma,d_0$ (detailed after)
+
+$\rightarrow$ 4800 parameter points
 
 %We systematically explore the clusters obtained for 840 parameter configurations. 
 
-% + explain openmole
-
+% + explain openmole -> later in potential developments
 
 }
+
+
 
 
 
@@ -229,38 +280,161 @@ $\rightarrow$
 
 %Maps reveal that most configurations resemble the actual distribution of European mega-city regions, which are functionally integrated polycentric urban areas \citep{hall2006polycentric}. 
 
+\justify
+
+\vspace{-0.4cm}
+\textit{Extraction of endogenous polycentric mega-city regions \cite{hall2006polycentric}}
+
+\medskip
+
+\centering
+
+% note : forgot r_0 in figs
+\includegraphics[width=\textwidth,height=0.9\textheight]{figures/totalPop4183694_00056402_ecount850_radius8000.png}
+
+
+}
+
+\sframe{Different endogenous morphologies}{
+
+% TODO for the paper : check effect of adding network threshold : methodo info on multilayer percol in itself
+
+\hspace{-0.5cm}
+\includegraphics[width=0.52\textwidth]{figures/totalPop2219780_36719597_vcount378_radius8000.png}
+\includegraphics[width=0.52\textwidth]{figures/totalPop1474347_36891685_vcount595_radius50000.png}
+
 }
 
 \sframe{Characterizing sustainibility}{
 
 % We use this endogenous definition of regional urban systems the percolation algorithm produced to evaluate their sustainability, in terms of conflicting objectives of economic integration and greenhouse gases emissions. Applying a gravity model to each region, we estimate transportation flows within each and extrapolate emissions by coupling with the Edgar emission database \citep{janssens2017edgar} and economic activities with a scaling law of population.
 
+% explain indicators : convex hull.
+
+\justify
+
+\textbf{Application: } sustainability indicators for the endogenous urban regions; proxys for two conflicting dimensions: GHG emissions and economic integration \cite{viguie2012trade}.
+
+\bigskip
+
+\textbf{Data: } EDGAR database for GHG emissions (v4.3.2) 
+
+\cite{janssens2017edgar}
+
+\bigskip
+
+\textbf{Estimation: } Abstract flows approximated with a gravity model
+
+\[
+\phi_{ij} = \left(\frac{v_i v_j}{(\sum_k v_k)^2}\right)^\gamma \cdot \exp\left(\frac{-d_{ij}}{d_0}\right)
+\]
+
+where $v_k$ are either effective local GHG emissions or population (economic activity scaling law of population \cite{bettencourt2007growth})
+
+\medskip
+
+$\rightarrow$ sum of flows within the geographical span of the cluster (convex hull) approximate potential emissions and economic activity
+
+
 }
 
-\sframe{Results: Pareto fronts}{
+\sframe{Pareto fronts for sustainability}{
 
 %  We show therein that different population, network and distance thresholds yield different performances in terms of sustainability, exhibiting a Pareto front. This suggests policies in terms of regional integration to increase the sustainability of mega-city regions.
 
+\textit{Superposing Pareto front for observed population and emissions, on all clusters.}
+
+\centering
+
+\medskip
+
+\includegraphics[height=0.8\textheight]{figures/full_effective_pareto.png}
+
+% -> full fronts in reserve slide
+
 }
 
-\sframe{Extrapolating transportation flows}{
+\sframe{Pareto fronts for aggregated indicators}{
 
-% detail method to extrapolate parameters of gravity flows
+\textit{Aggregated sustainability indicators suggest some configurations are more Pareto efficient (high $\gamma$ regime, activities with high added value).}
 
-% interesting result : compare these emission with the synthetic ? (then just a refinment ?) -> yes, better. show new Pareto fronts with this fixed parameters for only emissions, and varying for economic ? 
+\centering
+
+\medskip
+
+\includegraphics[height=0.8\textheight]{figures/aggreg_paretos_radiuspopthq.png}
 
 
 }
 
 
 
-\sframe{Calibration}{
+\sframe{An optimal morphology ?}{
+
+%# Cumulative Proportion  0.7296 0.9650 0.99761 1.00000
+%                PC1       PC2         PC3         PC4
+%moran   -0.3088585 0.9493848 -0.04444327  0.03605266
+%avgdist  0.5417362 0.1415668 -0.82239570 -0.10072759
+%entropy  0.5108424 0.2140447  0.45847647 -0.69499942
+%slope    0.5917502 0.1811415  0.33390034  0.71100630
+
+\textit{Optimal degree of monocentricity of the system for emissions.}
+
+\centering
+
+\medskip
+
+\includegraphics[height=0.85\textheight]{figures/aggreg_morpho_pc1-emissions.png}
+
+}
+
+\sframe{Morphological trade-offs}{
+
+\vspace{-0.3cm}
+
+\textit{No ``optimal'' cities, different forms yield different compromises in terms of relative indicators.}
+
+\centering
+
+\medskip
+
+\includegraphics[height=0.85\textheight]{figures/aggreg_morpho_relemissions-relefficiency_colpc1_logscale.png}
+
+
+}
+
+
+
+\sframe{Towards a systematic calibration}{
+
 
 % Further work will consist in the use of calibration heuristics \citep{reuillon2013openmole} to find in a more robust way optimal parameter values.
 
 % -> depending on results
 
+
+Grid sampling to explore regions rapidly limited
+
+$\rightarrow$ towards the use of genetic algorithms on grid, made smooth with the OpenMOLE software \url{https://next.openmole.org/}
+
+\centering
+
+\smallskip
+
+\includegraphics[height=0.35\textheight]{figures/openmole.png}
+
+\smallskip
+
+\raggedright\justify
+
+\footnotesize \textit{OpenMOLE: (i) embed any model as a black box; (ii) transparent access to main High Performance Computing environments; (iii) model exploration and calibration methods.}
+
+\bigskip
+
+\textbf{Apply to the summer school !} \texttt{https://exmodelo.org/}
+
 }
+
 
 
 
@@ -275,7 +449,7 @@ $\rightarrow$
 
 \textbf{Implications}
 
-$\rightarrow$ 
+$\rightarrow$ Transfer to policy making recommandations: Pareto-optimal configuration can be used for the planning of regional transportation networks, subsidies policies, etc.
 \smallskip
 
 $\rightarrow$ 
@@ -288,7 +462,12 @@ $\rightarrow$
 
 % 
 
-$\rightarrow$ 
+% detail method to extrapolate parameters of gravity flows
+
+% interesting result : compare these emission with the synthetic ? (then just a refinment ?) -> yes, better. show new Pareto fronts with this fixed parameters for only emissions, and varying for economic ? 
+
+
+$\rightarrow$ Extrapolation of transportation flows
 
 
 }
@@ -357,6 +536,49 @@ Raimbault, J. (2018). Caract{\'e}risation et mod{\'e}lisation de la co-{\'e}volu
 \textbf{Reserve Slides}
 
 }
+
+
+\sframe{Results: effective emissions}{
+
+\textit{Effective emissions exhibit a supralinear scaling of population}
+
+\medskip
+
+\centering
+
+\includegraphics[height=0.9\textheight]{figures/aggreg_effective.png}
+
+}
+
+\sframe{Results: all clusters Pareto fronts}{
+
+\textit{Variation of Pareto front patterns when potential parameter $\gamma,d_0$ vary.}
+
+\medskip
+
+\centering
+
+\includegraphics[width=0.9\textwidth]{figures/full_paretos.png}
+
+}
+
+
+\sframe{Results: an optimal morphology}{
+
+\textit{More monocentric areas are more optimal in terms of relative emissions and efficiency ?}
+
+\medskip
+
+\centering
+
+\includegraphics[width=0.49\textwidth]{figures/aggreg_morpho_pc1-relefficiency.png}\includegraphics[width=0.49\textwidth]{figures/aggreg_morpho_pc1-relemissions.png}
+
+% TODO : curves for emissions rescale to the same -> link with Caruso profiles ? ; investigate that, and why not for efficiency.
+
+
+}
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%
