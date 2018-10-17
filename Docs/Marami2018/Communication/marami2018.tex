@@ -89,6 +89,13 @@ October 18th 2018
 
 % -> visu OSM : see Metropolitan region ; plus positioning of Avignon ; Q of sustainibility ?
 
+
+% les formes des établissements humains peuvent se percevoir a differentes echelles et selon differentes dimensions. Elle font partie de notre vie courante, a ces mutiples echelles, et pourtant nous sont si etrangeres. Afin d'introduire notre sujet, je propose ici une image familière pour bien d'entre vous qui fréquentent cette région.
+% La metropole etendue de la region marseilleise ne se limite pas a l'aspect administratif d'aix marseille, mais englobe bien avignon et la ciotat, voire manosque, des lors que l'on prend un certain recul geographique.
+% il n'aura pas manque aux eoils attentifs que ce recul est d'autant plus une abstraction, puisque nous ne represnetons ici uniquement les reseaux routiers, qui s'averent deja etre un proxy suffisant pour estrapoler une densite d'activités humaines.
+% Cette presentation s'axera ainsi sur la morphologie des reseaux et des territories et sur leurs relations.
+
+
 \centering
 
 	\includegraphics[width=1.2\textwidth]{figures/roadssouth.png}
@@ -106,6 +113,9 @@ October 18th 2018
 
 % here extracts from Claire's work
 % Lagesse, C., Bordin, P., & Douady, S. (2015). A spatial multi-scale object to analyze road networks. Network Science, 3(1), 156-181. -> nice picture Avignon
+
+% La caracterisation des reseaux routiers, par exemples en termes de classification et dindicateurs topoliques, est liee a differents enjeux qui incluent la comprehnsion des dynamiques ppasses par la contingence de ces artefacts, amis qussi des questions futues liees a la soutenabilité des territoires qui'ils irriguent.
+% les developpements recents, issus d'efforts interdispclinaires, incluent par exmeple ce travail de Claire Lagesse applique a la ville que v ous reconnaissaez bien, pour la definition de nouveau object a la pertineence thematique plus grande que les seuls entites des bases de donnes sans ontologie propre. (ex perso ballade avignon hier : vraie coherence thematique de l'objet "Way")
 
 \textit{Multiple dimensions to characterize road networks}
 
@@ -134,6 +144,14 @@ Lagesse, C., Bordin, P., \& Douady, S. (2015). A spatial multi-scale object to a
 %Cottineau, C., Finance, O., Hatna, E., Arcaute, E., & Batty, M. (2018). Defining urban clusters to detect agglomeration economies. Environment and Planning B: Urban Analytics and City Science, 2399808318755146.
 
 % 
+
+% parmi ces outils, la percolation a ete applique recemment aux reseaux routiers.
+% en phyique, ce phenomene designe la traversee d'un milieu plus ou omins poreux par un fluide, et par exetnsion les processus pour l'attendre. En pariculier, nous l'entendrons au sens d'une occupation progressice des sites / connections des noeus d'un reseau, jusqu'a un etat critique ou l'ensemble de ceux-ci sont connectés (percolation threshold). [probailite de perco p_c]
+% en particulier ppour letude des viulles
+% des travaux relaticement anciens ont propose un phenomene de percolation locale correlation pour modeliser l'etalement urbain.
+% plus recemment, et plsu proches des travaux des physiciens, une determination endoganee des regions urbaines a etet proposee par l'equipe du acvs en appliquant une heuristqiue de percolation aux reseaux routiers.
+% ces methodes peuvent egalement servier a effecteur des statistqieus spatiales.
+% nous porposons ici d;'etendre ces methodes en prenant en compte differentes dimensions urbaines, de la meme maniere que cottineau et al combine densite de population et flux de commuting pour definir les regoins urbaines.
 
 \justify
 
@@ -169,6 +187,10 @@ $\rightarrow$ similar to \cite{cottineau2018defining} to define urban areas
 % - take into account in percolation
 % - potential application : endogenous sustainable urban entities
 
+% notre approceh reponde a la question ouverte du lien entre ofrme et fonction da`ns les systemes urbaine ;  et par ailleurs se base sur les interatcions entre reseaux te territoires poour fournire un proy de ce lien.
+% nous propospns ainsi d'explorer une heuristique multi-dimensionnelle de la percolation qui prend en compte morplholohie urbaine et yopologie dy reseau routier ; nous l'appliquon pour caracterisere endogenement les regions urbaines.
+% [rq : deux niveau de reseuax dans notree apporche : (mais en. fait comme souvent en geo ; ) le physique, et le abstraot que l'on construite a partir d'entites spatiales.
+
 
 \justify
 
@@ -196,6 +218,11 @@ $\rightarrow$ Interactions between networks and territories to capture the link 
 
 %This communication addresses such a gap by introducing a multi-dimensional percolation heuristic, which is analog to multilayer network percolation \citep{boccaletti2014structure}. Given discrete spatial fields, site percolation is operated between two cells given a threshold parameter for each dimension and a distance threshold.
 
+% decrivons a presons de neniere stylisee l'algorithme utilise.
+% le processus de peroclation initrial est deterministe, base sur la distance, met est prochess des random eulidian networks evoque hier par Alain Franc : si deux neouds sont a une distance d'un rayon critique r_0, ceux ci sont connectes par un lien.
+% nous ajoutons alors sur chaque couche du reaseu un seul de peroclation qui determine si le neod peut etre prus en compte dqns le reseau de la couhce.
+% par conjonction des contraintes, nous obtenus un reseau a unique couche dans laquelle simplement els composantes connexes donnent les clusters perfcolés.
+
 \textit{Multi-dimensional network percolation heuristic, similar to multilayer percolation} \cite{boccaletti2014structure}
 
 \bigskip
@@ -221,6 +248,13 @@ $\rightarrow$ Interactions between networks and territories to capture the link 
 
 %We apply the heuristic to urban morphology and road network topology measures in Europe. More precisely, a grid with resolution 50km of population density morphology indicators and road network topology indicators, has been computed on spatial moving windows for all European Union by \cite{raimbault2018urban}. 
 
+% Precisons a ppresent les objets geographiques a partir  desqueles nous allons construire le reseau.
+% nous rappelns que nous cherchons a combiner prorpiete des territoires, que nous approximerons tres simplement par la districbution spatiale de la population, et propriete des reseaux routiers, que nous approximerons par des indicateirs topollogiques locaux.
+% ces differentes caracteristqiues ont ete calucles, dans le cadre de ce travail de modelisation a l'echelle mesocscopique de la coevolution entre reseaux et cilles, sur les feentres glissantes de taille 50km poru l'ensemble de l'europe.
+% nous en donnons ici l'illustration dans le cas de la France
+% [several infos on different regimes etc]
+
+
 \justify
 
 \textit{Territorial indicators computed for Europe by \cite{raimbault2018urban}}
@@ -241,6 +275,12 @@ $\rightarrow$ Interactions between networks and territories to capture the link 
 \sframe{Network construction}{
 
 %We percolate the population density layer with a network characteristic layer, that we test among number of edges, number of vertices, cyclomatic number and euclidian efficiency, which capture functional properties especially for the two last.
+
+% a partir de ces deux couches nous considerosn d'un [art la densite de population, d'autre part des proxus pour la densite ou perdormance du reseau ; avce les paramteres associes.
+% la logique geographique derriere cela est liee a la premiere loi de Tobler : deux lieus proches etc  ; ajoute a la logique de la masse (loi de gravite), mais selon different aspects du reseau (car difficile de savoir quelle dimenion a priori jouera le role "equivalent" d'une densite de population : autant laisser libre et explorer plutot que de fixer arbitrairemenbt - maxime d'un computational scientist converti, bien sur.
+% en pratqiuem nous contruison le reseau correspondant et isolns ses composantes connexes.
+% descirption du plan d'explericence.
+
 
 \justify
 
@@ -279,6 +319,11 @@ $\rightarrow$ 4800 parameter points
 \sframe{Results: endogenous mega-regions}{
 
 %Maps reveal that most configurations resemble the actual distribution of European mega-city regions, which are functionally integrated polycentric urban areas \citep{hall2006polycentric}. 
+
+% les rsultats sont particulierement interessantm puiqaue ceratines valuers de apremtres menest a des configurations connues par lkes geographesm celles des mega-cities regions
+% [rq : affirnation arbitraire iuci car pas evidence-based, il faudrait comp systematique etc , le probeleme vcest que meme pas de liste avec consensus sur l'obejct, comme soubent en geo>...]
+% du coup "visuellemtn" randstad, rehinrhuhrm, rehinmainm London, Paris, Manchester Leeds,
+%
 
 \justify
 
