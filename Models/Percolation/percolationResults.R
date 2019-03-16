@@ -6,8 +6,11 @@ load('../../Data/consolidated/indics.RData')
 
 # load results from percolation
 
-resstamp = '20181016_024956'
-purpose='directSampling'
+#resstamp = '20181016_024956'
+#purpose='directSampling'
+resstamp = '20190316_182550'
+purpose='directSampling_radius'
+
 #resstamp = 'test_20190316_154614'
 load(paste0('res/',purpose,'_',resstamp,'.RData'))
 load(paste0('res/',purpose,'_params_',resstamp,'.RData'))
@@ -23,17 +26,42 @@ totalPop = sum(indics$totalPop)
 ## full areas stats
 
 for(k in 1:length(res)){res[[k]]$paramrow=rep(k,length(res[[k]]$pops))}
-full = data.frame(matrix(unlist(lapply(res,function(l){l$areas=NULL;unlist(data.frame(t(data.frame(l))))})),byrow=T,ncol=length(res[[1]])-1))
-colnames(full)<-names(res[[1]])[-1]
+full = data.frame(matrix(unlist(lapply(res,function(l){l$areas=NULL;l$clustdiameters=NULL;l$clustsizesnodes=NULL;l$clustsizesedges=NULL;unlist(data.frame(t(data.frame(l))))})),byrow=T,ncol=length(res[[1]])-4))
+colnames(full)<-names(res[[1]])[c(-1,-10,-11,-12)]
 params$paramrow=1:nrow(params)
 full=left_join(full,params)
 
+# compute relative indicators
 full$relemissions=rep(nrow(full),0)
 full$relefficiency=rep(nrow(full),0)
 for(k in unique(full$paramrow)){
   full$relemissions[full$paramrow==k]=(max(full$emissions[full$paramrow==k])-full$emissions[full$paramrow==k])/(max(full$emissions[full$paramrow==k])-min(full$emissions[full$paramrow==k]))
   full$relefficiency[full$paramrow==k]= 1 - (max(full$efficiencies[full$paramrow==k])-full$efficiencies[full$paramrow==k])/(max(full$efficiencies[full$paramrow==k])-min(full$efficiencies[full$paramrow==k])) 
 }
+
+
+#####
+# percolation transition
+
+toremove=c("pops","morans","avgdists","entropies","slopes","efficiencies","emissions","totalemissions")
+for(k in 1:length(res)){res[[k]]$paramrow=rep(k,length(res[[k]]$areas))}
+fulltrans = data.frame(matrix(unlist(lapply(res,function(l){for(tr in toremove){l[[tr]]=NULL};unlist(data.frame(t(data.frame(l))))})),byrow=T,ncol=length(res[[1]])-length(toremove)))
+colnames(fulltrans)<-names(res[[1]])[c(-9:-2)]
+params$paramrow=1:nrow(params)
+fulltrans=as.tbl(left_join(fulltrans,params))
+
+# not normalized
+fulltrans$nwparam = paste0(fulltrans$nwcol,fulltrans$nwthq)
+maxs = as.tbl(fulltrans)%>% group_by(nwcol,popthq,nwthq,radius,nwparam)%>%summarize(maxsizenodes = max(clustsizesnodes),maxsizeedges=max(clustsizesedges))
+g=ggplot(maxs,aes(x=radius,y=maxsizenodes,group=nwparam,color=nwparam))
+g+geom_point()+geom_line()
+
+maxall = as.tbl(fulltrans)%>% group_by(nwcol,popthq,nwthq,nwparam)%>%summarize(maxsizenodes = max(clustsizesnodes),maxsizeedges=max(clustsizesedges))
+
+maxs = as.tbl(fulltrans)%>% group_by(nwcol,popthq,nwthq,radius,nwparam)%>%summarize(relsizenodes = max(clustsizesnodes)/maxall$maxsizenodes[maxall$nwparam==nwparam[1]],relsizeedges=max(clustsizesedges)/maxall$maxsizeedges[maxall$nwparam==nwparam[1]])
+g=ggplot(maxs,aes(x=radius,y=relsizenodes,group=nwparam,color=nwparam))
+g+geom_point()+geom_line()
+
 
 # within config pareto fronts ?
 popthq=c(0.85,0.95);nwthq=c(0.0,0.95);radius=c(8000,50000)
