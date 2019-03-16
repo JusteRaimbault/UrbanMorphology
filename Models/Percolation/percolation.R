@@ -9,18 +9,26 @@ source('percolationFunctions.R')
 # assumes data has been consolidated before
 load('../../Data/consolidated/indics.RData')
 
+#purpose='directSampling'
+purpose='test'
+
 # parameter values
-#quantiles = c(0.85,0.9,0.95)
-popquantiles=c(0.85,0.9,0.95)
-nwquantiles=c(0.0,0.8,0.9,0.95)
-radiuses=c(8000,10000,15000,20000,50000)
-#radiuses=c(8000)
-nwindics= c("ecount","mu","vcount","euclPerf")
-#nwindics= c("ecount")
-gammas=c(0.5,1,1.5,2.0)
-#gammas=c(1)
-decays=c(100,1000,10000,50000,100000)
-#decays=c(1000)
+#popquantiles=c(0.85,0.9,0.95)
+popquantiles=c(0.95)
+
+#nwquantiles=c(0.0,0.8,0.9,0.95)
+nwquantiles=c(0.95)
+
+#radiuses=c(8000,10000,15000,20000,50000)
+radiuses=c(8000,10000)
+
+#nwindics= c("ecount","mu","vcount","euclPerf")
+nwindics= c("ecount")
+
+#gammas=c(0.5,1,1.5,2.0)
+gammas=c(1)
+#decays=c(100,1000,10000,50000,100000)
+decays=c(1000)
 
 params=matrix(0,length(popquantiles)*length(nwquantiles)*length(radiuses)*length(nwindics)*length(gammas)*length(decays),6)
 i=1
@@ -33,14 +41,15 @@ colnames(params)=c("nwcol","popthq","nwthq","radius","gamma","decay")
 params$nwthq=as.numeric(as.character(params$nwthq));params$popthq=as.numeric(as.character(params$popthq));params$radius=as.numeric(as.character(params$radius));params$gamma=as.numeric(as.character(params$gamma));params$decay=as.numeric(as.character(params$decay))
 
 library(doParallel)
-cl <- makeCluster(60,outfile='log')
+#cl <- makeCluster(60,outfile='log')
+cl <- makeCluster(2,outfile='log')
+
 registerDoParallel(cl)
 res <- foreach(i=1:nrow(params)) %dopar% {
 #res=list()
 #for(i in 1:nrow(params)){
     #source('Models/Percolation/percolationFunctions.R')
   source('percolationFunctions.R')
-  #p = conditionalPercolation(d=indics,popthq=params$popthq[i],nwthq=params$nwthq[i],radius=params$radius[i])
   # Mandatory args : d,radius,popthq,nwcol,nwthq,gamma,decay
   return(graphPercolation(d=indics,
                                 radius=params$radius[i],
@@ -54,7 +63,7 @@ res <- foreach(i=1:nrow(params)) %dopar% {
 }
 stopCluster(cl)
 
-save(res,file=paste0('res/directSampling_',format(Sys.time(), "%Y%m%d_%H%M%S"),'.RData'))
+save(res,file=paste0('res/',purpose,'_',format(Sys.time(), "%Y%m%d_%H%M%S"),'.RData'))
 
 #############
 

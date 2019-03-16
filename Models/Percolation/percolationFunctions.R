@@ -122,8 +122,13 @@ graphPercolation <- function(d,radius,popthq,nwcol,nwthq,gamma,decay,
   g = graph_from_adjacency_matrix(adjmat,mode='undirected')
   comps = components(g)
   k=1
+  # compute cluster diameters here as we have the graph
+  clustdiameters=c();clustsizesnodes=c();clustsizesedges=c()
   for(cnum in which(comps$csize >= minclustsize)){
     cpoints$cluster[comps$membership==cnum]=k
+    currentcomp = induced_subgraph(g,which(comps$membership==cnum))
+    clustdiameters=append(clustdiameters,diameter(currentcomp))
+    clustsizesnodes=append(clustsizesnodes,length(V(currentcomp)));clustsizesedges=append(clustsizesedges,length(E(currentcomp)))
     k=k+1
   }
   
@@ -141,7 +146,13 @@ graphPercolation <- function(d,radius,popthq,nwcol,nwthq,gamma,decay,
     }
   }
   
-  return(computeIndics(sppoints,gamma,decay))
+  indics = computeIndics(sppoints,gamma,decay)
+  
+  indics[["clustdiameters"]]=clustdiameters
+  indics[["clustsizesnodes"]]=clustsizesnodes
+  indics[["clustsizesedges"]]=clustsizesedges
+  
+  return(indics)
   
 }
 
@@ -184,7 +195,7 @@ computeIndics <- function(sppoints,gamma,decay,dmat=NULL,popcol="totalPop",emiss
   show(paste0('Computing indicators for ',nrow(sppoints),'points ; gamma = ',gamma,' ; decay = ',decay))
   #clusteredpoints=sppoints[!is.na(sppoints$cluster),]
   areas=c();pops=c();morans=c();avgdists=c();entropies=c();slopes=c();
-  efficiencies=c();emissions=c();totalemissions=c()
+  efficiencies=c();emissions=c();totalemissions=c();
   clustnums = unique(sppoints$cluster);clustnums=clustnums[!is.na(clustnums)]
   if(length(clustnums)>0){
   for(i in 1:length(clustnums)){

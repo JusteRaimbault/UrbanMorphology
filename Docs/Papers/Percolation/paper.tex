@@ -255,7 +255,6 @@ The sum of all flows within the geographical span of the cluster (that we approx
 
 %\textbf{Rationale: } \textit{two locations will be in relation if they are close, have a high population density and given network characteristics.}
 
-% note : euclperf should be minimized whereas other maximized : issue ?
 
 %\textbf{Implementation: } construction of a single layer spatial network given the condition on the two layers and distances, from the 5km resolution indicators spatial field; extraction of connected components.
 
@@ -265,6 +264,7 @@ In practice, the analysis is implemented using R and the igraph package. The net
 
 The experience plan is a full grid, for parameters $r_0$, $\theta_P$, $\theta_N$ and the network variable considered.
 
+% TODO recall def of euclPerf and why ok to be maximized
 
 %$\rightarrow$ 4800 parameter points
 %We systematically explore the clusters obtained for 840 parameter configurations. 
@@ -470,9 +470,11 @@ An other potential development would imply crossing our endogenous definitions o
 \bibliographystyle{jimis-en}
 \bibliography{biblio}
 
-\appendix\footnotesize
 
-\section{Appendix 1: supplementary sensitivity analyses}
+
+%\appendix\footnotesize
+
+%\section{Appendix 1: supplementary sensitivity analyses}
 
 
 
