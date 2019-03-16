@@ -9,26 +9,27 @@ source('percolationFunctions.R')
 # assumes data has been consolidated before
 load('../../Data/consolidated/indics.RData')
 
-purpose='directSampling'
+purpose='directSampling_radius'
 #purpose='test'
 
 # parameter values
-popquantiles=c(0.85,0.9,0.95)
-#popquantiles=c(0.85)
+#popquantiles=c(0.85,0.9,0.95)
+popquantiles=c(0.85)
 
-nwquantiles=c(0.0,0.8,0.9,0.95)
-#nwquantiles=c(0.0)
+#nwquantiles=c(0.0,0.8,0.9,0.95)
+nwquantiles=c(0.0,0.8)
 
-radiuses=c(8000,10000,15000,20000,50000)
+#radiuses=c(8000,10000,15000,20000,50000)
+radiuses=seq(8000,50000,by=1000)
 #radiuses=c(20000,50000)
 
-nwindics= c("ecount","mu","vcount","euclPerf")
-#nwindics= c("ecount")
+#nwindics= c("ecount","mu","vcount","euclPerf")
+nwindics= c("vcount","ecount")
 
-gammas=c(0.5,1,1.5,2.0)
-#gammas=c(1)
-decays=c(100,1000,10000,50000,100000)
-#decays=c(1000)
+#gammas=c(0.5,1,1.5,2.0)
+gammas=c(1)
+#decays=c(100,1000,10000,50000,100000)
+decays=c(1000)
 
 params=matrix(0,length(popquantiles)*length(nwquantiles)*length(radiuses)*length(nwindics)*length(gammas)*length(decays),6)
 i=1
@@ -43,8 +44,8 @@ params$nwthq=as.numeric(as.character(params$nwthq));params$popthq=as.numeric(as.
 show(paste0('Number of parameters points = ',nrow(params)))
 
 library(doParallel)
-#cl <- makeCluster(60,outfile='log')
-cl <- makeCluster(2,outfile='log')
+cl <- makeCluster(60,outfile='log')
+#cl <- makeCluster(2,outfile='log')
 
 registerDoParallel(cl)
 res <- foreach(i=1:nrow(params)) %dopar% {
