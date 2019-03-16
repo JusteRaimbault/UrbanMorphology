@@ -34,13 +34,13 @@
 % Issue Title 
 \issue{Title of the interdisciplinary issue}
 % List of k Editors
-\editors{First-name-$1$ Family-name-$1$, First-name-$2$ Family-name-$2$, First-name-$k$ Family-name-$k$...}
+\editors{}
 
 \begin{document}
 
 \maketitle
 
-\abstract{Territorial structure significantly conditions the sustainability of human settlements. Recent forms of urbanization, in particular integrated mega-city regions, may imply different patterns of economic and transportation flows and thus exhibit various performances regarding different indicators of sustainability. This paper proposes to reconstruct endogenous urban regions from the bottom-up using network percolation, in a multi-dimensional way to take into account both urban form (spatial distribution of population) and urban function (properties of transportation networks). Variable parametrizations allows to consider patterns of optimization for two stylized contradictory sustainability indicators (economic performance and greenhouse gases emissions). This suggests a customizable spatial design of policies to develop sustainable territories.}
+\abstract{The spatial distribution of human settlements into territories strongly conditions their sustainability. Recent forms of urbanization, in particular integrated mega-city regions, may imply different patterns of economic and transportation flows and thus exhibit various performances regarding different indicators of sustainability. This paper proposes to reconstruct endogenous urban regions from the bottom-up using network percolation, in a multi-dimensional way to take into account both urban form (spatial distribution of population) and urban function (properties of transportation networks). Variable parametrizations allows to consider patterns of optimization for two stylized contradictory sustainability indicators (economic performance and greenhouse gases emissions). This suggests a customizable spatial design of policies to develop sustainable territories.}
 
 \keywords{Road network; multilayer percolation; mega-city region}
 
@@ -50,78 +50,48 @@
 \vspace{-4ex}
 
 
-% Morphologies of networks and territories
-% - intro : LGV ? Avignon : travaux Claire ! - truc avec les Papes ? 
-% https://www.persee.fr/doc/anami_0003-4398_1985_num_97_172_2228_t1_0446_0000_3
-% https://www.persee.fr/doc/mefr_0223-5110_1984_num_96_1_2762
-
-% -> visu OSM : see Metropolitan region ; plus positioning of Avignon ; Q of sustainibility ?
-
 
 % les formes des établissements humains peuvent se percevoir a differentes echelles et selon differentes dimensions. Elle font partie de notre vie courante, a ces mutiples echelles, et pourtant nous sont si etrangeres. Afin d'introduire notre sujet, je propose ici une image familière pour bien d'entre vous qui fréquentent cette région.
 % La metropole etendue de la region marseilleise ne se limite pas a l'aspect administratif d'aix marseille, mais englobe bien avignon et la ciotat, voire manosque, des lors que l'on prend un certain recul geographique.
 % il n'aura pas manque aux eoils attentifs que ce recul est d'autant plus une abstraction, puisque nous ne represnetons ici uniquement les reseaux routiers, qui s'averent deja etre un proxy suffisant pour estrapoler une densite d'activités humaines.
 % Cette presentation s'axera ainsi sur la morphologie des reseaux et des territories et sur leurs relations.
-%\includegraphics[width=1.2\textwidth]{figures/roadssouth.png}
-%\textit{Source: OpenStreetMap}
 
-The structure of road networks both translates its past growth dynamics and has a significant impact on the sustainability of territories it irrigates. Diverse methods to characterize the structure of spatial networks, and more particularly road networks, have been developed in that context.
+The structure of road networks both contains its past growth dynamics and has a significant impact on the sustainability of territories it irrigates. Diverse methods to characterize the structure of spatial networks, and more particularly road networks, have been developed in that context.
 
 
-% here extracts from Claire's work
-% Lagesse, C., Bordin, P., & Douady, S. (2015). A spatial multi-scale object to analyze road networks. Network Science, 3(1), 156-181. -> nice picture Avignon
+
+\cite{lagesse2015spatial} % definition of the object "way"
 
 % La caracterisation des reseaux routiers, par exemples en termes de classification et dindicateurs topoliques, est liee a differents enjeux qui incluent la comprehnsion des dynamiques ppasses par la contingence de ces artefacts, amis qussi des questions futues liees a la soutenabilité des territoires qui'ils irriguent.
 % les developpements recents, issus d'efforts interdispclinaires, incluent par exmeple ce travail de Claire Lagesse applique a la ville que v ous reconnaissaez bien, pour la definition de nouveau object a la pertineence thematique plus grande que les seuls entites des bases de donnes sans ontologie propre. (ex perso ballade avignon hier : vraie coherence thematique de l'objet "Way")
 
-%\textit{Multiple dimensions to characterize road networks}
-%\includegraphics[width=\textwidth,height=0.7\textheight]{figures/avignon_claire.png}
-
-%Lagesse, C., Bordin, P., \& Douady, S. (2015). A spatial multi-scale object to analyze road networks. Network Science, 3(1), 156-181. \cite{lagesse2015spatial}
 
 
 
+A method to characterize topologies of these spatial networks is network percolation. Percolation in physics can be understood in a broad sense processes related to the progressive occupation or connection of nodes of a network, and is generally associated to a phase transition with the emergence of a giant cluster at a given connection probability \citep{callaway2000network}. Such approaches have been applied to the modeling of urban growth \citep{makse1998modeling}. It is also a method applied to the analysis of street networks, for example to extract endogenous urban regions \citep{arcaute2016cities}. In spatial statistics, this method can be used to characterize the spatial morphology of point patterns \cite{huynh2018characterisation}.
 
-A method to characterize topologies of these spatial networks is network percolation. Such approaches have been applied to the modeling of urban growth \citep{makse1998modeling} and to the analysis of street networks for example to extract endogenous urban regions \citep{arcaute2016cities} or to characterize the spatial morphology of point patterns \cite{huynh2018characterisation}.
 
-
-%Network percolation
-% A method to characterize topologies of these spatial networks is network percolation. Such approaches have been applied to the modeling of urban growth \citep{makse1998modeling} and to the analysis of street networks for example to extract endogenous urban regions \citep{arcaute2016cities} or to characterize the spatial morphology of point patterns \cite{huynh2018characterisation}.
+\cite{piovani2017urban} % meso scale percolation (within London area) and link with a retail location model
 
 % from monodimensional to multidimensional
 
 % similar to 
 %Cottineau, C., Finance, O., Hatna, E., Arcaute, E., & Batty, M. (2018). Defining urban clusters to detect agglomeration economies. Environment and Planning B: Urban Analytics and City Science, 2399808318755146.
 
-% 
+\cite{cottineau2018defining}
 
-% parmi ces outils, la percolation a ete applique recemment aux reseaux routiers.
-% en phyique, ce phenomene designe la traversee d'un milieu plus ou omins poreux par un fluide, et par exetnsion les processus pour l'attendre. En pariculier, nous l'entendrons au sens d'une occupation progressice des sites / connections des noeus d'un reseau, jusqu'a un etat critique ou l'ensemble de ceux-ci sont connectés (percolation threshold). [probailite de perco p_c]
-% en particulier ppour letude des viulles
-% des travaux relaticement anciens ont propose un phenomene de percolation locale correlation pour modeliser l'etalement urbain.
-% plus recemment, et plsu proches des travaux des physiciens, une determination endoganee des regions urbaines a etet proposee par l'equipe du acvs en appliquant une heuristqiue de percolation aux reseaux routiers.
+% 
 % ces methodes peuvent egalement servier a effecteur des statistqieus spatiales.
 % nous porposons ici d;'etendre ces methodes en prenant en compte differentes dimensions urbaines, de la meme maniere que cottineau et al combine densite de population et flux de commuting pour definir les regoins urbaines.
 
-%\textbf{Network percolation: } \textit{progressive occupation/connection of nodes of a network} \cite{callaway2000network}
 
-%Application to the study of cities:
-
-%\begin{itemize}
-%	\item modeling urban growth \cite{makse1998modeling}
-%	\item endeogenous determination of regions \cite{arcaute2016cities}
-%	\item characterization of spatial point patterns \cite{huynh2018characterisation}
-%\end{itemize}
 %\textit{Towards complementary dimensions to condition road network percolation}
 %$\rightarrow$ similar to \cite{cottineau2018defining} to define urban areas
 
 
-
-
-
 % necessity of multi-dimensional percolation
 
-Existing heuristics however generally focus on a single morphological dimension of networks, and leave out the functional properties of urban systems \citep{burger2012form}.
+Existing heuristics however generally focus on a single morphological dimension of networks, and leave out the functional properties of urban systems \citep{burger2012form}. However, urban systems are known to be multidimensional.
 
 This paper addresses such a gap by introducing a multi-dimensional percolation heuristic.
 
@@ -147,8 +117,6 @@ This paper addresses such a gap by introducing a multi-dimensional percolation h
 
 
 
-
-We percolate the population density layer with a network characteristic layer, that we test among number of edges, number of vertices, cyclomatic number and euclidian efficiency, which capture functional properties especially for the two last.
 
 
 
@@ -188,6 +156,9 @@ Given discrete spatial fields, site percolation is operated between two cells gi
 
 We apply the heuristic to urban morphology and road network topology measures in Europe. More precisely, a grid with resolution 50km of population density morphology indicators and road network topology indicators, has been computed on spatial moving windows for all European Union by \cite{raimbault2018urban}.
 
+The percolation on such an abstract network is a necessary condition in our case to link the different dimensions considered, namely population distribution and local road network properties.
+
+We percolate the population density layer with a network characteristic layer, that we test among number of edges, number of vertices, cyclomatic number and euclidian efficiency, which capture functional properties especially for the two last.
 
 % Precisons a ppresent les objets geographiques a partir  desqueles nous allons construire le reseau.
 % nous rappelns que nous cherchons a combiner prorpiete des territoires, que nous approximerons tres simplement par la districbution spatiale de la population, et propriete des reseaux routiers, que nous approximerons par des indicateirs topollogiques locaux.
@@ -195,21 +166,11 @@ We apply the heuristic to urban morphology and road network topology measures in
 % nous en donnons ici l'illustration dans le cas de la France
 % [several infos on different regimes etc]
 
-%\textit{Territorial indicators computed for Europe by \cite{raimbault2018urban}}
-
-% here add maps to better visualize the spatial fields
-
-%\medskip
-
-%\includegraphics[width=0.49\textwidth]{figures/indics_morpho_discrquantiles.png}
-%\includegraphics[width=0.49\textwidth]{figures/indics_network_en_areasize100_offset50_factor0_5.png}
-
-%\textbf{Population distribution morphology} and \textbf{Network topology} (betweenness, closeness, clustering, efficiency, \ldots) computed on 50km spatial windows (Eurostat density grid and OpenStreetMap)
 
 
 
 
-
+%%%%%%%%%%%%%%%%
 \subsection{Sustainability indicators}
 
 
@@ -232,6 +193,7 @@ where $v_k$ are either effective local GHG emissions or population. Indeed, the 
 
 The sum of all flows within the geographical span of the cluster (that we approximate as the convex Hull envelope of its points), allows us to approximate the cumulated potential emissions and economic activity.
 
+Using these potential flows follows the logic of \cite{arbabi2019development} which shows a need for improved intra-city-region mobility in England and Wales. Considering the regions as entities in which such transportation development policies can more easily been developed, we look at the sustainability of different possible regions if these potential flows were realized. Varying the parameters $\gamma$ and $d_0$ allows to control for the economic activity considered (high $\gamma$ values correspond to high added-value activities) and the span of interactions through $d_0$.
 
 
 
@@ -251,28 +213,19 @@ The sum of all flows within the geographical span of the cluster (that we approx
 
 %\textbf{Two layers: } population density (threshold $\theta_P$) and network characteristics (threshold $\theta_N$) taken among \{Number of edges, Number of vertices, Cyclomatic number $\mu$, Euclidian efficiency $v$ \}; percolated with a radius $r_0$
 
-% banos2012towards
+\cite{banos2012towards} network efficiency
 
 %\textbf{Rationale: } \textit{two locations will be in relation if they are close, have a high population density and given network characteristics.}
 
 
-%\textbf{Implementation: } construction of a single layer spatial network given the condition on the two layers and distances, from the 5km resolution indicators spatial field; extraction of connected components.
-
-In practice, the analysis is implemented using R and the igraph package. The network is constructed by superposing the population density layer with the network layer.
+In practice, the analysis is implemented using R and the igraph package. The network is constructed by superposing the population density layer with the network layer, starting from the 5km resolution spatial fields for morphological and network indicators. This network is filtered with the threshold parameters for each layer and with the radius parameter. Connected components yield the clusters that we interpret as endogenous regions.
 
 %\textbf{Experience plan: } grid sampling for $r_0,\theta_P,\theta_N$ and network variables; additional gravity potential parameters $\gamma,d_0$ (detailed after)
 
 The experience plan is a full grid, for parameters $r_0$, $\theta_P$, $\theta_N$ and the network variable considered.
+We also make $\gamma$ and $d_0$ vary.
 
 % TODO recall def of euclPerf and why ok to be maximized
-
-%$\rightarrow$ 4800 parameter points
-%We systematically explore the clusters obtained for 840 parameter configurations. 
-
-% + explain openmole -> later in potential developments
-
-
-
 
 
 We systematically explore the clusters obtained for 4800 parameter configurations.
@@ -282,6 +235,19 @@ We systematically explore the clusters obtained for 4800 parameter configuration
 
 
 \subsection{Extracting endogenous mega-city regions}
+
+
+%%%%%%%%%%%%%%%%%%%%
+\begin{figure*}[ht] 
+%\resizebox{10cm}{7cm}
+  {\includegraphics[width=0.49\linewidth]{figures/totalPop2219780_36719597_vcount378_radius8000.png}}
+  {\includegraphics[width=0.49\linewidth]{figures/totalPop1474347_36891685_vcount595_radius50000.png}}
+  \centering
+  \label{fig:exclusters}
+  \caption{Two examples of obtained clusters for different parameter values.}
+\end{figure*}
+%%%%%%%%%%%%%%%%%%%%
+
 
 Maps reveal that most configurations resemble the actual distribution of European mega-city regions, which are functionally integrated polycentric urban areas \citep{hall2006polycentric}. These are here defined endogenously from the bottom-up.
 
@@ -300,16 +266,7 @@ Maps reveal that most configurations resemble the actual distribution of Europea
 % TODO for the paper : check effect of adding network threshold : methodo info on multilayer percol in itself
 
 
-%%%%%%%%%%%%%%%%%%%%
-\begin{figure*}[ht] 
-%\resizebox{10cm}{7cm}
-  {\includegraphics[width=0.49\linewidth]{figures/totalPop2219780_36719597_vcount378_radius8000.png}}
-  {\includegraphics[width=0.49\linewidth]{figures/totalPop1474347_36891685_vcount595_radius50000.png}}
-  \centering
-  \label{fig:exclusters}
-  \caption{Two examples of obtained clusters for different parameter values.}
-\end{figure*}
-%%%%%%%%%%%%%%%%%%%%
+
 
 
 
@@ -357,17 +314,16 @@ We show therein that different population, network and distance thresholds yield
 %entropy  0.5108424 0.2140447  0.45847647 -0.69499942
 %slope    0.5917502 0.1811415  0.33390034  0.71100630
 
-When considering the aggregated indicators for a parametrization of endogenous city regions, one can relate them to morphological indicators, computed by~\cite{}, that we average on areas. This establishes a link between urban morphology and sustainibility. A principal component analysis on considered points yield 96\% of variance with two components, and 73\% explained by the first component alone. The first component relates to a level of monocentricity ($PC1 = -0.3\cdot I + 0.54 \cdot \bar{d} + 0.51\cdot \varepsilon + 0.59 \cdot \alpha$). As shown in Fig.~\ref{fig:emissions-pc1}, there seems to exist an optimal intermediate level of monocentricity regarding emissions only, except for long-range and low-hierarchy interactions. However, when considering both emissions and economic indicators, urban form then acts as a compromise variable, moving points on Pareto fronts, as shown in Fig.~\ref{fig:paretos-relative}. In some case, highly monocentric areas can be a good compromise, whereas the intermediate optimal for emissions may yield highly inefficient areas.
+When considering the aggregated indicators for a parametrization of endogenous city regions, one can relate them to morphological indicators for population density spatial distribution, computed by~\cite{raimbault2018calibration}, that we average on areas. This establishes a link between urban morphology and sustainibility. A principal component analysis on considered points yield 96\% of variance with two components, and 73\% explained by the first component alone. The first component relates to a level of monocentricity ($PC1 = -0.3\cdot I + 0.54 \cdot \bar{d} + 0.51\cdot \varepsilon + 0.59 \cdot \alpha$). As shown in Fig.~\ref{fig:emissions-pc1}, there seems to exist an optimal intermediate level of monocentricity regarding emissions only, except for long-range and low-hierarchy interactions. However, when considering both emissions and economic indicators, urban form then acts as a compromise variable, moving points on Pareto fronts, as shown in Fig.~\ref{fig:paretos-relative}. In some case, highly monocentric areas can be a good compromise, whereas the intermediate optimal for emissions may yield highly inefficient areas.
 
 
 
 %%%%%%%%%%%%%%%%%%%%
 \begin{figure*}[ht] 
 %\resizebox{10cm}{7cm}
-  {\includegraphics[width=\linewidth]{figures/aggreg_morpho_pc1-emissions.png}}
+  {\includegraphics[width=\linewidth]{figures/aggreg_morpho_pc1-emissions_targeted.png}}
   \centering
-  \label{fig:emissions-pc1}
-  \caption{Aggregated values of normalized potential emissions, as a function of the first morphological principal component (PC1), for varying values of parameters $d_G$ and $\gamma_G$. As PC1 is mainly linked to monocentricity, there seems to exist an optimal intermediate level of monocentricity for emissions alone.}
+  \caption{Aggregated values of normalized potential emissions, as a function of the first morphological principal component (PC1), for varying values of parameters $d_G$ (rows) and $\gamma_G$ (columns). Other intermediate values for these parameters yield similar behaviors. As PC1 is mainly linked to monocentricity, there seems to exist an optimal intermediate level of monocentricity for emissions alone.\label{fig:emissions-pc1}}
 \end{figure*}
 %%%%%%%%%%%%%%%%%%%%
 
@@ -383,10 +339,9 @@ When considering the aggregated indicators for a parametrization of endogenous c
 %%%%%%%%%%%%%%%%%%%%
 \begin{figure*}[ht] 
 %\resizebox{10cm}{7cm}
-  {\includegraphics[width=\linewidth]{figures/aggreg_morpho_relemissions-relefficiency_colpc1_logscale.png}}
-  \centering
-  \label{fig:paretos-relative}
-  \caption{Relative potential emissions against relative potential economic unefficiency (both indicators should be minimized), for varying values of $\gamma_G$ (columns) and $d_G$ (rows). Color level gives the value of PC1, whereas point size gives the share of total population contained within considered areas.}
+  {\includegraphics[width=\linewidth]{figures/aggreg_morpho_relemissions-relefficiency_colpc1_logscale_targeted.png}}
+  \centering  
+  \caption{Relative potential emissions against relative potential economic unefficiency (both indicators should be minimized), for varying values of $\gamma_G$ (columns) and $d_G$ (rows). Color level gives the value of PC1, whereas point size gives the share of total population contained within considered areas.\label{fig:paretos-relative}}
 \end{figure*}
 %%%%%%%%%%%%%%%%%%%%
 

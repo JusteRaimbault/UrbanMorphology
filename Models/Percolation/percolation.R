@@ -9,26 +9,26 @@ source('percolationFunctions.R')
 # assumes data has been consolidated before
 load('../../Data/consolidated/indics.RData')
 
-#purpose='directSampling'
-purpose='test'
+purpose='directSampling'
+#purpose='test'
 
 # parameter values
-#popquantiles=c(0.85,0.9,0.95)
-popquantiles=c(0.95)
+popquantiles=c(0.85,0.9,0.95)
+#popquantiles=c(0.85)
 
-#nwquantiles=c(0.0,0.8,0.9,0.95)
-nwquantiles=c(0.95)
+nwquantiles=c(0.0,0.8,0.9,0.95)
+#nwquantiles=c(0.0)
 
-#radiuses=c(8000,10000,15000,20000,50000)
-radiuses=c(8000,10000)
+radiuses=c(8000,10000,15000,20000,50000)
+#radiuses=c(20000,50000)
 
-#nwindics= c("ecount","mu","vcount","euclPerf")
-nwindics= c("ecount")
+nwindics= c("ecount","mu","vcount","euclPerf")
+#nwindics= c("ecount")
 
-#gammas=c(0.5,1,1.5,2.0)
-gammas=c(1)
-#decays=c(100,1000,10000,50000,100000)
-decays=c(1000)
+gammas=c(0.5,1,1.5,2.0)
+#gammas=c(1)
+decays=c(100,1000,10000,50000,100000)
+#decays=c(1000)
 
 params=matrix(0,length(popquantiles)*length(nwquantiles)*length(radiuses)*length(nwindics)*length(gammas)*length(decays),6)
 i=1
@@ -65,7 +65,10 @@ res <- foreach(i=1:nrow(params)) %dopar% {
 }
 stopCluster(cl)
 
-save(res,file=paste0('res/',purpose,'_',format(Sys.time(), "%Y%m%d_%H%M%S"),'.RData'))
+tstamp=format(Sys.time(), "%Y%m%d_%H%M%S")
+save(res,file=paste0('res/',purpose,'_',tstamp,'.RData'))
+save(params,file=paste0('res/',purpose,'_params_',tstamp,'.RData'))
+
 
 #############
 

@@ -151,6 +151,7 @@ graphPercolation <- function(d,radius,popthq,nwcol,nwthq,gamma,decay,
   indics[["clustdiameters"]]=clustdiameters
   indics[["clustsizesnodes"]]=clustsizesnodes
   indics[["clustsizesedges"]]=clustsizesedges
+  show(names(indics))
   
   return(indics)
   

@@ -1,9 +1,18 @@
 
+setwd(paste0(Sys.getenv('CS_HOME'),'/UrbanMorphology/Models/Percolation'))
+
+# indics
+load('../../Data/consolidated/indics.RData')
+
 # load results from percolation
 
-resstamp = 'directSampling_20181016_024956'
-load(paste0('res/',resstamp,'.RData'))
-resdir = paste0(Sys.getenv('CS_HOME'),'/UrbanMorphology/Results/Percolation/',resstamp,'/');dir.create(resdir)
+resstamp = '20181016_024956'
+purpose='directSampling'
+#resstamp = 'test_20190316_154614'
+load(paste0('res/',purpose,'_',resstamp,'.RData'))
+load(paste0('res/',purpose,'_params_',resstamp,'.RData'))
+resdir = paste0(Sys.getenv('CS_HOME'),'/UrbanMorphology/Results/Percolation/',purpose,'_',resstamp,'/');dir.create(resdir)
+
 
 source(paste0(Sys.getenv('CS_HOME'),'/Organisation/Models/Utils/R/plots.R'))
 
@@ -102,7 +111,9 @@ for(gamma in gammas){for (decay in decays){
 
 
 g=ggplot(sres,aes(x=emissions,y=efficiency,col=pop/totalPop))
-g+geom_point()+facet_grid(decay~gamma)+xlab("Normalized potential emissions")+ylab("1 - Normalized potential efficiency")+scale_color_continuous(name="Relative\nPopulation")+stdtheme
+g+geom_point()+facet_grid(decay~gamma)+
+  xlab("Normalized potential emissions")+ylab("1 - Normalized potential efficiency")+
+  scale_color_continuous(name="Relative\nPopulation")+stdtheme
 ggsave(file=paste0(resdir,'aggreg_paretos.png'),width=30,height=25,units='cm')
 
 g=ggplot(sres,aes(x=emissions*totalPop/pop,y=efficiency*totalPop/pop,col=pop/totalPop))
@@ -190,6 +201,13 @@ g=ggplot(sres,aes(x=PC1,y=emissions,col=pop/totpop))
 g+geom_point()+facet_grid(decay~gamma)+geom_smooth(method='loess',n=50)+xlab("PC1")+ylab("Normalized potential emissions")+scale_color_continuous(name="Relative\nPopulation")+stdtheme
 ggsave(file=paste0(resdir,'aggreg_morpho_pc1-emissions.png'),width=30,height=25,units='cm')
 
+# targeted plot
+g=ggplot(sres[sres$decay%in%c(100,100000)&sres$gamma%in%c(0.5,2),],aes(x=PC1,y=emissions,col=pop/totalPop))
+g+geom_point()+facet_grid(decay~gamma)+geom_smooth(method='loess',n=50)+xlab("PC1")+ylab("Normalized potential emissions")+scale_color_continuous(name="Relative\nPopulation")+stdtheme
+ggsave(file=paste0(resdir,'aggreg_morpho_pc1-emissions_targeted.png'),width=30,height=25,units='cm')
+
+
+
 g=ggplot(sres,aes(x=PC1,y=emissions,col=radius))
 g+geom_point()+facet_grid(decay~gamma)+geom_smooth(method='loess',span=0.5)+xlab("PC1")+ylab("Normalized potential emissions")+scale_color_continuous(name=expression(r[0]))+stdtheme
 ggsave(file=paste0(resdir,'aggreg_morpho_pc1-emissions_colr0.png'),width=30,height=25,units='cm')
@@ -244,9 +262,21 @@ g+geom_point(alpha=0.5)+facet_grid(decay~gamma)+scale_color_viridis_c(name="PC2"
 ggsave(file=paste0(resdir,'aggreg_morpho_emissions-efficiency_colpc2.png'),width=30,height=25,units='cm')
 
 
+
+##### pareto emissions / unefficiency
 g=ggplot(sres,aes(x=1+emissions*totalPop/pop,y=1+efficiency*totalPop/pop,col=PC1,size=pop/totalPop))
 g+geom_point(alpha=0.5)+scale_x_log10()+scale_y_log10()+facet_grid(decay~gamma)+scale_color_viridis_c(name="PC1")+xlab("Relative potential emissions")+ylab("Relative potential unefficiency")+scale_size_continuous(name="Relative\nPopulation")+stdtheme
 ggsave(file=paste0(resdir,'aggreg_morpho_relemissions-relefficiency_colpc1_logscale.png'),width=30,height=25,units='cm')
+
+## targeted
+g=ggplot(sres[sres$gamma%in%c(0.5,2)&sres$decay%in%c(100,100000),],aes(x=1+emissions*totalPop/pop,y=1+efficiency*totalPop/pop,col=PC1,size=pop/totalPop))
+g+geom_point(alpha=0.5)+scale_x_log10()+scale_y_log10()+facet_grid(decay~gamma)+
+  scale_color_viridis_c(name="PC1")+xlab("Relative potential emissions")+ylab("Relative potential unefficiency")+
+  scale_size_continuous(name="Relative\nPopulation")+stdtheme
+ggsave(file=paste0(resdir,'aggreg_morpho_relemissions-relefficiency_colpc1_logscale_targeted.png'),width=30,height=25,units='cm')
+
+
+
 
 g=ggplot(sres,aes(x=1+emissions*totalPop/pop,y=1+efficiency*totalPop/pop,col=PC2,size=pop/totalPop))
 g+geom_point(alpha=0.5)+scale_x_log10()+scale_y_log10()+facet_grid(decay~gamma)+scale_color_viridis_c(name="PC2")+xlab("Relative potential emissions")+ylab("Relative potential unefficiency")+scale_size_continuous(name="Relative\nPopulation")+stdtheme
