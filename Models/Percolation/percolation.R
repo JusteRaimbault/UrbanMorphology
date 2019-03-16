@@ -14,13 +14,13 @@ purpose='test'
 
 # parameter values
 #popquantiles=c(0.85,0.9,0.95)
-popquantiles=c(0.95)
+popquantiles=c(0.85)
 
 #nwquantiles=c(0.0,0.8,0.9,0.95)
-nwquantiles=c(0.95)
+nwquantiles=c(0.0)
 
 #radiuses=c(8000,10000,15000,20000,50000)
-radiuses=c(8000,10000)
+radiuses=c(15000,20000)
 
 #nwindics= c("ecount","mu","vcount","euclPerf")
 nwindics= c("ecount")
