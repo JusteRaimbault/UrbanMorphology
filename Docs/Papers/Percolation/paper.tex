@@ -7,7 +7,8 @@
 \usepackage{graphicx}
 
 % header
-\title{Identifying European Sustainable Mega-city Regions with Multi-dimensional Network Percolation}
+\title{Multi-dimensional Urban Network Percolation}
+% Identifying European Sustainable Mega-city Regions with Multi-dimensional Network Percolation
 % Endogenous urban regions as an optimal compromise between economic integration and greenhouse gases emissions
 % A multi-dimensional percolation approach to characterize sustainable mega-city regions
 
@@ -40,9 +41,9 @@
 
 \maketitle
 
-\abstract{The spatial distribution of human settlements into territories strongly conditions their sustainability. Recent forms of urbanization, in particular integrated mega-city regions, may imply different patterns of economic and transportation flows and thus exhibit various performances regarding different indicators of sustainability. This paper proposes to reconstruct endogenous urban regions from the bottom-up using network percolation, in a multi-dimensional way to take into account both urban form (spatial distribution of population) and urban function (properties of transportation networks). Variable parametrizations allows to consider patterns of optimization for two stylized contradictory sustainability indicators (economic performance and greenhouse gases emissions). This suggests a customizable spatial design of policies to develop sustainable territories.}
+\abstract{Network percolation has recently been proposed as a method to characterize the global structure of an urban system form the bottom-up. This paper proposes to extend urban network percolation in a multi-dimensional way, to take into account both urban form (spatial distribution of population) and urban functions (here as properties of transportation networks). The method is applied to the European urban system to reconstruct endogenous urban regions. The variable parametrization allows to consider patterns of optimization for two stylized contradictory sustainability indicators (economic performance and greenhouse gases emissions). This suggests a customizable spatial design of policies to develop sustainable territories.}
 
-\keywords{Road network; multilayer percolation; mega-city region}
+\keywords{Road network; Multi-dimensional percolation; European urban system; Mega-city region}
 
 \section{Introduction}
 
@@ -50,64 +51,19 @@
 \vspace{-4ex}
 
 
-
-% les formes des établissements humains peuvent se percevoir a differentes echelles et selon differentes dimensions. Elle font partie de notre vie courante, a ces mutiples echelles, et pourtant nous sont si etrangeres. Afin d'introduire notre sujet, je propose ici une image familière pour bien d'entre vous qui fréquentent cette région.
-% La metropole etendue de la region marseilleise ne se limite pas a l'aspect administratif d'aix marseille, mais englobe bien avignon et la ciotat, voire manosque, des lors que l'on prend un certain recul geographique.
-% il n'aura pas manque aux eoils attentifs que ce recul est d'autant plus une abstraction, puisque nous ne represnetons ici uniquement les reseaux routiers, qui s'averent deja etre un proxy suffisant pour estrapoler une densite d'activités humaines.
-% Cette presentation s'axera ainsi sur la morphologie des reseaux et des territories et sur leurs relations.
-
-The structure of road networks both contains its past growth dynamics and has a significant impact on the sustainability of territories it irrigates. Diverse methods to characterize the structure of spatial networks, and more particularly road networks, have been developed in that context.
+The structure of road networks can be used as a proxy to understand its past growth dynamics, but also has a significant impact on the future sustainability of territories it irrigates. Diverse methods to characterize the structure of spatial networks, and more particularly road networks, have been developed in that context, including classical network indicators such as centralities \citep{crucitti2006centrality} but also more elaborated constructions capturing more realistic processes in terms of street network use \citep{lagesse2015spatial}. These study are by essence interdisciplinary, or at least imply complementary viewpoints from disciplines as diverse as architecture with space syntax \citep{hillier1976space}, physics with the study of spatial networks \citep{barthelemy2011spatial}, or social science disciplines concerned with space such as geography \citep{ducruet2014spatial}.
 
 
-
-\cite{lagesse2015spatial} % definition of the object "way"
-
-% La caracterisation des reseaux routiers, par exemples en termes de classification et dindicateurs topoliques, est liee a differents enjeux qui incluent la comprehnsion des dynamiques ppasses par la contingence de ces artefacts, amis qussi des questions futues liees a la soutenabilité des territoires qui'ils irriguent.
-% les developpements recents, issus d'efforts interdispclinaires, incluent par exmeple ce travail de Claire Lagesse applique a la ville que v ous reconnaissaez bien, pour la definition de nouveau object a la pertineence thematique plus grande que les seuls entites des bases de donnes sans ontologie propre. (ex perso ballade avignon hier : vraie coherence thematique de l'objet "Way")
+A method to characterize topologies of such urban spatial networks is network percolation, initially applied to road networks by \cite{arcaute2016cities}. Percolation in physics can be understood in a broad sense as processes related to the progressive occupation or connection of nodes of a network, and is generally associated to a phase transition with the emergence of a giant cluster at a given connection probability \citep{stauffer2014introduction}. Important applications include the quantification of network robustness \citep{callaway2000network} or the modeling of epidemic spreading \citep{newman1999scaling}. Such approaches have been applied to urban systems not only for the study of networks. \cite{makse1998modeling} model urban growth with a local percolation model for site occupancy. \cite{arcaute2016cities} focus on the analysis of street networks and extract endogenous urban regions for UK which correlate with socio-economic properties, and provide a definition of urban areas which highly correlates with land-cover data. \cite{piovani2017urban} apply road network percolation at the mesoscopic scale of London metropolitan area, in relation with a retail location model. In spatial statistics, this method can be used to characterize the spatial morphology of point patterns \cite{huynh2018characterisation}.
 
 
+Existing heuristics however generally focus on a single dimension or property of the urban system. However, such systems are known to be multidimensional, for example through the superposition of the morphological dimension of networks, and the functional properties of the urban environment \citep{burger2012form}. The link between urban form and function remains in particular an open question \citep{batty1994fractal}, but more generally the inclusion of multiple dimension in urban analysis is still a research direction to be investigated, as in the case of agent-based models for example \cite{perez2016agent}. This paper addresses such a gap in the case of urban network percolation, by introducing a multi-dimensional percolation heuristic. The method allows to combine different dimensions of the urban system, the same way that \cite{cottineau2018defining} combines population density and commuting flows to produce multiple definitions of urban areas.
 
 
-A method to characterize topologies of these spatial networks is network percolation. Percolation in physics can be understood in a broad sense processes related to the progressive occupation or connection of nodes of a network, and is generally associated to a phase transition with the emergence of a giant cluster at a given connection probability \citep{stauffer2014introduction}. Important applications include the quantification of network robustness \citep{callaway2000network}.
+Beside these methodological issues, applied tools are needed to quantify the sustainability of recently emerged urban forms. In particular, according to \cite{lenechet2017peupler}, the most recent transition of human settlement systems (in the sense of \cite{sanders2017peupler}, i.e. a change in the dynamical regime ruling the evolution of the spatial structure of settlements) is the emergence of mega-city regions. These have been defined by \cite{hall2006polycentric} as polycentric urban structures highly integrated in terms of flows. The transition imply complex processes such as changes in the governance structure, and can not be associated to the stylized transition identified by \cite{louf2013modeling} in a simplistic toy urban model, and therefore has chances to imply more drivers than negative externalities of congestion only. To what extent these new urban forms are sustainable, for example in the broad sense of UN development goals \citep{komiyama2006sustainability}, remains an open question. In order to test our multi-dimensional percolation method, we propose to apply it to the endogenous characterization of urban regions, and compute stylized sustainability indicators on the constructed regions.
 
 
-Such approaches have been applied to urban systems. \cite{makse1998modeling} model urban growth with a local percolation model. It is also a method applied to the analysis of street networks, for example to extract endogenous urban regions \citep{arcaute2016cities}. In spatial statistics, this method can be used to characterize the spatial morphology of point patterns \cite{huynh2018characterisation}.
-
-
-\cite{piovani2017urban} % meso scale percolation (within London area) and link with a retail location model
-
-% from monodimensional to multidimensional
-
-
-%\textit{Towards complementary dimensions to condition road network percolation}
-%$\rightarrow$ similar to \cite{cottineau2018defining} to define urban areas
-
-
-% necessity of multi-dimensional percolation
-
-Existing heuristics however generally focus on a single morphological dimension of networks, and leave out the functional properties of urban systems \citep{burger2012form}. However, urban systems are known to be multidimensional.
-
-This paper addresses such a gap by introducing a multi-dimensional percolation heuristic, in order to combine different dimensions of the urban system, the same way that \cite{cottineau2018defining} combines population density and commuting flows to produce multiple definitions of urban areas.
-
-The rationale behind combining urban form with network topology measures relies on the capture of the link between urban form and function, assumed as distributed by transportation networks \citep{raimbault2018caracterisation}.
-
-
-% - why the relation between form and function, aka pop and network in our view is crucial
-% - take into account in percolation
-% - potential application : endogenous sustainable urban entities
-
-% notre approceh reponde a la question ouverte du lien entre ofrme et fonction da`ns les systemes urbaine ;  et par ailleurs se base sur les interatcions entre reseaux te territoires poour fournire un proy de ce lien.
-% nous propospns ainsi d'explorer une heuristique multi-dimensionnelle de la percolation qui prend en compte morplholohie urbaine et yopologie dy reseau routier ; nous l'appliquon pour caracterisere endogenement les regions urbaines.
-% [rq : deux niveau de reseuax dans notree apporche : (mais en. fait comme souvent en geo ; ) le physique, et le abstraot que l'on construite a partir d'entites spatiales.
-
-
-%\textbf{Research objective : } \textit{Investigate a multi-dimensional percolation of territorial networks taking into account urban morphology and road network topology; endogenous characterization of urban regions.}
-
-
-Our contribution relies on several points: (i) this is to the best of our knowledge the first time a multi-dimensional percolation method is appplied to urban systems; (ii) we furthermore apply it on a significant spatial extent; and (iii) we link the cluster obtained with simple sustainability measures.
-
-
-The rest of this paper is organized as follows: we first describe the multi-dimensional percolation heuristic, the data and variables to which it is applied, and the indicators used to characterized the sustainability of clusters produced. We then describe the results of applying this method to population and network variables for the whole European Union, focusing on the endogenous regions produced and their sustainability properties. We finally discuss possible developments and the implications of this methodology to the design of policies.
+Our contribution relies on several points: (i) this is to the best of our knowledge the first time a multi-dimensional percolation method is applied to urban systems; (ii) we furthermore apply it on the significant spatial extent of all European Union; and (iii) we link the clusters obtained with simple sustainability measures. The rest of this paper is organized as follows: we first describe the multi-dimensional percolation heuristic, the data and variables to which it is applied, and the indicators used to characterized the sustainability of clusters produced. We then describe the results of applying this method to population and network variables for the whole European Union, focusing on the endogenous regions produced and their sustainability properties. We finally discuss possible developments and the implications of this methodology to the design of policies.
 
 
 
@@ -127,81 +83,50 @@ The rest of this paper is organized as follows: we first describe the multi-dime
 %\resizebox{10cm}{7cm}
   {\includegraphics[width=\linewidth]{figures/principle.pdf}}
   \centering
-  \label{fig:method}
-  \caption{Schematic representation of the multi-dimensional network percolation heuristic.}
+  \caption{Schematic representation of the multi-dimensional network percolation heuristic. We show a stylized configuration with two layers having the same nodes, and the links within each layer are created following the percolation radius $r_0$ and the thresholds for the layer variables. The final clusters are the superposition of these. The green points give examples of starting points in the case of a propagation heuristic.\label{fig:method}}
 \end{figure*}
 %%%%%%%%%%%%%%%%%%%%
 
 
-
-Given discrete spatial fields, site percolation is operated between two cells given a threshold parameter for each dimension and a distance threshold. This heuristic is similar to multilayer network percolation \citep{boccaletti2014structure}.
-
-\cite{son2012percolation} % extension of epidemic spreading
-
-\cite{hackett2016bond} bond percolation multiplex networks
-
-% decrivons a presons de neniere stylisee l'algorithme utilise.
-% le processus de peroclation initrial est deterministe, base sur la distance, met est prochess des random eulidian networks evoque hier par Alain Franc : si deux neouds sont a une distance d'un rayon critique r_0, ceux ci sont connectes par un lien.
-% nous ajoutons alors sur chaque couche du reaseu un seul de peroclation qui determine si le neod peut etre prus en compte dqns le reseau de la couhce.
-% par conjonction des contraintes, nous obtenus un reseau a unique couche dans laquelle simplement els composantes connexes donnent les clusters perfcolés.
-
-The method works with an arbitrary number of layers.
-
-The rationale
+Percolation processes in multilayer networks have been proposed as an extension within simple networks \citep{boccaletti2014structure}. A generalization of epidemic spreading can for example be achieved using this framework \citep{son2012percolation}. In the case of multilayer networks sharing the same nodes for all layers, often called multiplex networks, bond percolation has also been studied \citep{hackett2016bond}.
 
 
+In the case of our heuristic, bond percolation is operated between two cells given a distance threshold, and furthermore with a threshold parameter for each layer assuming a node function within each layer. The distance-based connection is similar to generative processes for random euclidian networks \citep{penrose1999k}.
 
+More formally, let assume a set of nodes $V = v_i$ common to all layers, and layers edges $E_j$ taken as empty at the initial state of the algorithm. Each node has a value of the considered variables associated to each layer, written $v_{ij}$. For each layer, a link $e_{kl} \in E_j$ is created if $d(v_k,v_l) < r_0$ where $d$ is the distance between the nodes (which can be any distance) and $r_0$ the percolation radius, and if $v_{kj} > \theta_j$ and $v_{lj} > \theta_j$ where $\theta_j$ is the threshold for layer $j$. The final percolated network edges $E$ is composed by links contained within all layers simultaneously. The multi-dimensional percolation clusters are then the connected components of this network $(V,E)$. The parameters implied in this heuristic are the percolation radius $r_0$ and the percolation thresholds $\theta_j$ for each layer $j$, allowing a flexible application through parametrization.
 
-The parameters implied in this heuristic are the percolation radius $r_0$ and the percolation thresholds $\theta_i$ for each layer $i$.
+Note that we do not call our method ``multi-layer percolation'', as it is not strictly multi-layer since nodes are common. The term of multi-dimensional percolation is more suited to the use of multiple variables and thresholds. The method works with an arbitrary number of layers. See Fig.~\ref{fig:method} for a schematic representation of the method. It can be implemented with a propagation heuristic or directly working on adjacency matrices. The rationale behind the conjunction of the thresholding of each layer variable and the distance thresholding relies on the idea that two points will interact is they are close enough, but also if they have a strong enough intensity of the activity or dimension captured by each layer, simultaneously for all layers considered. This recalls Tobler's first law of geography \citep{tobler2004first} in a multi-dimensional way.
 
 
 
 \subsection{Empirical data}
 
 
-We apply the heuristic to urban morphology and road network topology measures in Europe. More precisely, a grid with resolution 50km of population density morphology indicators and road network topology indicators, has been computed on spatial moving windows for all European Union by \cite{raimbault2018urban}.
+We apply the heuristic to urban morphology and road network topology measures in Europe. The idea to combine urban form with network topology measures relies on the capture of the link between urban form and function as already mentioned, urban functions being assumed as distributed by transportation networks \citep{raimbault2018caracterisation}.
 
-The percolation on such an abstract network is a necessary condition in our case to link the different dimensions considered, namely population distribution and local road network properties.
+More precisely, a grid of population density morphology indicators and road network topology indicators has been computed on spatial moving windows of width 50km for all European Union by \cite{raimbault2018urban}, with an offset resolution of 5km. We use this data to construct a two layers abstract network: a layer which variable is given by population density, and a second layer which variable is given by a network variable. Nodes are the center of cells (thus disposed in space on a grid of step 5km). We test the variable characterizing the second layer among the following characteristics of the road network within the corresponding window: number of edges, number of vertices, cyclomatic number and euclidian efficiency. These measures capture functional properties especially for the two last.
 
-We percolate the population density layer with a network characteristic layer, that we test among number of edges, number of vertices, cyclomatic number and euclidian efficiency, which capture functional properties especially for the two last.
-
-% Precisons a ppresent les objets geographiques a partir  desqueles nous allons construire le reseau.
-% nous rappelns que nous cherchons a combiner prorpiete des territoires, que nous approximerons tres simplement par la districbution spatiale de la population, et propriete des reseaux routiers, que nous approximerons par des indicateirs topollogiques locaux.
-% ces differentes caracteristqiues ont ete calucles, dans le cadre de ce travail de modelisation a l'echelle mesocscopique de la coevolution entre reseaux et cilles, sur les feentres glissantes de taille 50km poru l'ensemble de l'europe.
-% nous en donnons ici l'illustration dans le cas de la France
-% [several infos on different regimes etc]
-
-
-
+The percolation on such an abstract network is a necessary condition in our case to link the different dimensions considered, namely population distribution and local road network properties. We have therefore two levels of networks in our approach, namely the physical road network which local properties are taken here as input, and the abstract two layer network on which we do the percolation. We will in the following write $\theta_P$ for the threshold parameter of the population layer, and $\theta_N$ for the threshold parameter of the network layer. In practice, these parameters will be given in the following as quantile level of the corresponding variable, for an easier interpretation and conception of experience plans. The name of the variable considered will be written $v_N$.
 
 
 %%%%%%%%%%%%%%%%
 \subsection{Sustainability indicators}
 
 
-We use this endogenous definition of regional urban systems produced by the percolation algorithm to evaluate their sustainability, in terms of conflicting objectives of economic integration and greenhouse gases emissions. The definition of sustainability, or sustainable development, is by essence multi-dimensional \citep{viguie2012trade}. Its characterization as quantitative indicators is even more subject to numerous degrees of freedom. We work here with two stylized indicators for two conflicting dimensions, as a proof-of-concept.
+As already detailed, recent forms of urbanization, in particular integrated mega-city regions, may imply different patterns of economic and transportation flows and thus exhibit various performances regarding different indicators of sustainability. We propose to use the endogenous definition of regional urban systems produced by the percolation algorithm to evaluate their sustainability, in terms of conflicting objectives of economic integration and greenhouse gases emissions. The definition of sustainability, or sustainable development, is by essence multi-dimensional \citep{viguie2012trade}. Its characterization as quantitative indicators is even more subject to numerous degrees of freedom. We work here with two stylized indicators for two conflicting dimensions, as a proof-of-concept.
 
 
-The EDGAR database \citep{janssens2017edgar} (version 4.3.2) is used for local estimates of greenhouse gases emissions.
+We use the EDGAR database \citep{janssens2017edgar} (version 4.3.2) for local grid estimates of greenhouse gases emissions. We use the latest year available, namely 2012. As its resolution is much smaller than our indicator grid, we aggregate the emissions on the closer indicator point for each cell of the emission database. Since according to \cite{lashof1990relative} most of the greenhouse effect is caused by $\textrm{CO}_2$, and as in terms of emissions in the database we find that it represents $98.2\%$ in mass proportion of all gases, we only consider it.
 
-
-% explain indicators : convex hull.
-
-Applying a gravity model to each region, we estimate abstract transportation flows within each and extrapolate emissions by coupling with the Edgar emission database \citep{janssens2017edgar} and economic activities with a scaling law of population.  More precisely, greenhouse gases emissions derived from economic and transportation flows are estimated with the following expression 
+Applying a gravity model to each region, we estimate abstract transportation flows within each and use these to extrapolate emissions from the actual local emission from the Edgar database, and economic activities with a scaling law of population.  More precisely, following \cite{raimbault2018indirect}, a potential flow between two points $i$ and $j$ can be estimated with the following expression 
 
 \begin{equation}
-\phi_{ij} = \left(\frac{v_i v_j}{(\sum_k v_k)^2}\right)^\gamma \cdot \exp\left(\frac{-d_{ij}}{d_0}\right)
+\phi_{ij}^{(k)} = \left(\frac{v^{(k)}_i v^{(k)}_j}{(\sum_l v_l)^2}\right)^\gamma \cdot \exp\left(\frac{-d_{ij}}{d_0}\right)
 \end{equation}
 
-where $v_k$ are either effective local GHG emissions or population. Indeed, the economic activity follows relatively well scaling laws of populations \cite{bettencourt2007growth}, the exponent being dependant on the activity and the definition of areas on which it is estimated~\citep{cottineau2017diverse}.
+where $v^{(k)}_i$ are either population or effective local GHG emissions (indexed by $k = 1,2$ respectively), $d_{ij}$ the distance between the two points, $d_0$ a distance decay parameter, and $\gamma$ a scaling parameter. Indeed, the economic activity follows relatively well scaling laws of populations \citep{bettencourt2007growth}, the exponent being dependant on the activity and the definition of areas on which it is estimated~\citep{cottineau2017diverse}.
 
-
-The sum of all flows within the geographical span of the cluster (that we approximate as the convex Hull envelope of its points), allows us to approximate the cumulated potential emissions and economic activity.
-
-
-The corresponding relative indicators are defined as
-% TODO relative indiactors / normalized (by pop ?)
-
+The sum of all flows of points within the geographical span of the cluster (that we approximate as the convex Hull envelope of its points), allows us to approximate the cumulated potential emissions and economic activity. Writing clusters $K_c$ as this set of points, we define the total economic flow by $E_c = \sum_{i,j \in K_c} \phi_{ij}^{(1)}$ and the total emissions due to flows by $G_c = \sum_{i,j \in C_c} \phi_{ij}^{(2)}$. This allows to define a relative economic inefficiency by $e_c = 1 - \frac{\max_c E_c - E_c}{\max_c E_c - \min_c E_c}$ and relative potential emissions by $g_c = \frac{\max_c G_c - G_c}{\max_c G_c - \min_c G_c}$. Both indicators should be minimized for sustainability. Normalized indicators $\tilde{e}_c,\tilde{g}_c$ are defined in a similar way, but the extrema being computed on all other possible urban configurations with the same $\gamma,d_0$ values.
 
 Using these potential flows follows the logic of \cite{arbabi2019development} which shows a need for improved intra-city-region mobility in England and Wales. Considering the regions as entities in which such transportation development policies can more easily been developed, we look at the sustainability of different possible regions if these potential flows were realized. Varying the parameters $\gamma$ and $d_0$ allows to control for the economic activity considered (high $\gamma$ values correspond to high added-value activities) and the span of interactions through $d_0$.
 
@@ -212,38 +137,82 @@ Using these potential flows follows the logic of \cite{arbabi2019development} wh
 \subsection{Implementation}
 
 
-%Network construction
+In practice, the analysis is implemented using R and the igraph package. Source code, data and results are available on the open git repository of the project at \url{https://github.com/JusteRaimbault/UrbanMorphology}. The network is constructed by superposing the population density layer with the network layer, starting from the 5km resolution spatial fields for morphological and network indicators. This network is filtered with the threshold parameters for each layer and with the radius parameter. Connected components yield the clusters that we interpret as endogenous regions.
 
-%We percolate the population density layer with a network characteristic layer, that we test among number of edges, number of vertices, cyclomatic number and euclidian efficiency, which capture functional properties especially for the two last.
-
-% a partir de ces deux couches nous considerosn d'un [art la densite de population, d'autre part des proxus pour la densite ou perdormance du reseau ; avce les paramteres associes.
-% la logique geographique derriere cela est liee a la premiere loi de Tobler : deux lieus proches etc  ; ajoute a la logique de la masse (loi de gravite), mais selon different aspects du reseau (car difficile de savoir quelle dimenion a priori jouera le role "equivalent" d'une densite de population : autant laisser libre et explorer plutot que de fixer arbitrairemenbt - maxime d'un computational scientist converti, bien sur.
-% en pratqiuem nous contruison le reseau correspondant et isolns ses composantes connexes.
-% descirption du plan d'explericence.
-
-%\textbf{Two layers: } population density (threshold $\theta_P$) and network characteristics (threshold $\theta_N$) taken among \{Number of edges, Number of vertices, Cyclomatic number $\mu$, Euclidian efficiency $v$ \}; percolated with a radius $r_0$
-
-\cite{banos2012towards} network efficiency
-
-%\textbf{Rationale: } \textit{two locations will be in relation if they are close, have a high population density and given network characteristics.}
-
-
-In practice, the analysis is implemented using R and the igraph package. Source code, data and results are available on the open git repository of the project at \url{https://github.com/JusteRaimbault/UrbanMorphology}.
+We recall that the euclidian performance of the network \citep{banos2012towards} is in our case $<d_e/d_n>$ where the average is taken on all origin-destination pairs in the network, $d_e$ is the euclidian distance and $d_n$ the network distance. Thus, it indeed increases with network performance, in consistence with the use done here through thresholding.
 
 
 
-The network is constructed by superposing the population density layer with the network layer, starting from the 5km resolution spatial fields for morphological and network indicators. This network is filtered with the threshold parameters for each layer and with the radius parameter. Connected components yield the clusters that we interpret as endogenous regions.
+
+%%%%%%%%%%%%%%%%%%%%
+\begin{figure*}[ht] 
+%\resizebox{10cm}{7cm}
+  {\includegraphics[width=0.49\linewidth]{figures/abssize_nodes.png}}
+  {\includegraphics[width=0.49\linewidth]{figures/relsize_nodes.png}}
+  \centering
+  \caption{Percolation transition. On the left, we plot the size of the largest cluster in each configuration in terms of nodes, as a function of the percolation radius $r_0$. Color gives the other percolation parameters. On the right, the plot is similar but with the size relative to the size of the largest cluster obtained with the maximal radius in each configuration.\label{fig:percolation}}
+\end{figure*}
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+\begin{figure*}[ht] 
+%\resizebox{10cm}{7cm}
+  {\includegraphics[width=\linewidth]{figures/fractaldimension.png}}
+  \centering
+  \caption{Percolation transition.\label{fig:fractaldim}}
+\end{figure*}
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%
+\subsection{Percolation transition and fractal dimension}
 
 
-The experience plan is a full grid, for parameters $r_0$, $\theta_P$, $\theta_N$ and the network variable considered.
-We also make $\gamma$ and $d_0$ vary.
 
-We recall that the euclidian performance of the network is in our case $<d_e/d_n>$ where the average is taken on all origin-destination pairs in the network, $d_e$ is the euclidian distance and $d_n$ the network distance. Thus, it indeed increases with network performance, in consistence with the use done here through thresholding.
+In its application to road networks by \cite{arcaute2016cities}, the structure of the national urban system for UK is captured by studying the percolation transition, i.e. the variation of the size of the largest cluster as a function of the percolation radius. As this signature is tightly linked to historical, cultural and geographical conditions, the application to different urban systems should yield different results. We study here this property, for different threshold parameter values. We make the radius vary betweem 8km and 100km with a one km step, have a fixed population threshold $\theta_P = 0.85$, test all network variables, and three network thresholds $\theta_N \in \{ 0 ; 0.8 ; 0.95 \}$.
 
-
-We systematically explore the clusters obtained for 4800 parameter configurations.
+The absolute and relative sizes of the largest cluster are plotted in Fig.~\ref{fig:percolation} as a function of the percolation radius. This aspect first gives methodological information on multilayer percolation. Indeed, comparing the result with $\theta_N = 0$ (single layer percolation) with positive values of $\theta_N$ shows a significantly different behavior. As expected, absolute size are much smaller, but when looking 
 
 
+
+% ! largest cluster size in terms of edges makes no sense with the implementation we took - nodes only
+%      nwcol         popthq         nwthq          radius         nwparam             fractdim     
+% ecount  :186   Min.   :0.85   Min.   :0.00   Min.   :  8000   Length:1023        Min.   :0.9239  
+% euclPerf:279   1st Qu.:0.85   1st Qu.:0.00   1st Qu.: 31000   Class :character   1st Qu.:1.2639  
+% mu      :279   Median :0.85   Median :0.80   Median : 54000   Mode  :character   Median :1.3306  
+% vcount  :279   Mean   :0.85   Mean   :0.55   Mean   : 54000                      Mean   :1.3225  
+ %               3rd Qu.:0.85   3rd Qu.:0.95   3rd Qu.: 77000                      3rd Qu.:1.3909  
+ %               Max.   :0.85   Max.   :0.95   Max.   :100000                      Max.   :1.6058                                                                                    NA's   :337     
+%   fractdimsd     fractdimadjrsquared   fractrelsd    
+% Min.   :0.0544   Min.   :0.5111      Min.   :0.0395  
+% 1st Qu.:0.0966   1st Qu.:0.7016      1st Qu.:0.0700  
+% Median :0.1328   Median :0.7467      Median :0.1043  
+% Mean   :0.1317   Mean   :0.7456      Mean   :0.1009  
+% 3rd Qu.:0.1578   3rd Qu.:0.7981      3rd Qu.:0.1232  
+% Max.   :0.2381   Max.   :0.8642      Max.   :0.1958  
+% NA's   :337      NA's   :337         NA's   :337  
+
+
+
+
+We study also the evolution of the fractal dimension of clusters as a function of $r_0$.
+We do not plot the standard error $\sigma$ of fractal dimensions for visibility purposes, but their relative value given by $\alpha / \sigma\left[\alpha\right]$ is in average 0.10 and in maximum 0.196 on all points. Regarding the variability as a function of the percolation radius $r_0$, 
+
+%  fractdimsignif
+%# A tibble: 11 x 5
+%# Groups:   nwcol, popthq, nwthq [?]
+%   nwcol    popthq nwthq nwparam       signif
+%   <fct>     <dbl> <dbl> <chr>          <dbl>
+% 1 ecount     0.85  0    ecount0      -0.105 
+% 2 ecount     0.85  0.8  ecount0.8    -0.0452
+% 3 euclPerf   0.85  0    euclPerf0    -0.108 
+% 4 euclPerf   0.85  0.8  euclPerf0.8   0.0360
+% 5 euclPerf   0.85  0.95 euclPerf0.95 -0.108 
+% 6 mu         0.85  0    mu0          -0.108 
+% 7 mu         0.85  0.8  mu0.8        -0.108 
+% 8 mu         0.85  0.95 mu0.95        0.375 
+% 9 vcount     0.85  0    vcount0      -0.105 
+%10 vcount     0.85  0.8  vcount0.8    -0.0416
+%11 vcount     0.85  0.95 vcount0.95   -0.0868
 
 
 
@@ -251,15 +220,22 @@ We systematically explore the clusters obtained for 4800 parameter configuration
 \subsection{Extracting endogenous mega-city regions}
 
 
+The experience plan is a full grid, for parameters $r_0$, $\theta_P$, $\theta_N$ and the network variable considered.
+We also make $\gamma$ and $d_0$ vary.
+
+We systematically explore the clusters obtained for 4800 parameter configurations.
+
+
 %%%%%%%%%%%%%%%%%%%%
 \begin{figure*}[ht] 
 %\resizebox{10cm}{7cm}
-{\includegraphics[width=0.49\textwidth]{figures/totalPop4183694_00056402_ecount850_radius8000.png}}\\
-  {\includegraphics[width=0.49\linewidth]{figures/totalPop2219780_36719597_vcount378_radius8000.png}}
+{\includegraphics[width=0.49\textwidth]{figures/totalPop4183694_00056402_ecount850_radius8000.png}}
+  {\includegraphics[width=0.49\linewidth]{figures/totalPop2219780_36719597_vcount378_radius8000.png}}\\
   {\includegraphics[width=0.49\linewidth]{figures/totalPop1474347_36891685_vcount595_radius50000.png}}
+   {\includegraphics[width=0.49\linewidth]{figures/totalPop1474347_36891685_euclPerf0_00507404608502498_radius54000.png}}
   \centering
   
-  \caption{Examples of obtained clusters for different parameter values. In the third case for example, we obtain the urban regions of West midlands and London in the UK, Randstad merged with Rhein-Rhur and Rhein-Main in Germany, Paris in France, also with capital cities such as Copenhaguen, Stockholm and Helsinki. There is no cluster in South Europe in that case, due to the high population density threshold.\label{fig:exclusters}}
+  \caption{Examples of obtained clusters for different parameter values. In the top-right case for example ($\theta_P = 0.9$, $\theta_N = 0.8$, variable \texttt{vcount},$r_0 = 8km$), we obtain the urban regions of West midlands and London in the UK, Randstad merged with Rhein-Rhur and Rhein-Main in Germany, Paris in France, also with capital cities such as Copenhaguen, Stockholm and Helsinki. There is no cluster in South Europe in that case, due to the high population density threshold.\label{fig:exclusters}}
 \end{figure*}
 %%%%%%%%%%%%%%%%%%%%
 
@@ -269,27 +245,6 @@ Maps reveal that some configurations resemble the actual distribution of Europea
 
 We show some examples in Fig.~\ref{fig:exclusters}.
 
-
-
-
-%%%%%%%%%%%%%%%%%%%
-\subsection{Percolation transition and fractal dimension}
-
-
-%%%%%%%%%%%%%%%%%%%%
-\begin{figure*}[ht] 
-%\resizebox{10cm}{7cm}
-  %{\includegraphics[width=\linewidth]{figures/}}
-  \centering
-  \label{fig:percolation}
-  \caption{Percolation transition.}
-\end{figure*}
-%%%%%%%%%%%%%%%%%%%%
-
-
-In its application to road networks by \cite{arcaute2016cities}, the structure of the national urban system for UK is captured by studying the percolation transition, i.e. the variation of the size of the largest cluster as a function of the percolation radius. As this signature is tightly linked to historical, cultural and geographical conditions, the application to different urban systems should yield different results. We study here this property, for different threshold parameter values. The relative size of the largest cluster is plotted in Fig.~\ref{fig:percolation} as a function of the percolation radius.
-
-This aspect furthermore gives methodological information on multilayer percolation. Indeed, comparing the result with $\theta_N = 0$ (single layer percolation) with $\theta_N = 0.8$
 
 
 

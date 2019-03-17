@@ -8,7 +8,8 @@ load('../../Data/consolidated/indics.RData')
 
 #resstamp = '20181016_024956'
 #purpose='directSampling'
-resstamp = '20190316_182550'
+#resstamp = '20190316_182550'
+resstamp='20190316_235006'
 purpose='directSampling_radius'
 
 #resstamp = 'test_20190316_154614'
@@ -43,6 +44,19 @@ for(k in unique(full$paramrow)){
 #####
 # percolation transition
 
+#sapply(res[[1]],length)
+#sapply(res,length)
+#sapply(res,function(l){length(l[[1]])})
+#max(sapply(res,function(l){abs(length(l[[1]])-length(l[[10]]))+abs(length(l[[10]])-length(l[[11]]))+abs(length(l[[11]])-length(l[[12]]))+abs(length(l[[12]])-length(l[[13]]))}))
+# which(params$nwcol=='mu'&params$nwthq==0.95&params$radius==75000)
+
+
+# -> need to filter NAs
+# BEFORE the lapply (not same length) - ULTRA DIRTY data structure -> really need to stop using R...
+resfilt = list();paraminds=c();kk=1;for(k in 1:length(res)){if(length(which(is.na(res[[k]][[1]])))==0){resfilt[[kk]]=res[[k]];paraminds=append(paraminds,k);kk=kk+1}}
+res=resfilt
+params=params[paraminds,]
+
 toremove=c("pops","morans","avgdists","entropies","slopes","efficiencies","emissions","totalemissions")
 for(k in 1:length(res)){res[[k]]$paramrow=rep(k,length(res[[k]]$areas))}
 fulltrans = data.frame(matrix(unlist(lapply(res,function(l){for(tr in toremove){l[[tr]]=NULL};unlist(data.frame(t(data.frame(l))))})),byrow=T,ncol=length(res[[1]])-length(toremove)))
@@ -50,17 +64,87 @@ colnames(fulltrans)<-names(res[[1]])[c(-9:-2)]
 params$paramrow=1:nrow(params)
 fulltrans=as.tbl(left_join(fulltrans,params))
 
+dir.create(paste0(resdir,'transition'))
+
 # not normalized
 fulltrans$nwparam = paste0(fulltrans$nwcol,fulltrans$nwthq)
+# maximum within a parameter value
 maxs = as.tbl(fulltrans)%>% group_by(nwcol,popthq,nwthq,radius,nwparam)%>%summarize(maxsizenodes = max(clustsizesnodes),maxsizeedges=max(clustsizesedges))
-g=ggplot(maxs,aes(x=radius,y=maxsizenodes,group=nwparam,color=nwparam))
-g+geom_point()+geom_line()
 
+g=ggplot(maxs[maxs$nwthq>0|(maxs$nwthq==0&maxs$nwcol=='ecount'),],aes(x=radius,y=maxsizenodes,group=nwparam,color=nwparam))
+g+geom_point()+geom_line()+xlab(expression(r[0]*' (m)'))+ylab("Size of largest cluster (nodes)")+
+  scale_color_discrete(name='Parameters',labels=c(expression(theta[N]*'= 0'),expression(theta[N]*'= 0.8 ; ecount'),expression(theta[N]*'= 0.8 ; euclPerf'),expression(theta[N]*'= 0.95 ; euclPerf'),expression(theta[N]*'= 0.8 ; mu'),expression(theta[N]*'= 0.95 ; mu'),expression(theta[N]*'= 0.8 ; vcount'),expression(theta[N]*'= 0.95 ; vcount')))+
+  stdtheme
+ggsave(file=paste0(resdir,'transition/abssize_nodes.png'),width=30,height=20,units='cm')
+
+
+g=ggplot(maxs[maxs$nwthq>0|(maxs$nwthq==0&maxs$nwcol=='ecount'),],aes(x=radius,y=maxsizeedges,group=nwparam,color=nwparam))
+g+geom_point()+geom_line()+xlab(expression(r[0]*' (m)'))+ylab("Size of largest cluster (edges)")+
+  scale_color_discrete(name='Parameters',labels=c(expression(theta[N]*'= 0'),expression(theta[N]*'= 0.8 ; ecount'),expression(theta[N]*'= 0.8 ; euclPerf'),expression(theta[N]*'= 0.95 ; euclPerf'),expression(theta[N]*'= 0.8 ; mu'),expression(theta[N]*'= 0.95 ; mu'),expression(theta[N]*'= 0.8 ; vcount'),expression(theta[N]*'= 0.95 ; vcount')))+
+  stdtheme
+ggsave(file=paste0(resdir,'transition/abssize_edges.png'),width=30,height=20,units='cm')
+
+
+# overall maximums
 maxall = as.tbl(fulltrans)%>% group_by(nwcol,popthq,nwthq,nwparam)%>%summarize(maxsizenodes = max(clustsizesnodes),maxsizeedges=max(clustsizesedges))
 
+# local maximums
 maxs = as.tbl(fulltrans)%>% group_by(nwcol,popthq,nwthq,radius,nwparam)%>%summarize(relsizenodes = max(clustsizesnodes)/maxall$maxsizenodes[maxall$nwparam==nwparam[1]],relsizeedges=max(clustsizesedges)/maxall$maxsizeedges[maxall$nwparam==nwparam[1]])
-g=ggplot(maxs,aes(x=radius,y=relsizenodes,group=nwparam,color=nwparam))
-g+geom_point()+geom_line()
+
+g=ggplot(maxs[maxs$nwthq>0|(maxs$nwthq==0&maxs$nwcol=='ecount'),],aes(x=radius,y=relsizenodes,group=nwparam,color=nwparam))
+g+geom_point()+geom_line()+xlab(expression(r[0]*' (m)'))+ylab("Relative size of largest cluster (nodes)")+
+  scale_color_discrete(name='Parameters',labels=c(expression(theta[N]*'= 0'),expression(theta[N]*'= 0.8 ; ecount'),expression(theta[N]*'= 0.8 ; euclPerf'),expression(theta[N]*'= 0.95 ; euclPerf'),expression(theta[N]*'= 0.8 ; mu'),expression(theta[N]*'= 0.95 ; mu'),expression(theta[N]*'= 0.8 ; vcount'),expression(theta[N]*'= 0.95 ; vcount')))+
+  stdtheme
+ggsave(file=paste0(resdir,'transition/relsize_nodes.png'),width=30,height=20,units='cm')
+
+
+g=ggplot(maxs,aes(x=radius,y=relsizeedges,group=nwparam,color=nwparam))
+g+geom_point()+geom_line()+xlab(expression(r[0]*' (m)'))+ylab("Relative size of largest cluster (edges)")+
+  scale_color_discrete(name='Parameters',labels=c(expression(theta[N]*'= 0'),expression(theta[N]*'= 0.8 ; ecount'),expression(theta[N]*'= 0.8 ; euclPerf'),expression(theta[N]*'= 0.95 ; euclPerf'),expression(theta[N]*'= 0.8 ; mu'),expression(theta[N]*'= 0.95 ; mu'),expression(theta[N]*'= 0.8 ; vcount'),expression(theta[N]*'= 0.95 ; vcount')))+
+  stdtheme
+ggsave(file=paste0(resdir,'transition/relsize_edges.png'),width=30,height=20,units='cm')
+
+
+## fractal dimension
+# estimated by log(# Nodes) = lm(log(diameter))
+
+#counts = as.tbl(fulltrans)%>% group_by(nwcol,popthq,nwthq,radius,nwparam)%>%summarize(count=n())
+# length(which(counts$count<10))
+# d=fulltrans[fulltrans$nwcol=='mu'&fulltrans$nwthq==0.95&fulltrans$radius==75000,]
+# reg = lm(data = data.frame(lnodes=log(d$clustsizesnodes),ldiam=log(d$clustdiameters)),lnodes~ldiam)
+
+minobs=20
+
+fractdim = as.tbl(fulltrans)%>% group_by(nwcol,popthq,nwthq,radius,nwparam)%>%summarize(
+  fractdim=ifelse(n()<minobs,NA,summary(lm(data = data.frame(lnodes=log(clustsizesnodes),ldiam=log(clustdiameters)),lnodes~ldiam))$coefficients[2,1]),
+  fractdimsd=ifelse(n()<minobs,NA,summary(lm(data = data.frame(lnodes=log(clustsizesnodes),ldiam=log(clustdiameters)),lnodes~ldiam))$coefficients[2,2]),
+  fractdimadjrsquared=ifelse(n()<minobs,NA,summary(lm(data = data.frame(lnodes=log(clustsizesnodes),ldiam=log(clustdiameters)),lnodes~ldiam))$adj.r.squared),
+  fractrelsd=fractdimsd/fractdim
+)
+
+g=ggplot(fractdim[(fractdim$nwthq>0|(fractdim$nwthq==0&fractdim$nwcol=='ecount'))&fractdim$radius<=50000,],aes(x=radius,y=fractdim,ymin=fractdim-fractdimsd,ymax=fractdim+fractdimsd,group=nwparam,color=nwparam))
+g+geom_point()+#geom_errorbar()+
+  geom_line()+xlab(expression(r[0]*' (m)'))+ylab("Fractal dimension")+
+  scale_color_discrete(name='Parameters',labels=c(expression(theta[N]*'= 0'),expression(theta[N]*'= 0.8 ; ecount'),expression(theta[N]*'= 0.8 ; euclPerf'),expression(theta[N]*'= 0.95 ; euclPerf'),expression(theta[N]*'= 0.8 ; mu'),expression(theta[N]*'= 0.95 ; mu'),expression(theta[N]*'= 0.8 ; vcount'),expression(theta[N]*'= 0.95 ; vcount')))+
+  stdtheme
+ggsave(file=paste0(resdir,'transition/fractaldimension.png'),width=30,height=20,units='cm')
+# -> shitty as work with geo diams ?
+
+g+geom_point()+geom_errorbar()+
+  geom_line()+xlab(expression(r[0]*' (m)'))+ylab("Fractal dimension")+
+  scale_color_discrete(name='Parameters',labels=c(expression(theta[N]*'= 0'),expression(theta[N]*'= 0.8 ; ecount'),expression(theta[N]*'= 0.8 ; euclPerf'),expression(theta[N]*'= 0.95 ; euclPerf'),expression(theta[N]*'= 0.8 ; mu'),expression(theta[N]*'= 0.95 ; mu'),expression(theta[N]*'= 0.8 ; vcount'),expression(theta[N]*'= 0.95 ; vcount')))+
+  stdtheme
+ggsave(file=paste0(resdir,'transition/fractaldimension_errorbars.png'),width=30,height=20,units='cm')
+
+summary(fractdim)
+# signif of variations (min/max)
+fractdimsignif = fractdim%>%filter(!is.na(fractdim))%>%group_by(nwcol,popthq,nwthq,nwparam)%>%summarize(
+  signif = (max(fractdim)-fractdimsd[which(fractdim==max(fractdim))])-(min(fractdim)+fractdimsd[fractdim==min(fractdim)])
+)
+
+
+########
+## Optimization on sustainibility indicators
 
 
 # within config pareto fronts ?

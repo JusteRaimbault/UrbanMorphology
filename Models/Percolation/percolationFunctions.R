@@ -104,7 +104,7 @@ conditionalPercolation <- function(d,radius,popthq,nwcol,nwthq,gamma,decay,
 graphPercolation <- function(d,radius,popthq,nwcol,nwthq,gamma,decay,
                              minclustsize=25,
                              xcol="lonmin",ycol="latmin",popcol="totalPop",
-                             withMaps=T,
+                             withMaps=F,
                              resdir=paste0(Sys.getenv('CS_HOME'),'/UrbanMorphology/Results/Percolation/Maps2/')
 ){
 
@@ -127,8 +127,10 @@ graphPercolation <- function(d,radius,popthq,nwcol,nwthq,gamma,decay,
   for(cnum in which(comps$csize >= minclustsize)){
     cpoints$cluster[comps$membership==cnum]=k
     currentcomp = induced_subgraph(g,which(comps$membership==cnum))
+    clustsizesnodes=append(clustsizesnodes,length(V(currentcomp)));
+    clustsizesedges=append(clustsizesedges,length(E(currentcomp)))
+    # note : keeping short edges only will make no sense for number of edges (prop to number of nodes) - for diameter neither ! (would cut the components)
     clustdiameters=append(clustdiameters,diameter(currentcomp))
-    clustsizesnodes=append(clustsizesnodes,length(V(currentcomp)));clustsizesedges=append(clustsizesedges,length(E(currentcomp)))
     k=k+1
   }
   
