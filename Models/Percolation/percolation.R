@@ -17,14 +17,14 @@ purpose='directSampling_radius'
 popquantiles=c(0.85)
 
 #nwquantiles=c(0.0,0.8,0.9,0.95)
-nwquantiles=c(0.0,0.8)
+nwquantiles=c(0.0,0.8,0.95)
 
 #radiuses=c(8000,10000,15000,20000,50000)
-radiuses=seq(8000,50000,by=1000)
+radiuses=seq(8000,100000,by=1000)
 #radiuses=c(20000,50000)
 
-#nwindics= c("ecount","mu","vcount","euclPerf")
-nwindics= c("vcount","ecount")
+nwindics= c("ecount","mu","vcount","euclPerf")
+#nwindics= c("vcount","ecount")
 
 #gammas=c(0.5,1,1.5,2.0)
 gammas=c(1)
