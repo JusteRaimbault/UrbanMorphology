@@ -91,6 +91,8 @@ summaryPopulation<-function(m=NULL){
   )
 }
 
+# TODO add effective density
+
 
 
 #moran index 
