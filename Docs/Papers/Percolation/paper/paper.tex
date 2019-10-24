@@ -11,8 +11,8 @@
 
 
 \author[1,2,3,*]{Juste RAIMBAULT}
-\affil[1]{CASA, UCL, UK}
-\affil[2]{UPS CNRS 3611 ISC-PIF, France} 
+\affil[1]{UPS CNRS 3611 ISC-PIF, France}
+\affil[2]{CASA, UCL, UK}
 \affil[3]{UMR CNRS 8504 G{\'e}ographie-cit{\'e}s}
  
 % corresponding author with his/her email
@@ -42,11 +42,6 @@
 \keywords{Road network; Multi-dimensional percolation; European urban system; Mega-city region}
 
 
-% TODO - Last paragraph of 2.1.1: in my understanding the sentence “a first component for two nodes to interact is a large enough proximity” should be “a first component for two nodes to interact is a small enough proximity
-% TODO Last paragraph of 2.1.2: Please do not call \Theta as percolation threshold. This is a threshold to consider large enough populations to create links. Percolation threshold in the percolation literature refers to the critical value of the control parameter (i.e. a critical r_0, \Theta pair here) at which the percolating phase-transition evolves and a giant percolating component appear in the system.
-% TODO - The first one about the choice of calibration (paragraph 3.2): We make the radius vary betweem [Typo: between] 8km and 100km with a one km step, have a fixed population threshold θ P = 0.85, test all road network indicators, and three network layer thresholds θ N ∈ {0; 0.8; 0.95}. » Why is this calibration chosen? Maybe just one sentence to explain it could be interesting.
-% TODO - The second about a sentence, little further in the same paragraph: « As the addition of a layer also changes drastically the results, one should stay careful when switching from a mono-dimensional percolation to a multi-dimensional percolation. » This impact sounds crucial and the choice of the multi-dimensional percolation versus a single one had not been discussed. Again, a short explanation in the introduction could be interesting.
-
 
 \section{Introduction}
 
@@ -66,7 +61,7 @@ A method to characterize the hierarchical structure of such urban spatial networ
 Such approaches have been applied to urban systems with other applications than the study of networks. \cite{makse1998modeling} model urban growth with a local percolation model for site occupancy. \cite{arcaute2016cities} focus on the analysis of street networks and extract endogenous urban regions for UK which correlate with socio-economic properties, and provide a definition of urban areas which highly correlates with land-cover data. \cite{piovani2017urban} apply road network percolation at the mesoscopic scale of London metropolitan area, in relation with a retail location model. At a larger scale, the paradigm of percolation transition has been applied to the study of urban traffic dynamics \citep{Li669,Zeng23}. In spatial statistics, this method can be used to characterize the spatial morphology of point patterns \citep{huynh2018characterisation}.
 
 
-Existing heuristics generally focus on a single dimension or property of the urban system. However, such systems are known to be highly multidimensional. For example, the morphological dimension of networks is complementary to the functional properties of the urban environment \citep{burger2012form}. The link between urban form and function remains in particular an open question \citep{batty1994fractal}. More generally, the inclusion of multiple dimension in urban analysis is still a research direction to be investigated, as in the case of agent-based models for example \citep{perez2016agent}. This paper addresses such a gap in the case of urban network percolation, by introducing a multi-dimensional percolation heuristic. The method allows combining different dimensions of the urban system, the same way that \cite{cottineau2018defining} link population density with commuting flows to produce multiple definitions of urban areas.
+Existing heuristics generally focus on a single dimension or property of the urban system. However, such systems are known to be highly multidimensional. For example, the morphological dimension of networks is complementary to the functional properties of the urban environment \citep{burger2012form}. The link between urban form and function remains in particular an open question \citep{batty1994fractal}. More generally, the inclusion of multiple dimension in urban analysis is still a research direction to be investigated, as in the case of agent-based models for example \citep{perez2016agent}. This paper addresses such a gap in the case of urban network percolation, by introducing a multi-dimensional percolation heuristic. The method allows combining different dimensions of the urban system, the same way that \cite{cottineau2018defining} link population density with commuting flows to produce multiple definitions of urban areas. We can indeed expect significantly different qualitative behaviors when switching from a single-dimension percolation to a multi-dimensional one, since the spatial structure of different urban dimensions are correlated but also largely complementary. If this is the case, the method then captures more aspects of the urban system and some of their interrelations.
 
 
 \subsection{Sustainability of mega-urban regions}
@@ -114,7 +109,7 @@ The rest of this paper is organized as follows: we first describe the multi-dime
 %%%%%%%%%%%%%%%%%%%%
 \begin{figure*}[ht] 
 %\resizebox{10cm}{7cm}
-  {\includegraphics[width=\linewidth]{figures/principle.pdf}}
+  {\includegraphics[width=\linewidth]{Fig1.png}}
   \centering
   \caption{Schematic representation of the multi-dimensional network percolation heuristic. Two layers are considered here, with similar nodes but different links in each. To each layer is associated a node variable. In each layer, links are created according to a distance threshold (percolation radius) and a variable value threshold. The final clusters (bottom in color) are obtained by considering the links present in each layer.\label{fig:method}}
 \end{figure*}
@@ -125,7 +120,7 @@ The rest of this paper is organized as follows: we first describe the multi-dime
 
 Percolation processes in multilayer networks have been proposed as an extension within simple networks \citep{boccaletti2014structure}. A generalization of epidemic spreading can for example be achieved using this framework \citep{son2012percolation}. In the case of multilayer networks sharing the same nodes for all layers, often called multiplex networks \citep{aleta2018multilayer}, bond percolation has also been studied \citep{hackett2016bond}. In the case of our heuristic, bond percolation is operated between two cells given a distance threshold, and furthermore with a threshold parameter for each layer assuming a node function within each layer. The distance-based connection is similar to generative processes for random euclidian networks \citep{penrose1999k}.
 
-We do not call our method ``multi-layer percolation'', since nodes are common between layers. We show in Fig.~\ref{fig:method} for a schematic representation of the method. It can be implemented with a propagation heuristic or directly working on adjacency matrices. The rationale behind combining a thresholding for each layer variable with a distance thresholding relies on the idea that a first component for two points to interact is a large enough proximity. The second component is a strong enough intensity of the urban dimension captured by each layer, simultaneously for all layers considered. This recalls Tobler's first law of geography \citep{tobler2004first} in a multi-dimensional way.
+We do not call our method ``multi-layer percolation'', since nodes are common between layers. We show in Fig.~\ref{fig:method} for a schematic representation of the method. It can be implemented with a propagation heuristic or directly working on adjacency matrices. The rationale behind combining a thresholding for each layer variable with a distance thresholding relies on the idea that a first component for two points to interact is a geographical proximity. The second component is a strong enough intensity of the urban dimension captured by each layer, simultaneously for all layers considered. This recalls Tobler's first law of geography \citep{tobler2004first} in a multi-dimensional way.
 
 
 \subsubsection{Formal description}
@@ -137,7 +132,7 @@ More formally, let assume a set of nodes $V = v_i$ common to all layers of the n
 \end{enumerate}
 
  
-The parameters implied in this heuristic are the percolation radius $r_0$ and the percolation thresholds $\vec{\theta} = \theta_j$ for each layer $j$. Varying these parameters allows considering different levels of percolation.
+The parameters implied in this heuristic are the percolation radius $r_0$ and the variable thresholds $\vec{\theta} = \theta_j$ for each layer $j$. Varying these parameters allows considering different levels of percolation.
 
 
 
@@ -232,8 +227,7 @@ In practice, the analysis is implemented using R and the igraph package. Source 
 %%%%%%%%%%%%%%%%%%%%
 \begin{figure*}[ht] 
 %\resizebox{10cm}{7cm}
-  {\includegraphics[width=0.49\linewidth]{figures/abssize_nodes.png}}
-  {\includegraphics[width=0.49\linewidth]{figures/relsize_nodes.png}}
+  {\includegraphics[width=\linewidth]{Fig2.png}}
   \centering
   \caption{Percolation transition. On the left, we plot the size of the largest cluster in each configuration in terms of nodes, as a function of the percolation radius $r_0$. Color gives the other percolation parameters. On the right, the plot is similar but with the size relative to the size of the largest cluster obtained with the maximal radius in each configuration.\label{fig:percolation}}
 \end{figure*}
@@ -242,7 +236,7 @@ In practice, the analysis is implemented using R and the igraph package. Source 
 %%%%%%%%%%%%%%%%%%%%
 \begin{figure*}[ht] 
 %\resizebox{10cm}{7cm}
-  {\includegraphics[width=\linewidth]{figures/fractaldimension.png}}
+  {\includegraphics[width=\linewidth]{Fig3.png}}
   \centering
   \caption{Fractal dimension. We plot for each parametrization given by the curve color the evolution of the fractal dimension $\alpha$ as a function of $r_0$. Standard errors are not plotted for readability.\label{fig:fractaldim}}
 \end{figure*}
@@ -253,32 +247,11 @@ In practice, the analysis is implemented using R and the igraph package. Source 
 
 
 
-In its application to road networks by \cite{arcaute2016cities}, the structure of the national urban system for UK is captured by studying the percolation transition, i.e. the variation of the size of the largest cluster as a function of the percolation radius. As this signature is tightly linked to historical, cultural and geographical conditions, the application to different urban systems should yield different results. We study here this property, for different threshold parameter values. We make the radius vary betweem 8km and 100km with a one km step, have a fixed population threshold $\theta_P = 0.85$, test all road network indicators, and three network layer thresholds $\theta_N \in \{ 0 ; 0.8 ; 0.95 \}$.
+In its application to road networks by \cite{arcaute2016cities}, the structure of the national urban system for UK is captured by studying the percolation transition, i.e. the variation of the size of the largest cluster as a function of the percolation radius. As this signature is tightly linked to historical, cultural and geographical conditions, the application to different urban systems should yield different results. We study here this property, for different threshold parameter values. We make the radius vary between 8km and 100km with a one km step, have a fixed population threshold $\theta_P = 0.85$, test all road network indicators, and three network layer thresholds $\theta_N \in \{ 0 ; 0.8 ; 0.95 \}$. These values yield a good precision for the radius which is the most important variable to study transition and estimate fractal dimensions, while this population threshold is enough to provide a broad coverage for large radiuses (as shown by other explorations described below). Changing network variables and their threshold allows us to investigate how the transition behavior do change regarding the dimension considered and its intensity.
 
 The absolute and relative sizes of the largest cluster are plotted in Fig.~\ref{fig:percolation} as a function of the percolation radius. This aspect first gives methodological information on multilayer percolation. Indeed, comparing the result with $\theta_N = 0$ (single layer percolation) with positive values of $\theta_N$ shows a significantly different behavior. As expected, absolute size are much smaller, but when looking at relative sizes we observe that the abrupt steps typical to percolation transitions have different distributions across the different parametrizations. This result is particularly interesting regarding the first axis of our research question, as it shows that the structure of clusters obtained is not only due to the population layer, and that the multi-dimensional percolation captures a complementary signal.
  
 The more regular curve seems to be the standard percolation on population only, whereas at $\theta_N = 0.95$, different road network indicators produce either very early transitions (for $\mu$ for example) or very late (for $N_V$). Also, changing of scale compared to \cite{arcaute2016cities} gives more steps and less abrupts curves in general, confirming the integration of subsystems with different structures in our analysis and the importance of scale in such analysis. As the addition of a layer also changes drastically the results, one should stay careful when switching from a mono-dimensional percolation to a multi-dimensional percolation.
-
-
-
-% ! largest cluster size in terms of edges makes no sense with the implementation we took - nodes only
-%      nwcol         popthq         nwthq          radius         nwparam             fractdim     
-% ecount  :186   Min.   :0.85   Min.   :0.00   Min.   :  8000   Length:1023        Min.   :0.9239  
-% euclPerf:279   1st Qu.:0.85   1st Qu.:0.00   1st Qu.: 31000   Class :character   1st Qu.:1.2639  
-% mu      :279   Median :0.85   Median :0.80   Median : 54000   Mode  :character   Median :1.3306  
-% vcount  :279   Mean   :0.85   Mean   :0.55   Mean   : 54000                      Mean   :1.3225  
- %               3rd Qu.:0.85   3rd Qu.:0.95   3rd Qu.: 77000                      3rd Qu.:1.3909  
- %               Max.   :0.85   Max.   :0.95   Max.   :100000                      Max.   :1.6058                                                                                    NA's   :337     
-%   fractdimsd     fractdimadjrsquared   fractrelsd    
-% Min.   :0.0544   Min.   :0.5111      Min.   :0.0395  
-% 1st Qu.:0.0966   1st Qu.:0.7016      1st Qu.:0.0700  
-% Median :0.1328   Median :0.7467      Median :0.1043  
-% Mean   :0.1317   Mean   :0.7456      Mean   :0.1009  
-% 3rd Qu.:0.1578   3rd Qu.:0.7981      3rd Qu.:0.1232  
-% Max.   :0.2381   Max.   :0.8642      Max.   :0.1958  
-% NA's   :337      NA's   :337         NA's   :337  
-
-
 
 
 We study also the evolution of the fractal dimension of clusters as a function of $r_0$, to verify how the initial percolation approach is robust to multi-dimensionality. Following \cite{arcaute2016cities}, we estimate the fractal dimension $\alpha$ of clusters with a simple OLS regression between cluster size and cluster diameter, namely 
@@ -297,33 +270,11 @@ Regarding the variability of fractal dimension as a function of the percolation 
 This study of percolation transition and fractal dimension thus shows that our multi-dimensional percolation heuristic remains relevant, as results analog but qualitatively different to the one-dimensional approach can be obtained.
 
 
-%  fractdimsignif
-%# A tibble: 11 x 5
-%# Groups:   nwcol, popthq, nwthq [?]
-%   nwcol    popthq nwthq nwparam       signif
-%   <fct>     <dbl> <dbl> <chr>          <dbl>
-% 1 ecount     0.85  0    ecount0      -0.105 
-% 2 ecount     0.85  0.8  ecount0.8    -0.0452
-% 3 euclPerf   0.85  0    euclPerf0    -0.108 
-% 4 euclPerf   0.85  0.8  euclPerf0.8   0.0360
-% 5 euclPerf   0.85  0.95 euclPerf0.95 -0.108 
-% 6 mu         0.85  0    mu0          -0.108 
-% 7 mu         0.85  0.8  mu0.8        -0.108 
-% 8 mu         0.85  0.95 mu0.95        0.375 
-% 9 vcount     0.85  0    vcount0      -0.105 
-%10 vcount     0.85  0.8  vcount0.8    -0.0416
-%11 vcount     0.85  0.95 vcount0.95   -0.0868
-
-
 %%%%%%%%%%%%%%%%%%%%
 \begin{figure}[h!] 
 %\resizebox{10cm}{7cm}
-{\includegraphics[width=0.49\textwidth]{figures/totalPop4183694_00056402_ecount850_radius8000.png}}
-  {\includegraphics[width=0.49\linewidth]{figures/totalPop2219780_36719597_vcount378_radius8000.png}}\\
-  {\includegraphics[width=0.49\linewidth]{figures/totalPop1474347_36891685_vcount595_radius50000.png}}
-   {\includegraphics[width=0.49\linewidth]{figures/totalPop1474347_36891685_euclPerf0_00507404608502498_radius54000.png}}
+{\includegraphics[width=\linewidth]{Fig4.png}}
   \centering
-  
   \caption{Examples of obtained clusters for different parameter values. In the top-right case for example ($\theta_P = 0.9$, $\theta_N = 0.8$, variable \texttt{vcount},$r_0 = 8km$), we obtain the urban regions of West midlands and London in the UK, Randstad merged with Rhein-Rhur and Rhein-Main in Germany, Paris in France, also with capital cities such as Copenhaguen, Stockholm and Helsinki. There is no cluster in South Europe in that case, due to the high population density threshold.\label{fig:exclusters}}
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%
@@ -332,7 +283,7 @@ This study of percolation transition and fractal dimension thus shows that our m
 %%%%%%%%%%%%%%%%%%%%
 \begin{figure}[h!] 
 %\resizebox{10cm}{7cm}
-  {\includegraphics[width=0.7\linewidth]{figures/full_effective_pareto.png}}
+  {\includegraphics[width=0.7\linewidth]{Fig5.png}}
   \centering
   \caption{Point clouds of region-level indicators, namely population and emissions, for different parametrizations, given by the color. Each point represent an endogenous urban region.\label{fig:paretos}}
 \end{figure}
@@ -354,7 +305,7 @@ The behavior of sustainability indicators for different population, network and 
 %%%%%%%%%%%%%%%%%%%%
 \begin{figure*}[!ht] 
 %\resizebox{10cm}{7cm}
-  {\includegraphics[width=\linewidth]{figures/aggreg_morpho_pc1-emissions_targeted.png}}
+  {\includegraphics[width=\linewidth]{Fig6.png}}
   \centering
   \caption{Aggregated values of normalized potential emissions $\sum_c \tilde{g}_c$, as a function of the first morphological principal component (PC1), for varying values of parameters $d_G$ (rows) and $\gamma_G$ (columns). Other intermediate values for these parameters yield similar behaviors. As PC1 is mainly linked to monocentricity, there seems to exist an optimal intermediate level of monocentricity for emissions alone. Color level give the share of population within the considered clusters in comparison to all European population.\label{fig:emissions-pc1}}
 \end{figure*}
@@ -364,7 +315,7 @@ The behavior of sustainability indicators for different population, network and 
 %%%%%%%%%%%%%%%%%%%%
 \begin{figure*}[!ht] 
 %\resizebox{10cm}{7cm}
-  {\includegraphics[width=\linewidth]{figures/aggreg_morpho_relemissions-relefficiency_colpc1_logscale_targeted.png}}
+  {\includegraphics[width=\linewidth]{Fig7.png}}
   \centering  
   \caption{Relative potential emissions $\sum_c g_c$ against relative potential economic unefficiency $\sum_c e_c$ (both indicators should be minimized), for varying values of $\gamma_G$ (columns) and $d_G$ (rows). Color level gives the value of PC1, whereas point size gives the share of total population contained within considered areas.\label{fig:paretos-relative}}
 \end{figure*}
@@ -374,14 +325,6 @@ The behavior of sustainability indicators for different population, network and 
 %%%%%%%%%%%%%
 \subsection{Linking urban morphology and sustainability}
 
-
-
-%# Cumulative Proportion  0.7296 0.9650 0.99761 1.00000
-%                PC1       PC2         PC3         PC4
-%moran   -0.3088585 0.9493848 -0.04444327  0.03605266
-%avgdist  0.5417362 0.1415668 -0.82239570 -0.10072759
-%entropy  0.5108424 0.2140447  0.45847647 -0.69499942
-%slope    0.5917502 0.1811415  0.33390034  0.71100630
 
 We now consider the sustainability indicators, aggregated for a configuration on all clusters. An important question is how these relate with measures of urban form \citep{le2012urban}. For a given parametrization of endogenous city regions, one can relate them to morphological indicators for population density spatial distribution. Such indicators were computed by~\cite{raimbault2018calibration}, and capture different dimensions of the spatial distribution of population, such as spatial autocorrelation (Moran index), homogeneity (entropy index), hierarchy (rank-size exponent), or level of aggregation (average distance between individuals). We average them here on clusters. This establishes a link between urban morphology and sustainibility. A principal component analysis on considered points yield 96\% of variance with two components, and 73\% explained by the first component alone. The first component relates to a level of monocentricity ($PC1 = -0.3\cdot I + 0.54 \cdot \bar{d} + 0.51\cdot \varepsilon + 0.59 \cdot h$ where $I$ is Moran index, $\bar{d}$ average distance, $\epsilon$ entropy, and $h$ level of hierarchy). In a nutshell, the principal dimension of urban form in differentiating our urban clusters is the level of monocentricity. We can relate it with indicators for emissions and economic efficiency.
 
@@ -433,91 +376,418 @@ In conclusion, our multilayer percolation approach captures in a way the multi-d
 
 
 
+\section*{Acknowledgment}
 
-\bibliographystyle{jimis-en}
-\bibliography{biblio}
-
-
-
-%\appendix\footnotesize
-
-%\section{Appendix 1: supplementary sensitivity analyses}
+This work is part of DynamiCity, a FUI project funded by BPI France, Auvergne-Rh{\^o}ne-Alpes region, Ile-de-France region and Lyon metropolis.
 
 
 
-%\sframe{Results: effective emissions}{
+\begin{thebibliography}{}
 
-%\textit{Effective emissions exhibit a supralinear scaling of population}
-%\includegraphics[height=0.83\textheight]{figures/aggreg_effective.png}
-
-%\sframe{Results: all clusters Pareto fronts}{
-
-%\textit{Variation of Pareto front patterns when potential parameter $\gamma,d_0$ vary.}
-
-%\includegraphics[width=0.9\textwidth]{figures/full_paretos.png}
+\bibitem[\protect\citeauthoryear{Aleta and Moreno}{Aleta and
+  Moreno}{2018}]{aleta2018multilayer}
+Aleta A., Moreno Y. (2018).
+\newblock Multilayer networks in a nutshell.
+\newblock {\em Annual Review of Condensed Matter Physics\/}.
 
 
-%\sframe{Results: an optimal morphology}{
-
-%\textit{More monocentric areas are more optimal in terms of relative emissions and efficiency ?}
-
-%\includegraphics[width=0.49\textwidth]{figures/aggreg_morpho_pc1-relefficiency.png}%\includegraphics[width=0.49\textwidth]{figures/aggreg_morpho_pc1-relemissions.png}
-
-
-%  curves for emissions rescale to the same -> link with Caruso profiles ? ; investigate that, and why not for efficiency.
+\bibitem[\protect\citeauthoryear{Arbabi, Mayfield, and McCann}{Arbabi
+  \textit{et~al.}}{2019}]{arbabi2019development}
+Arbabi H., Mayfield M., McCann P. (2019).
+\newblock On the development logic of city-regions: inter-versus intra-city
+  mobility in england and wales.
+\newblock {\em Spatial Economic Analysis\/}, 1--20.
 
 
+\bibitem[\protect\citeauthoryear{Arcaute, Molinero, Hatna, Murcio, Vargas-Ruiz,
+  Masucci, and Batty}{Arcaute \textit{et~al.}}{2016}]{arcaute2016cities}
+Arcaute E., Molinero C., Hatna E., Murcio R., Vargas-Ruiz C., Masucci A.~P.,
+  Batty M. (2016).
+\newblock Cities and regions in britain through hierarchical percolation.
+\newblock {\em Royal Society open science\/}~{\em 3\/}(4), 150691.
 
 
+\bibitem[\protect\citeauthoryear{Banos and Genre-Grandpierre}{Banos and
+  Genre-Grandpierre}{2012}]{banos2012towards}
+Banos A., Genre-Grandpierre C. (2012).
+\newblock Towards new metrics for urban road networks: Some preliminary
+  evidence from agent-based simulations.
+\newblock In {\em Agent-based models of geographical systems}, pp.\  627--641.
+  Springer.
 
-%\section{Acknowledgment}
-%
 
-%\section{Biography}
-%Here, feel free to add short biographies of the authors.
+\bibitem[\protect\citeauthoryear{Barth{\'e}lemy}{Barth{\'e}lemy}{2011}]{barthelemy2011spatial}
+Barth{\'e}lemy M. (2011).
+\newblock Spatial networks.
+\newblock {\em Physics Reports\/}~{\em 499\/}(1-3), 1--101.
 
 
+\bibitem[\protect\citeauthoryear{Batty and Longley}{Batty and
+  Longley}{1994}]{batty1994fractal}
+Batty M., Longley P.~A. (1994).
+\newblock {\em Fractal cities: a geometry of form and function}.
+\newblock Academic press.
+
+
+\bibitem[\protect\citeauthoryear{Bettencourt, Lobo, Helbing, K{\"u}hnert, and
+  West}{Bettencourt \textit{et~al.}}{2007}]{bettencourt2007growth}
+Bettencourt L.~M., Lobo J., Helbing D., K{\"u}hnert C., West G.~B. (2007).
+\newblock Growth, innovation, scaling, and the pace of life in cities.
+\newblock {\em Proceedings of the national academy of sciences\/}~{\em
+  104\/}(17), 7301--7306.
+
+
+\bibitem[\protect\citeauthoryear{Boccaletti, Bianconi, Criado, Del~Genio,
+  G{\'o}mez-Gardenes, Romance, Sendina-Nadal, Wang, and Zanin}{Boccaletti
+  \textit{et~al.}}{2014}]{boccaletti2014structure}
+Boccaletti S., Bianconi G., Criado R., Del~Genio C.~I., G{\'o}mez-Gardenes J.,
+  Romance M., Sendina-Nadal I., Wang Z., Zanin M. (2014).
+\newblock The structure and dynamics of multilayer networks.
+\newblock {\em Physics Reports\/}~{\em 544\/}(1), 1--122.
+
+
+\bibitem[\protect\citeauthoryear{Burger and Meijers}{Burger and
+  Meijers}{2012}]{burger2012form}
+Burger M., Meijers E. (2012).
+\newblock Form follows function? linking morphological and functional
+  polycentricity.
+\newblock {\em Urban studies\/}~{\em 49\/}(5), 1127--1149.
+
+
+\bibitem[\protect\citeauthoryear{Callaway, Newman, Strogatz, and
+  Watts}{Callaway \textit{et~al.}}{2000}]{callaway2000network}
+Callaway D.~S., Newman M.~E., Strogatz S.~H., Watts D.~J. (2000).
+\newblock Network robustness and fragility: Percolation on random graphs.
+\newblock {\em Physical review letters\/}~{\em 85\/}(25), 5468.
+
+
+\bibitem[\protect\citeauthoryear{Cottineau, Finance, Hatna, Arcaute, and
+  Batty}{Cottineau \textit{et~al.}}{2018}]{cottineau2018defining}
+Cottineau C., Finance O., Hatna E., Arcaute E., Batty M. (2018).
+\newblock Defining urban clusters to detect agglomeration economies.
+\newblock {\em Environment and Planning B: Urban Analytics and City Science\/},
+  2399808318755146.
+
+
+\bibitem[\protect\citeauthoryear{Cottineau, Hatna, Arcaute, and
+  Batty}{Cottineau \textit{et~al.}}{2017}]{cottineau2017diverse}
+Cottineau C., Hatna E., Arcaute E., Batty M. (2017).
+\newblock Diverse cities or the systematic paradox of urban scaling laws.
+\newblock {\em Computers, environment and urban systems\/}~{\em 63}, 80--94.
+
+
+\bibitem[\protect\citeauthoryear{Crucitti, Latora, and Porta}{Crucitti
+  \textit{et~al.}}{2006}]{crucitti2006centrality}
+Crucitti P., Latora V., Porta S. (2006).
+\newblock Centrality measures in spatial networks of urban streets.
+\newblock {\em Physical Review E\/}~{\em 73\/}(3), 036125.
+
+
+\bibitem[\protect\citeauthoryear{Ducruet and Beauguitte}{Ducruet and
+  Beauguitte}{2014}]{ducruet2014spatial}
+Ducruet C., Beauguitte L. (2014).
+\newblock Spatial science and network science: Review and outcomes of a complex
+  relationship.
+\newblock {\em Networks and Spatial Economics\/}~{\em 14\/}(3-4), 297--316.
+
+
+\bibitem[\protect\citeauthoryear{Feng, Wu, Wu, Su, Weng, and Bian}{Feng
+  \textit{et~al.}}{2018}]{feng2018spatiotemporal}
+Feng Y., Wu S., Wu P., Su S., Weng M., Bian M. (2018).
+\newblock Spatiotemporal characterization of megaregional poly-centrality:
+  Evidence for new urban hypotheses and implications for polycentric policies.
+\newblock {\em Land use policy\/}~{\em 77}, 712--731.
+
+
+\bibitem[\protect\citeauthoryear{Florida, Gulden, and Mellander}{Florida
+  \textit{et~al.}}{2008}]{florida2008rise}
+Florida R., Gulden T., Mellander C. (2008).
+\newblock The rise of the mega-region.
+\newblock {\em Cambridge Journal of Regions, Economy and Society\/}~{\em
+  1\/}(3), 459--476.
+
+
+\bibitem[\protect\citeauthoryear{Hackett, Cellai, G{\'o}mez, Arenas, and
+  Gleeson}{Hackett \textit{et~al.}}{2016}]{hackett2016bond}
+Hackett A., Cellai D., G{\'o}mez S., Arenas A., Gleeson J.~P. (2016).
+\newblock Bond percolation on multiplex networks.
+\newblock {\em Physical Review X\/}~{\em 6\/}(2), 021002.
+
+
+\bibitem[\protect\citeauthoryear{Hall and Pain}{Hall and
+  Pain}{2006}]{hall2006polycentric}
+Hall P.~G., Pain K. (2006).
+\newblock {\em The polycentric metropolis: learning from mega-city regions in
+  Europe}.
+\newblock Routledge.
+
+
+\bibitem[\protect\citeauthoryear{Hillier, Leaman, Stansall, and
+  Bedford}{Hillier \textit{et~al.}}{1976}]{hillier1976space}
+Hillier B., Leaman A., Stansall P., Bedford M. (1976).
+\newblock Space syntax.
+\newblock {\em Environment and Planning B: Planning and design\/}~{\em 3\/}(2),
+  147--185.
+
+
+\bibitem[\protect\citeauthoryear{Huynh, Makarov, Legara, Monterola, and
+  Chew}{Huynh \textit{et~al.}}{2018}]{huynh2018characterisation}
+Huynh H.~N., Makarov E., Legara E.~F., Monterola C., Chew L.~Y. (2018).
+\newblock Characterisation and comparison of spatial patterns in urban systems:
+  A case study of us cities.
+\newblock {\em Journal of computational science\/}~{\em 24}, 34--43.
+
+
+\bibitem[\protect\citeauthoryear{Janssens-Maenhout, Crippa, Guizzardi, Muntean,
+  Schaaf, Dentener, Bergamaschi, Pagliari, Olivier, Peters,
+  \textit{et~al.}}{Janssens-Maenhout \textit{et~al.}}{2017}]{janssens2017edgar}
+Janssens-Maenhout G., Crippa M., Guizzardi D., Muntean M., Schaaf E., Dentener
+  F., Bergamaschi P., Pagliari V., Olivier J., Peters J., \textit{et~al.}
+  (2017).
+\newblock Edgar v4. 3.2 global atlas of the three major greenhouse gas
+  emissions for the period 1970--2012.
+\newblock {\em Earth Syst. Sci. Data Discuss\/}.
+
+
+\bibitem[\protect\citeauthoryear{Komiyama and Takeuchi}{Komiyama and
+  Takeuchi}{2006}]{komiyama2006sustainability}
+Komiyama H., Takeuchi K. (2006).
+\newblock {\em Sustainability science: building a new discipline}.
+
+
+\bibitem[\protect\citeauthoryear{Lagesse, Bordin, and Douady}{Lagesse
+  \textit{et~al.}}{2015}]{lagesse2015spatial}
+Lagesse C., Bordin P., Douady S. (2015).
+\newblock A spatial multi-scale object to analyze road networks.
+\newblock {\em Network Science\/}~{\em 3\/}(1), 156--181.
+
+
+\bibitem[\protect\citeauthoryear{Lang and Dhavale}{Lang and
+  Dhavale}{2005}]{lang2005beyond}
+Lang R.~E., Dhavale D. (2005).
+\newblock Beyond megalopolis: Exploring america’s new “megapolitan”
+  geography.
+
+
+\bibitem[\protect\citeauthoryear{Laquian}{Laquian}{2011}]{laquian2011planning}
+Laquian A. (2011).
+\newblock The planning and governance of asia’s mega-urban regions.
+\newblock {\em Population Distribution, Urbanization, Internal Migration and
+  Development: An International Perspective, United Nations Department of
+  Economic and Social Affairs, Population Division, New York: United
+  Nations\/}, 302--322.
+
+
+\bibitem[\protect\citeauthoryear{Lashof and Ahuja}{Lashof and
+  Ahuja}{1990}]{lashof1990relative}
+Lashof D.~A., Ahuja D.~R. (1990).
+\newblock Relative contributions of greenhouse gas emissions to global warming.
+\newblock {\em Nature\/}~{\em 344\/}(6266), 529.
+
+
+\bibitem[\protect\citeauthoryear{Le~N{\'e}chet}{Le~N{\'e}chet}{2012}]{le2012urban}
+Le~N{\'e}chet F. (2012).
+\newblock Urban spatial structure, daily mobility and energy consumption: a
+  study of 34 european cities.
+\newblock {\em Cybergeo: European Journal of Geography\/}.
+
+
+\bibitem[\protect\citeauthoryear{Le~N{\'e}chet}{Le~N{\'e}chet}{2017}]{lenechet2017peupler}
+Le~N{\'e}chet F. (2017).
+\newblock De l'{\'e}talement urbain aux r{\'e}gions m{\'e}tropolitaines
+  polycentriques : formes de fonctionnement et formes de gouvernance.
+\newblock In {\em {Peupler la terre - De la pr{\'e}histoire {\`a} l'{\`e}re des
+  m{\'e}tropoles}}. Presses Universitaires Francois Rabelais.
+
+
+\bibitem[\protect\citeauthoryear{Li, Fu, Wang, Lu, Berezin, Stanley, and
+  Havlin}{Li \textit{et~al.}}{2015}]{Li669}
+Li D., Fu B., Wang Y., Lu G., Berezin Y., Stanley H.~E., Havlin S. (2015).
+\newblock Percolation transition in dynamical traffic network with evolving
+  critical bottlenecks.
+\newblock {\em Proceedings of the National Academy of Sciences\/}~{\em
+  112\/}(3), 669--672.
+\newblock URL: \url{https://www.pnas.org/content/112/3/669}, \href
+  {http://arxiv.org/abs/https://www.pnas.org/content/112/3/669.full.pdf}
+  {arXiv:https://www.pnas.org/content/112/3/669.full.pdf}, \href
+  {http://dx.doi.org/10.1073/pnas.1419185112} {doi:10.1073/pnas.1419185112}.
+
+
+\bibitem[\protect\citeauthoryear{Louf and Barthelemy}{Louf and
+  Barthelemy}{2013}]{louf2013modeling}
+Louf R., Barthelemy M. (2013).
+\newblock Modeling the polycentric transition of cities.
+\newblock {\em Physical review letters\/}~{\em 111\/}(19), 198702.
+
+
+\bibitem[\protect\citeauthoryear{Makse, Andrade, Batty, Havlin, Stanley,
+  \textit{et~al.}}{Makse \textit{et~al.}}{1998}]{makse1998modeling}
+Makse H.~A., Andrade J.~S., Batty M., Havlin S., Stanley H.~E., \textit{et~al.}
+  (1998).
+\newblock Modeling urban growth patterns with correlated percolation.
+\newblock {\em Physical Review E\/}~{\em 58\/}(6), 7054.
+
+
+\bibitem[\protect\citeauthoryear{Marull, Galletto, Domene, and
+  Trull{\'e}n}{Marull \textit{et~al.}}{2013}]{marull2013emerging}
+Marull J., Galletto V., Domene E., Trull{\'e}n J. (2013).
+\newblock Emerging megaregions: a new spatial scale to explore urban
+  sustainability.
+\newblock {\em Land Use Policy\/}~{\em 34}, 353--366.
+
+
+\bibitem[\protect\citeauthoryear{McNally}{McNally}{2000}]{mcnally2000four}
+McNally M.~G. (2000).
+\newblock The four step model.
+
+
+\bibitem[\protect\citeauthoryear{Newman and Watts}{Newman and
+  Watts}{1999}]{newman1999scaling}
+Newman M.~E., Watts D.~J. (1999).
+\newblock Scaling and percolation in the small-world network model.
+\newblock {\em Physical review E\/}~{\em 60\/}(6), 7332.
+
+
+\bibitem[\protect\citeauthoryear{Offner, Beaucire, Delaplace, Fr{\'e}mont,
+  Ninot, Bretagnolle, and Pumain}{Offner
+  \textit{et~al.}}{2014}]{espacegeo2014effets}
+Offner J.-M., Beaucire F., Delaplace M., Fr{\'e}mont A., Ninot O., Bretagnolle
+  A., Pumain D. (2014).
+\newblock Les effets structurants des infrastructures de transport.
+\newblock {\em Espace Geographique\/}~(42), p--51.
+
+
+\bibitem[\protect\citeauthoryear{Penrose}{Penrose}{1999}]{penrose1999k}
+Penrose M.~D. (1999).
+\newblock On k-connectivity for a geometric random graph.
+\newblock {\em Random Structures \& Algorithms\/}~{\em 15\/}(2), 145--164.
+
+
+\bibitem[\protect\citeauthoryear{Perez, Banos, and Pettit}{Perez
+  \textit{et~al.}}{2016}]{perez2016agent}
+Perez P., Banos A., Pettit C. (2016).
+\newblock Agent-based modelling for urban planning current limitations and
+  future trends.
+\newblock In {\em International Workshop on Agent Based Modelling of Urban
+  Systems}, pp.\  60--69. Springer.
+
+
+\bibitem[\protect\citeauthoryear{Piovani, Molinero, and Wilson}{Piovani
+  \textit{et~al.}}{2017}]{piovani2017urban}
+Piovani D., Molinero C., Wilson A. (2017).
+\newblock Urban retail location: insights from percolation theory and spatial
+  interaction modeling.
+\newblock {\em PloS one\/}~{\em 12\/}(10), e0185787.
+
+
+\bibitem[\protect\citeauthoryear{Raimbault}{Raimbault}{2018a}]{raimbault2018calibration}
+Raimbault J. (2018a).
+\newblock Calibration of a density-based model of urban morphogenesis.
+\newblock {\em PloS one\/}~{\em 13\/}(9), e0203516.
+
+
+\bibitem[\protect\citeauthoryear{Raimbault}{Raimbault}{2018b}]{raimbault2018caracterisation}
+Raimbault J. (2018b).
+\newblock {\em Caract{\'e}risation et mod{\'e}lisation de la co-{\'e}volution
+  des r{\'e}seaux de transport et des territoires}.
+\newblock Ph.\ D. thesis, Universit{\'e} Paris 7 Denis Diderot.
+
+
+\bibitem[\protect\citeauthoryear{Raimbault}{Raimbault}{2018c}]{raimbault2018indirect}
+Raimbault J. (2018c).
+\newblock Indirect evidence of network effects in a system of cities.
+\newblock {\em Environment and Planning B: Urban Analytics and City Science\/},
+  2399808318774335.
+
+
+\bibitem[\protect\citeauthoryear{Raimbault}{Raimbault}{2019}]{raimbault2018urban}
+Raimbault J. (2019).
+\newblock An urban morphogenesis model capturing interactions between networks
+  and territories.
+\newblock In {\em The Mathematics of Urban Morphology}, pp.\  383--409.
+  Springer.
+
+
+\bibitem[\protect\citeauthoryear{Reuillon, Leclaire, and
+  Rey-Coyrehourcq}{Reuillon \textit{et~al.}}{2013}]{reuillon2013openmole}
+Reuillon R., Leclaire M., Rey-Coyrehourcq S. (2013).
+\newblock Openmole, a workflow engine specifically tailored for the distributed
+  exploration of simulation models.
+\newblock {\em Future Generation Computer Systems\/}~{\em 29\/}(8), 1981--1990.
+
+
+\bibitem[\protect\citeauthoryear{Sanders}{Sanders}{2017}]{sanders2017peupler}
+Sanders L. (2017).
+\newblock {\em Peupler la terre - De la pr{\'e}histoire {\`a} l'{\`e}re des
+  m{\'e}tropoles.}
+\newblock Presses Universitaires Francois Rabelais.
+
+
+\bibitem[\protect\citeauthoryear{Son, Bizhani, Christensen, Grassberger, and
+  Paczuski}{Son \textit{et~al.}}{2012}]{son2012percolation}
+Son S.-W., Bizhani G., Christensen C., Grassberger P., Paczuski M. (2012).
+\newblock Percolation theory on interdependent networks based on epidemic
+  spreading.
+\newblock {\em EPL (Europhysics Letters)\/}~{\em 97\/}(1), 16006.
+
+
+\bibitem[\protect\citeauthoryear{Sorensen and Okata}{Sorensen and
+  Okata}{2010}]{sorensen2010megacities}
+Sorensen A., Okata J. (2010).
+\newblock {\em Megacities: Urban form, governance, and sustainability},
+  Volume~10.
+\newblock Springer Science \& Business Media.
+
+
+\bibitem[\protect\citeauthoryear{Stauffer and Aharony}{Stauffer and
+  Aharony}{2014}]{stauffer2014introduction}
+Stauffer D., Aharony A. (2014).
+\newblock {\em Introduction to percolation theory}.
+\newblock Taylor \& Francis.
+
+
+\bibitem[\protect\citeauthoryear{Su, Liu, Xu, Li, Pi, and Weng}{Su
+  \textit{et~al.}}{2017}]{su2017china}
+Su S., Liu Z., Xu Y., Li J., Pi J., Weng M. (2017).
+\newblock China’s megaregion policy: Performance evaluation framework,
+  empirical findings and implications for spatial polycentric governance.
+\newblock {\em Land Use Policy\/}~{\em 63}, 1--19.
+
+
+\bibitem[\protect\citeauthoryear{Tammaru, Marci{\'n}czak, Van~Ham, and
+  Musterd}{Tammaru \textit{et~al.}}{2015}]{tammaru2015multi}
+Tammaru T., Marci{\'n}czak S., Van~Ham M., Musterd S. (2015).
+\newblock A multi-factor approach to understanding socio-economic segregation
+  in european capital cities.
+\newblock In {\em Socio-economic segregation in European capital cities}, pp.\
+  25--53. Routledge.
+
+
+\bibitem[\protect\citeauthoryear{Tobler}{Tobler}{2004}]{tobler2004first}
+Tobler W. (2004).
+\newblock On the first law of geography: A reply.
+\newblock {\em Annals of the Association of American Geographers\/}~{\em
+  94\/}(2), 304--310.
+
+
+\bibitem[\protect\citeauthoryear{Vigui{\'e} and Hallegatte}{Vigui{\'e} and
+  Hallegatte}{2012}]{viguie2012trade}
+Vigui{\'e} V., Hallegatte S. (2012).
+\newblock Trade-offs and synergies in urban climate policies.
+\newblock {\em Nature Climate Change\/}~{\em 2\/}(5), 334.
+
+
+\bibitem[\protect\citeauthoryear{Zeng, Li, Guo, Gao, Gao, Stanley, and
+  Havlin}{Zeng \textit{et~al.}}{2019}]{Zeng23}
+Zeng G., Li D., Guo S., Gao L., Gao Z., Stanley H.~E., Havlin S. (2019).
+\newblock Switch between critical percolation modes in city traffic dynamics.
+\newblock {\em Proceedings of the National Academy of Sciences\/}~{\em
+  116\/}(1), 23--28.
+
+
+\end{thebibliography}
 
 
 
 
 \end{document}
-
-
-
-
-
-%%%%%%%%
-%% -- TEMPLATES
-
-%\begin{table}
-%  \newcolumntype{+}{>{\global\let\currentrowstyle\relax}}
-%  \newcolumntype{^}{>{\currentrowstyle}}
-%  \newcommand{\rowstyle}[1]{\gdef\currentrowstyle{#1}%
-%    #1\ignorespaces
-%  }
-%  \centering
-%  \begin{tabular}{+>{\bfseries}l^c^c^c^c}
-%    \hline
-%    \rowstyle{\bfseries}
-%    & Sepal.Length & Sepal.Width & Petal.Length & Petal.Width\\
-%    Setosa & 5.006 & 3.428 & 1.462 & 0.246\\
-%    Versicolor & 5.936 & 2.77  & 4.26  & 1.326\\
-%    Verginica & 6.588 & 2.974 & 5.552 & 2.026\\
-%    \hline
-%  \end{tabular}
-%  \caption{Morbi malesuada diam at magna condimentum.}
-%  \label{tab:example}
-%\end{table}
-
-%
-%\begin{figure*}[ht] 
-%\resizebox{10cm}{7cm}
-%  {\includegraphics[width=11cm]{spider.jpg}}
-%  \centering
-%  \label{frog}
-%  \caption{A spider, Picture from Didier Josselin.}
-%  \end{figure*}
-%  
-
-
