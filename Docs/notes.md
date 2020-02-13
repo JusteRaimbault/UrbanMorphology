@@ -2,6 +2,16 @@
 
 
 ====
+2019/11/13
+
+Paper follow-up:
+ - methodo impact of abstract nw construction, test other dimensions
+ - empirical: policies with more realistic sustainability indicators / compare to real regions and real flows - link with amadeus ?
+ - company flows (ownership amadeus) -> percolation / clustering FUAs ?
+ - emp / th (proposer à Florent): worlwide definition of MCRs, link with emissions, potential emissions, etc. (emission gain from integration ?) "Worldwide estimation of polycentricity positive externalities"
+ - "city regions as they could be"-> // ALife, transition, evolution, etc. (reprendre coevol ?)
+
+====
 2019/01/18
 
 https://www.nature.com/articles/sdata2018280 : cities co2 emission dataset

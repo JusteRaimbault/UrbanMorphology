@@ -91,17 +91,22 @@ summaryPopulation<-function(m=NULL){
   )
 }
 
+# TODO add effective density
+
 
 
 #moran index 
-moranIndex <- function(m=NULL){
-  if(is.null(m)){return(list(moran=NA))}
-  r_dens=raster(m/sum(m))
-  return(list(moran=Moran(r_dens,spatialWeights(nrow(r_dens)-1,ncol(r_dens)-1))))
-}
+#moranIndex <- function(m=NULL){
+#  if(is.null(m)){return(list(moran=NA))}
+#  r_dens=raster(m/sum(m))
+#  return(list(moran=Moran(r_dens,spatialWeights(nrow(r_dens)-1,ncol(r_dens)-1))))
+#}
 
 # same with use of focal
-convolMoran <- function(r_pop){
+# much more efficient - why (Moran use focal also ; overlay ?)
+moran <- function(m=NULL){
+  if(is.null(m)){return(list(moran=NA))}
+  r_pop = raster(m)
   meanPop = cellStats(r_pop,sum)/ncell(r_pop)
   w = spatialWeights(nrow(r_pop)-1,ncol(r_pop)-1)
   return(ncell(r_pop) * cellStats(focal(r_pop-meanPop,w,sum,pad=TRUE,padValue=0)*(r_pop - meanPop),sum) / cellStats((r_pop - meanPop)*(r_pop - meanPop),sum) / cellStats(focal(raster(matrix(data=rep(1,ncell(r_pop)),nrow=nrow(r_pop))),w,sum,pad=TRUE,padValue=0),sum))
@@ -129,10 +134,11 @@ distanceMatrix <- function(N,P){
 # still very heavy computationally
 # uses focal instead as in Moran Index computation.
 #
-averageDistance <- function(m=NULL){
+averageDistance <- function(m=NULL,normalizeByDist=T){
   if(is.null(m)){return(list(averageDistance=NA))}
   r_pop=raster(m)
-  return(list(averageDistance=cellStats(focal(r_pop,distanceMatrix(nrow(r_pop)-1,ncol(r_pop)-1),sum,pad=TRUE,padValue=0)*r_pop,sum) / ( cellStats(r_pop,sum)^2 * sqrt(nrow(r_pop)*ncol(r_pop)/pi))))
+  norm = ifelse(normalizeByDist,1/sqrt(nrow(r_pop)*ncol(r_pop)/pi),1)
+  return(list(averageDistance=cellStats(focal(r_pop,distanceMatrix(nrow(r_pop)-1,ncol(r_pop)-1),sum,pad=TRUE,padValue=0)*r_pop,sum) / ( cellStats(r_pop,sum)^2)*norm))
 }
 
 
@@ -166,9 +172,63 @@ rankSizeSlope <- function(m=NULL){
   }else{return(list(rankSizeAlpha =NA,rankSizeRSquared = NA))}
 }
 
+#'
+#' index of acentrism
+acentrism <- function(m=NULL,quantiles=
+                        #c(0.0,0.25,0.5,0.75)
+                        seq(0.0,0.99,0.01)
+                      ){
+  if(is.null(m)){return(list(acentrism = NA))}
+  if(is.raster(m)){m = getValuesBlock(m,format='matrix')}else{
+    if(!is.matrix(m)){m = as.matrix(m)}
+  }
+  pops=c();dists=c()
+  for(q in quantiles){
+    popth = quantile(c(m[m>0]),c(q))[1]
+    currentm = m
+    currentm[currentm<popth]=0
+    pops=append(pops,sum(currentm))
+    r_pop = raster(currentm)
+    avgDist = averageDistance(currentm,F)
+    dists=append(dists,unlist(avgDist))
+  }
+  totpop=pops[1];totdist=dists[1]
+  #show(pops);show(dists)
+  # additional normalization due to quantile apporximation ? NO as integral is on populations
+  # length(c(m[m>0]))/length(quantiles)
+  acentrism = sum((pops[1:(length(pops)-1)]-pops[2:length(pops)])*(dists[1:(length(dists)-1)]+dists[2:length(dists)]))/(2*totpop*totdist)
+  return(
+    list(acentrism=acentrism)
+  )
+}
+
+#'
+#' fractal dimension with box counting algorithm
+fractaldimension<-function(m=NULL){
+  if(is.null(m)){return(list(fractaldimension = NA))}
+  maxkernelsize = floor(min(dim(m))/4)-1 # ! assumes m is a matrix
+  r_pop = raster(m)
+  counts = c();boxsizes=c()
+  for(k in 1:maxkernelsize){
+    convol = as.matrix(focal(r_pop,matrix(rep(1,(2*k+1)^2),nrow=2*k+1),sum,pad=TRUE,padValue=0))
+    #show(convol)
+    boxsizes = append(boxsizes,2*k+1)
+    counts=append(counts,length(which(convol[seq(k,nrow(m),2*k+1),seq(k,ncol(m),2*k+1)]>0)))
+  }
+  #show(counts);show(boxsizes)
+  reg = lm(data=data.frame(c=log(counts),r=log(boxsizes)),c~r)
+  #show(summary(reg))
+  return(list(
+      fractaldimension=-summary(reg)$coefficients[2],
+      fractality = summary(reg)$adj.r.squared
+    )
+  )
+}
 
 
 
+########
+## Utility functions
 
 # aggregate by resFactor (resolution = resolution * resFactor)
 # a given square matrix of size areasize

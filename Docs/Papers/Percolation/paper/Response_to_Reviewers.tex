@@ -1,0 +1,299 @@
+%% start of file `template.tex'.
+%% Copyright 2006-2013 Xavier Danaux (xdanaux@gmail.com).
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License version 1.3c,
+% available at http://www.latex-project.org/lppl/.
+
+
+\documentclass[11pt,a4paper,sans]{moderncv}        % possible options include font size ('10pt', '11pt' and '12pt'), paper size ('a4paper', 'letterpaper', 'a5paper', 'legalpaper', 'executivepaper' and 'landscape') and font family ('sans' and 'roman')
+
+\usepackage[document]{ragged2e}
+% pour justifier
+
+
+% moderncv themes
+\moderncvstyle{banking}                            % style options are 'casual' (default), 'classic', 'oldstyle' and 'banking'
+\moderncvcolor{red}                                % color options 'blue' (default), 'orange', 'green', 'red', 'purple', 'grey' and 'black'
+\renewcommand{\familydefault}{\rmdefault} 
+%\nopagenumbers{} 
+\usepackage[utf8]{inputenc} 
+\usepackage[scale=0.9]{geometry}
+
+
+\def \draft {1}
+\usepackage{xparse}
+\usepackage{ifthen}
+\DeclareDocumentCommand{\comment}{o m o o o o}
+{\ifthenelse{\draft=1}{
+  \IfValueT{#1}{
+      \textcolor{red}{\textbf{C (#1) : }#2}
+      \IfValueT{#3}{\textcolor{blue}{\textbf{A1 : }#3}}
+      \IfValueT{#4}{\textcolor{green}{\textbf{A2 : }#4}}
+      \IfValueT{#5}{\textcolor{red!50!blue}{\textbf{A3 : }#5}}
+      \IfValueT{#6}{\textcolor{blue}{\textbf{A4 : }#6}}
+    }
+    \IfNoValueT{#1}{
+      \textcolor{red}{\textbf{C : }#2}
+      \IfValueT{#3}{\textcolor{blue}{\textbf{A1 : }#3}}
+      \IfValueT{#4}{\textcolor{green}{\textbf{A2 : }#4}}
+      \IfValueT{#5}{\textcolor{red!50!blue}{\textbf{A3 : }#5}}
+      \IfValueT{#6}{\textcolor{blue}{\textbf{A4 : }#6}}
+    }
+ }{}
+}
+
+
+\firstname{}
+\lastname{}
+\begin{document}
+
+% recipient data
+\recipient{Editor JASSS}{}
+\date{\today}
+\opening{Dear Editor,}
+\closing{Yours faithfully,\\
+Juste Raimbault%\\
+%Université Paris 7 - UMR CNRS 8504 Géographie-cités
+}
+         % use an optional argument to use a string other than "Enclosure", or redefine \enclname
+
+%\makelettertitle
+
+
+
+\justify
+
+
+
+\textbf{Response to reviewers}
+
+
+
+\bigskip
+
+
+
+
+\bigskip
+
+\textbf{Reviewer 1:}
+
+
+\begin{enumerate}
+
+%I have carefully read the manuscript written by Raimbault entitled as “Multi-dimensional Urban Network Percolation”, which was submitted to JIMIS for publication. This paper addresses a multi-dimensional network representation of urban population density and transportation networks to study their correlations and percolation properties over Europe. Beyond the observations of the percolation transition by varying the percolation radius, the author addresses the organisation of poly- and multicetered mega city regions from a sustainability point of view.
+%Considering that I am not an expert of urban development, but having background in network science, as far as I can judge the methodology, statistical data analysis, argumentation, and synthesis presented in this manuscript are correct and the language also reaches the scientific standard. However, I have a few comments what I would like to suggest to the author to address as it would largely improve the readability of the manuscript. 
+%Comments:
+
+\item \textit{Although the focus of this work is about network percolation, the definition of multidimensional (multilayer) network is poorly explained. I understood that in both layers nodes might be spatial grid bins, and that links in one layer might be defined via population density and in the other layer might be defined by transportation. But the manuscript does not explain clearly how the networks were constructed, i.e. the definition of nodes, and links and the matching between different layers. Do you use the gravity model to define links between locations? Do you use a disk percolation kind of approach? This should be defined in Section 2.2 but the description there is very cryptic.}
+
+$\rightarrow$ The methodological section describing the percolation heuristic was reorganized and rewritten to be clearer. In particular, the general part for any network was made explicitly separate from the construction of the gridded network and the construction of nodes, and also from the application to the empirical dataset of population density and network indicators. The construction of links within each layer, done through the distance between nodes (corresponding to disk percolation) and the values of the variable corresponding to the layer, was also clarified.
+
+
+\medskip
+
+\item \textit{At the same time I could not understand what a network variable is, also mentioned in 2.2. It is a too general term as there are many variables of a network.}
+
+$\rightarrow$ This was also clarified with the description of the heuristic and network construction. In particular, ``network variable'' are network indicators computed on the road network on a spatial window centered around the node. This term was preferentially used.
+
+\medskip
+
+\item \textit{Considering that JIMIS is an interdisciplinary journal the author assumes too much about the reader. Terms like cyclomatic number, euclidian efficiency, or Pareto front should be defined in the manuscript.}
+
+$\rightarrow$ Definition of terms were added.
+
+\medskip
+
+\item \textit{The author misses to describe in details how he obtained and pre-processed the data he uses to construct the network and other aspects of the study. Although he shares the data this is an important question from the point of credibility, methodology and reproducibility.}
+
+$\rightarrow$ Data preprocessing and network construction were described with more details.
+
+\medskip
+
+\item \textit{Typos \ldots}
+ 
+$\rightarrow$ Typos were corrected
+%- Page 1 Section 1: “These study” -> “This study”
+%- Page 4 Section 1: “interacts is they are” -> “interacts if they are”
+
+\end{enumerate}
+
+
+\bigskip
+
+\textbf{Reviewer 2:}
+
+\medskip
+
+\begin{enumerate}
+%This paper proposes to apply multilayer percolation to the European urban system. It applies a known method to a new field (urban systems). This idea is quite interesting and has a great potential.
+\item \textit{Nevertheless, to me, the main drawback of this paper is that the research question is unclear. What is leading the methodology? The aim of mobilized indicators (economic performance and greenhouse gas emissions) is also not straightforward.}
+
+$\rightarrow$ The research question of the paper was formulated in a clearer way in the introduction. It consists in two main axis: (i) from the methodological viewpoint, how can urban network percolation be extended to multiple dimensions; and (ii) from the thematic viewpoint, how can endogenous mega urban regions be characterized which such a method, and how can it provide insights into their sustainability. These two axis are separated, but still tightly related as the second depends on the new methodology, and the first is illustrated through its concrete application in the second. The choice of sustainability indicators was also better motivated.
+
+\medskip
+
+\item \textit{Several key concepts and main points of the methodology are mentioned as the text goes by, without having been introduced earlier. Thus, a great number of formulas and parameters are gathered, without clearly explaining the articulation between all of them, and the purpose they serve.}
+
+$\rightarrow$ The content of the methodology was better presented and contextualized in the introduction, and formulas and parameters were described with more details.
+
+\medskip
+
+\item \textit{The discussion and conclusion are very expeditious and reinforce the idea of a methodology without a research question to lean on.}
+
+$\rightarrow$ The discussion was extended and made more precise, with a stronger relation with the research question.
+
+\medskip
+
+%Details:
+%– INTRODUCTION – 
+
+\item \textit{Other quantitative methods able to bring information linked to the question leading the work, and how the method exposed here can bring new elements, should be more developed. This part needs a more substantial structure and presentation.}
+
+$\rightarrow$ The introduction was reorganized and more literature was added, both for the methodological part and the thematic part of the research question.
+
+\medskip
+
+\item \textit{The author should make clearer what is taken into account in the urban system. Spatial distribution of population and properties of transportation network are mentioned but need to be specified (which one, defined how?).}
+
+$\rightarrow$ The dimension of the urban system taken into account were better specified in the introduction.
+
+\medskip
+
+%– METHODS – 
+%- Multidimensional percolation -
+
+\item \textit{The mathematical aspect of the methodology is a very interesting part of the work. But the only fact of applying a new methodology does not make a research result to me: it is necessary to show how brought information is significant to analyze an urban system.}
+
+$\rightarrow$ The discussion of results was reworked regarding the thematic research question.
+
+\medskip
+
+\item \textit{The figure 1 is unclear; its legend is confused; different concepts are mixed.}
+
+$\rightarrow$ Legend of figure 1 was made clearer.
+
+\medskip
+
+
+\item \textit{The third paragraph is much clearer than the two first. It may come first. Furthermore, the percolation on one single layer has to be defined before presenting the one on several layers.}
+
+$\rightarrow$ This section was reorganized to be clearer.
+
+\medskip
+
+\item \textit{English seems very ``French'' in the last paragraph.}
+
+$\rightarrow$ This paragraph, and more generally the paper, was edited for English soundness.
+
+\medskip
+
+
+\item \textit{Empirical data: Here we understand that nodes are centers of cells, and that each layer corresponds to (1) population density (2) network variable (Nv / Ne / cyclomatic number / euclidian efficiency) This clarification should come earlier in the paper, in the methodological part.}
+
+$\rightarrow$ The description of methods and data was reorganized to make this clearer.
+
+\medskip
+
+\item \textit{Besides, several questions need explanations at this point : What is this efficiency chosen? Why those indicators? And still\ldots What is the research question?}
+
+$\rightarrow$ The choice of network indicators was further discussed, in relation with the research question.
+
+\medskip
+
+\item \textit{Sustainability indicators: The ``messy'' way to present formulas (even not really explained sometimes) make their relevance for the development questionable.}
+
+$\rightarrow$ More details and explanations were given for these indicators.
+
+\medskip
+
+\item \textit{``recent forms of urbanization, in particular integrated megacity regions, may imply different patterns of economic and transportation flows and thus exhibit various performances regarding different indicators of sustainability.'' This is one of the strong hypothesis of the paper. It needs to be introduced earlier.}
+
+$\rightarrow$ This assumption, linked to the research question on the sustainability of megacity regions, was reformulated and integrated in the rewritten introduction. 
+
+
+\medskip
+
+\item \textit{Sustainability and greenhouse gas emissions have also to be introduced before: why is the focus here?}
+
+$\rightarrow$ The choice of these dimensions of sustainability is to give an illustration with two paradigmatic opposed dimensions, which can furthermore be approximated indirectly from gravity models as we propose. The explanation of this choice was added in the introduction.
+
+\medskip
+
+%– RESULTS – 
+%- Implementation -
+%The choice to offer online results is great!
+
+\item \textit{``Thus, it indeed increases with network performance, in consistence with the use done here through thresholding.'' This part is not very clear to me.}
+
+$\rightarrow$ This paragraph was clarified.
+
+\medskip
+
+%- Percolation transition and fractal dimension -
+
+\item \textit{Fractals are introduced just here! It seems to be part of the methodology\ldots Idem for the standard deviation, and the difference $(\alpha - \sigma \left[\alpha\right])_M - (\alpha - \sigma\left[\alpha\right])$: it is not clear why those formulas are added here and what they support.}
+
+$\rightarrow$ The study of fractal dimension is not essential in the methodology, but comes as an auxiliary result to validate the multi-dimensional approach regarding the original papers studying urban percolation. This was specified, and the formulas were better explained.
+
+\medskip
+
+\item \textit{A summary table would have been great here.}
+
+$\rightarrow$ We chose not to add a summary table for fractal dimensions, as it is not the main purpose of the study and their variation is furthermore not significant.
+
+\medskip
+
+\item \textit{Extracting endogenous megacity regions: Why is this configuration working? The impression is that the result comes as the work is felt the way along.}
+
+$\rightarrow$ This work is exploratory, thus 4800 parameter configuration were explored. The ones shown in Fig. 4 are close to actual functional regions for some, but very far for others. This suggest that our parametrizable approach is flexible to consider varying definitions of urban regions, and that in some cases it coincides with the purely functional definition of (Hall and Pain, 2016), i.e. that some thresholds of population and road network performance intensity capture actual functional linkages. There is however no way to explain this emerging property, as our method constructs clusters from the bottom-up. This was added in the discussion.
+
+\medskip
+
+\item \textit{How do we know that it is not just an effect of the population density layer?}
+
+$\rightarrow$ The shape of percolation transition curves in Fig. 2 show that the addition of the road network layer adds some information, as the curve for $\theta_N = 0$ (population only) can be compared with other values. This was made more explicit.
+
+\medskip
+
+\item \textit{``we observe a Pareto front for all points\ldots'': What do we learn about urban system from that?}
+
+$\rightarrow$ The presence of Pareto fronts confirms that urban systems consist in general of compromises between multiple objectives. This was clarified.
+
+\medskip
+
+
+\item \textit{Linking urban morphology and sustainability: Very confused part.}
+
+$\rightarrow$ This part was clarified by adding more context literature and more explanations.
+
+
+\medskip
+
+%– DISCUSSION & CONCLUSION – 
+
+\item \textit{The discussion and conclusion need to be developed. Before announcing developments (4.1), the reader has to understand what this specific research work brings (what are the main results, linked to the research question, and their limits). The conclusion is very broad (“link between form and function in urban system”; “shows its potentialities”). It needs to be more specific.}
+
+$\rightarrow$ The discussion was extended in relation with answers to the research question.
+
+%From my point of view, this paper could be very interesting with a clarification of the research question and a more structured presentation of methodology and indicators. 
+
+\medskip
+
+\item \textit{I am not a native English speaker, but it seems that there are some English points to adjust. Some sentences are too long to be clear.}
+ 
+$\rightarrow$ English was reworked throughout the paper to make it more readable and understandable.
+
+\end{enumerate}
+
+
+
+
+
+
+
+\end{document}
+
+
+%% end of file `template.tex'.
